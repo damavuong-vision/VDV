@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -110,6 +111,12 @@
 .login-error{min-height:20px;color:#dc2626;font-size:13px;font-weight:800;text-align:left;margin-top:12px}
 .login-hint{margin-top:14px;color:var(--muted);font-size:12px;text-align:left;line-height:1.5}
 
+.report-table{width:100%;border-collapse:collapse;margin-top:16px;background:#fff}
+.report-table th,.report-table td{border:1px solid #dbe3ef;padding:10px 12px;text-align:left;font-size:14px}
+.report-table th{background:#f3f7fc;font-weight:800}
+.summary-card{border:1px solid #dbe3ef;border-radius:16px;background:#fff;padding:16px;margin-bottom:16px}
+.empty-box{padding:16px;border:1px dashed #cbd5e1;border-radius:12px;color:#64748b;background:#fff}
+
 </style>
 </head>
 
@@ -161,6 +168,7 @@
       <div class="side-link nav-main" data-view="trend">Trend <span>›</span></div>
       <div class="side-link nav-main" data-view="heatmap">Heatmap <span>›</span></div>
       <div class="side-link nav-main" data-view="anomaly">Anomaly <span>›</span></div>
+      <div class="side-link nav-main" data-view="monthly">Báo cáo tháng <span>›</span></div>
 
       <div id="sidebarOverview" class="sidebar-panel">
         <div class="side-title">Nhóm khu vực</div>
@@ -336,6 +344,42 @@
           </div>
         </section>
       </section>
+
+<section class="card page-section hidden" id="sectionMonthlyReport">
+  <div class="card-head">
+    <h2>Báo cáo tháng</h2>
+    <span class="chip" id="monthlyMeta">--</span>
+  </div>
+
+  <div class="filters" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div class="field">
+      <label>Tháng báo cáo</label>
+      <input type="month" id="reportMonth" value="2026-02">
+    </div>
+
+    <div class="field">
+      <label>Nhóm báo cáo</label>
+      <select id="reportGroup">
+        <option value="temperature">Nhiệt độ bê tông</option>
+        <option value="jointmeter">Khe nhiệt hở</option>
+        <option value="piezometer">Áp lực thấm</option>
+        <option value="seepage">Lưu lượng thấm</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>&nbsp;</label>
+      <button class="btn primary" id="btnLoadMonthlyReport">Tải báo cáo tháng</button>
+    </div>
+
+    <div class="field">
+      <label>&nbsp;</label>
+      <button class="btn" id="btnPrintMonthly">In / Xuất PDF</button>
+    </div>
+  </div>
+
+  <div id="monthlyReportPreview" style="margin-top:16px"></div>
+</section>
     </main>
   </div>
 </div>
@@ -659,51 +703,84 @@ async function loadLatestSummaryRows(){
   latestSummaryRows = collected;
 }
 
-  function renderSafetyOverview(latestRows){
-    $('safetyMeta').textContent = `Latest summary • ${latestRows.length} latest rows`;
+  
+function renderSafetyOverview(latestRows){
+  $('safetyMeta').textContent = `Latest summary • ${latestRows.length} latest rows`;
 
-    const tempRows = latestRows.filter(r => ((r.sensor?.sensor_group || '').toLowerCase() === 'temperature') || String(r.metric_subtype || '').toLowerCase() === 'temp');
-    if(tempRows.length){
-      const mn = tempRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, tempRows[0]);
-      const mx = tempRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, tempRows[0]);
-      $('ovTemp').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} °C`;
-      $('ovTempPos').textContent = `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`;
-    } else { $('ovTemp').textContent = '--'; $('ovTempPos').textContent = ''; }
-
-    const jointRows = latestRows.filter(r => ((r.sensor?.sensor_group || '').toLowerCase() === 'jointmeter') && String(r.metric_subtype || '').toLowerCase() === 'eng_value');
-    if(jointRows.length){
-      const mn = jointRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, jointRows[0]);
-      const mx = jointRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, jointRows[0]);
-      $('ovJoint').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} mm`;
-      $('ovJointPos').textContent = `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`;
-    } else { $('ovJoint').textContent = '--'; $('ovJointPos').textContent = ''; }
-
-    const upliftRows = latestRows.filter(r => ((r.sensor?.sensor_group || '').toLowerCase() === 'piezometer') && String(r.metric_subtype || '').toLowerCase() === 'eng_value');
-    if(upliftRows.length){
-      const mn = upliftRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, upliftRows[0]);
-      const mx = upliftRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, upliftRows[0]);
-      $('ovUplift').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} kg/cm2`;
-      $('ovUpliftPos').textContent = `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`;
-    } else { $('ovUplift').textContent = '--'; $('ovUpliftPos').textContent = ''; }
-
-    const usRows = latestRows.filter(r => /^AV01/i.test(r.sensor_code) && String(r.metric_subtype || '').toLowerCase() === 'eng_value');
-    const dsRows = latestRows.filter(r => /^AV02/i.test(r.sensor_code) && String(r.metric_subtype || '').toLowerCase() === 'eng_value');
-    if(usRows.length || dsRows.length){
-      const usMin = usRows.length ? usRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, usRows[0]) : null;
-      const usMax = usRows.length ? usRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, usRows[0]) : null;
-      const dsMin = dsRows.length ? dsRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, dsRows[0]) : null;
-      const dsMax = dsRows.length ? dsRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, dsRows[0]) : null;
-      $('ovStress').textContent = `TL ${usMin ? fmtNum(usMin.value) : '--'}..${usMax ? fmtNum(usMax.value) : '--'} | HL ${dsMin ? fmtNum(dsMin.value) : '--'}..${dsMax ? fmtNum(dsMax.value) : '--'}`;
-      $('ovStressPos').textContent = `TL: ${usMin ? usMin.sensor_code : '--'} / ${usMax ? usMax.sensor_code : '--'} • HL: ${dsMin ? dsMin.sensor_code : '--'} / ${dsMax ? dsMax.sensor_code : '--'}`;
-    } else { $('ovStress').textContent = '--'; $('ovStressPos').textContent = ''; }
-
-    const seepRows = latestRows.filter(r => ((r.sensor?.sensor_group || '').toLowerCase() === 'seepage') && String(r.metric_subtype || '').toLowerCase() === 'flow');
-    if(seepRows.length){
-      const total = seepRows.reduce((a,c)=>a + (Number(c.value) || 0), 0);
-      $('ovSeepage').textContent = `${fmtNum(total)} L/s`;
-      $('ovSeepagePos').textContent = `Có ${seepRows.length} sensor seepage có dữ liệu latest`;
-    } else { $('ovSeepage').textContent = '--'; $('ovSeepagePos').textContent = ''; }
+  const tempRows = latestRows.filter(r =>
+    String(r.metric_subtype || '').toLowerCase() === 'temp'
+  );
+  if(tempRows.length){
+    const mn = tempRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, tempRows[0]);
+    const mx = tempRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, tempRows[0]);
+    $('ovTemp').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} °C`;
+    $('ovTempPos').textContent = `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`;
+  } else {
+    $('ovTemp').textContent = '--';
+    $('ovTempPos').textContent = '';
   }
+
+  const jointRows = latestRows.filter(r =>
+    ((r.sensor?.sensor_group || '').toLowerCase() === 'jointmeter') &&
+    String(r.metric_subtype || '').toLowerCase() === 'eng_value'
+  );
+  if(jointRows.length){
+    const mn = jointRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, jointRows[0]);
+    const mx = jointRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, jointRows[0]);
+    $('ovJoint').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} mm`;
+    $('ovJointPos').textContent = `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`;
+  } else {
+    $('ovJoint').textContent = '--';
+    $('ovJointPos').textContent = '';
+  }
+
+  const upliftRows = latestRows.filter(r =>
+    ((r.sensor?.sensor_group || '').toLowerCase() === 'piezometer') &&
+    String(r.metric_subtype || '').toLowerCase() === 'eng_value'
+  );
+  if(upliftRows.length){
+    const mn = upliftRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, upliftRows[0]);
+    const mx = upliftRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, upliftRows[0]);
+    $('ovUplift').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} kg/cm2`;
+    $('ovUpliftPos').textContent = `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`;
+  } else {
+    $('ovUplift').textContent = '--';
+    $('ovUpliftPos').textContent = '';
+  }
+
+  const usRows = latestRows.filter(r =>
+    /^AV01/i.test(r.sensor_code) &&
+    String(r.metric_subtype || '').toLowerCase() === 'eng_value'
+  );
+  const dsRows = latestRows.filter(r =>
+    /^AV02/i.test(r.sensor_code) &&
+    String(r.metric_subtype || '').toLowerCase() === 'eng_value'
+  );
+  if(usRows.length || dsRows.length){
+    const usMin = usRows.length ? usRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, usRows[0]) : null;
+    const usMax = usRows.length ? usRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, usRows[0]) : null;
+    const dsMin = dsRows.length ? dsRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, dsRows[0]) : null;
+    const dsMax = dsRows.length ? dsRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, dsRows[0]) : null;
+    $('ovStress').textContent = `TL ${usMin ? fmtNum(usMin.value) : '--'}..${usMax ? fmtNum(usMax.value) : '--'} | HL ${dsMin ? fmtNum(dsMin.value) : '--'}..${dsMax ? fmtNum(dsMax.value) : '--'}`;
+    $('ovStressPos').textContent = `TL: ${usMin ? usMin.sensor_code : '--'} / ${usMax ? usMax.sensor_code : '--'} • HL: ${dsMin ? dsMin.sensor_code : '--'} / ${dsMax ? dsMax.sensor_code : '--'}`;
+  } else {
+    $('ovStress').textContent = '--';
+    $('ovStressPos').textContent = '';
+  }
+
+  const seepRows = latestRows.filter(r =>
+    ((r.sensor?.sensor_group || '').toLowerCase() === 'seepage') &&
+    String(r.metric_subtype || '').toLowerCase() === 'flow'
+  );
+  if(seepRows.length){
+    const total = seepRows.reduce((a,c)=>a + (Number(c.value) || 0), 0);
+    $('ovSeepage').textContent = `${fmtNum(total)} L/s`;
+    $('ovSeepagePos').textContent = `Có ${seepRows.length} sensor seepage có dữ liệu latest`;
+  } else {
+    $('ovSeepage').textContent = '--';
+    $('ovSeepagePos').textContent = '';
+  }
+}
 
   function renderKpis(rows, latestRows){
     $('kLatest').textContent = rows.length ? fmtDateTime(rows[0].ts) : '--';
@@ -1033,7 +1110,7 @@ function applyPreset(groupName){
     metricEl.value = hasTarget ? targetMetric : 'ALL';
   }
 
-  void void applyFilters();
+  void applyFilters();
 }
 
 async function applyFilters(){
@@ -1070,7 +1147,8 @@ function switchView(view){
       overview: ['sectionSafetyOverview','sectionOverviewTop','sectionOverviewMain','sectionTrend','sectionBottom'],
       trend: ['sectionTrend'],
       heatmap: ['sectionOverviewMain'],
-      anomaly: ['sectionBottom']
+      anomaly: ['sectionBottom'],
+      monthly: ['sectionMonthlyReport']
     };
     document.querySelectorAll('.nav-main').forEach(el => el.classList.toggle('active', el.dataset.view === view));
     ['sidebarOverview','sidebarTrend','sidebarHeatmap','sidebarAnomaly'].forEach(id => {
@@ -1083,7 +1161,7 @@ function switchView(view){
         (view === 'anomaly' && id === 'sidebarAnomaly')
       ) ? 'block' : 'none';
     });
-    ['sectionSafetyOverview','sectionOverviewTop','sectionOverviewMain','sectionTrend','sectionBottom'].forEach(id => {
+    ['sectionSafetyOverview','sectionOverviewTop','sectionOverviewMain','sectionTrend','sectionBottom','sectionMonthlyReport'].forEach(id => {
       const el = $(id);
       if(!el) return;
       el.classList.toggle('hidden', !map[view].includes(id));
@@ -1095,6 +1173,8 @@ function switchView(view){
     $('loginPass')?.addEventListener('keydown', (e) => { if(e.key === 'Enter') void handleLogin(); });
     $('loginEmail')?.addEventListener('keydown', (e) => { if(e.key === 'Enter') void handleLogin(); });
     $('btnLogout')?.addEventListener('click', () => { void handleLogout(); });
+    $('btnLoadMonthlyReport')?.addEventListener('click', () => { void loadMonthlyReport(); });
+    $('btnPrintMonthly')?.addEventListener('click', () => { window.print(); });
     $('btnReload').addEventListener('click', () => { void applyFilters(); });
     $('btnApply').addEventListener('click', () => { void applyFilters(); });
     $('btnReset').addEventListener('click', () => { resetFilters(); refreshFilterOptions(); applyFilters(); });
@@ -1167,6 +1247,208 @@ async function init(){
   }
 }
 
+
+
+function getMonthRange(monthValue) {
+  const [year, month] = monthValue.split('-').map(Number);
+  const from = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0));
+  const to = new Date(Date.UTC(year, month, 1, 0, 0, 0));
+  return { fromTs: from.toISOString(), toTs: to.toISOString() };
+}
+
+function getMonthlyGroupConfig(group) {
+  const map = {
+    temperature: {
+      title: 'Nhiệt độ bê tông',
+      sensor_group: 'temperature',
+      metric_subtype: 'temp',
+      report_group: 'temperature',
+      unit: '°C'
+    },
+    jointmeter: {
+      title: 'Khe nhiệt hở',
+      sensor_group: 'jointmeter',
+      metric_subtype: 'eng_value',
+      report_group: 'jointmeter',
+      unit: 'mm'
+    },
+    piezometer: {
+      title: 'Áp lực thấm',
+      sensor_group: 'piezometer',
+      metric_subtype: 'eng_value',
+      report_group: 'piezometer',
+      unit: 'kg/cm2'
+    },
+    seepage: {
+      title: 'Lưu lượng thấm',
+      sensor_group: 'seepage',
+      metric_subtype: 'flow',
+      report_group: 'seepage',
+      unit: 'L/s'
+    }
+  };
+  return map[group];
+}
+
+async function rpcMonthlyStats(fromTs, toTs, sensorGroup, metricSubtype) {
+  const { data, error } = await sb.rpc('fn_monthly_stats', {
+    p_from_ts: fromTs,
+    p_to_ts: toTs,
+    p_sensor_group: sensorGroup,
+    p_metric_subtype: metricSubtype
+  });
+  if (error) throw error;
+  return data || [];
+}
+
+async function rpcMonthlySummary(fromTs, toTs, sensorGroup, metricSubtype) {
+  const { data, error } = await sb.rpc('fn_monthly_group_summary', {
+    p_from_ts: fromTs,
+    p_to_ts: toTs,
+    p_sensor_group: sensorGroup,
+    p_metric_subtype: metricSubtype
+  });
+  if (error) throw error;
+  return (data && data[0]) || null;
+}
+
+async function rpcDesignLimit(reportGroup, metricSubtype) {
+  const { data, error } = await sb.rpc('fn_report_design_limit', {
+    p_report_group: reportGroup,
+    p_metric_subtype: metricSubtype
+  });
+  if (error) throw error;
+  return (data && data[0]) || null;
+}
+
+function renderMonthlyStatTable(rows, unit) {
+  if (!rows || rows.length === 0) {
+    return `<div class="empty-box">Không có dữ liệu trong tháng.</div>`;
+  }
+
+  return `
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th>Sensor</th>
+          <th>Vị trí</th>
+          <th>Max (${unit})</th>
+          <th>Min (${unit})</th>
+          <th>Max-Min</th>
+          <th>Số mẫu</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td>${r.sensor_code}</td>
+            <td>${r.station_code || ''}</td>
+            <td>${fmtNum(r.max_value)}</td>
+            <td>${fmtNum(r.min_value)}</td>
+            <td>${fmtNum(r.amplitude)}</td>
+            <td>${r.sample_count}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function evaluateMonthlyReport(summary, design) {
+  if (!summary) {
+    return { assessment: 'Không có dữ liệu', measured_max: null };
+  }
+
+  const measuredMax = Number(summary.value_max);
+
+  if (!design || !Number.isFinite(Number(design.design_value))) {
+    return {
+      measured_max: measuredMax,
+      assessment: 'Chưa cấu hình ngưỡng'
+    };
+  }
+
+  const designValue = Math.abs(Number(design.design_value));
+  let ratio = measuredMax / designValue;
+
+  if ((design.compare_rule || '').toLowerCase() === 'abs_le') {
+    ratio = Math.abs(measuredMax) / designValue;
+  }
+
+  let assessment = 'Bình thường';
+  if (ratio > Number(design.alarm_ratio || 1)) {
+    assessment = 'Cảnh báo';
+  } else if (ratio > Number(design.warning_ratio || 0.8)) {
+    assessment = 'Theo dõi';
+  }
+
+  return {
+    measured_max: measuredMax,
+    assessment,
+    design_value: design.design_value
+  };
+}
+
+function buildMonthlySummaryCard(title, summary, evaluation, unit) {
+  if (!summary) {
+    return `
+      <div class="summary-card">
+        <h3>${title}</h3>
+        <p>Không có dữ liệu.</p>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="summary-card">
+      <h3>${title}</h3>
+      <p><b>Max lớn nhất:</b> ${summary.sensor_max || '--'} = ${fmtNum(summary.value_max)} ${unit}</p>
+      <p><b>Min nhỏ nhất:</b> ${summary.sensor_min || '--'} = ${fmtNum(summary.value_min)} ${unit}</p>
+      <p><b>Biên độ lớn nhất:</b> ${summary.sensor_amp || '--'} = ${fmtNum(summary.value_amp)} ${unit}</p>
+      <p><b>Ngưỡng thiết kế:</b> ${evaluation.design_value ?? '--'} ${unit}</p>
+      <p><b>Đánh giá:</b> ${evaluation.assessment}</p>
+    </div>
+  `;
+}
+
+async function loadMonthlyReport() {
+  try {
+    const monthValue = $('reportMonth').value;
+    const groupValue = $('reportGroup').value;
+    const cfg = getMonthlyGroupConfig(groupValue);
+    const preview = $('monthlyReportPreview');
+
+    if(!monthValue || !cfg){
+      preview.innerHTML = '<div class="empty-box">Vui lòng chọn tháng và nhóm báo cáo.</div>';
+      return;
+    }
+
+    const { fromTs, toTs } = getMonthRange(monthValue);
+    $('monthlyMeta').textContent = `${monthValue} • ${cfg.title}`;
+
+    preview.innerHTML = '<div class="empty-box">Đang tải báo cáo tháng...</div>';
+
+    const [rows, summary, design] = await Promise.all([
+      rpcMonthlyStats(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype),
+      rpcMonthlySummary(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype),
+      rpcDesignLimit(cfg.report_group, cfg.metric_subtype)
+    ]);
+
+    const evaluation = evaluateMonthlyReport(summary, design);
+
+    preview.innerHTML = `
+      ${buildMonthlySummaryCard(cfg.title, summary, evaluation, cfg.unit)}
+      ${renderMonthlyStatTable(rows, cfg.unit)}
+    `;
+  } catch (err) {
+    console.error(err);
+    $('monthlyReportPreview').innerHTML = `
+      <div class="empty-box" style="color:#b91c1c">
+        Lỗi tải báo cáo tháng: ${err.message || err}
+      </div>
+    `;
+  }
+}
 
   init();
 </script>
