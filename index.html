@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -865,6 +866,32 @@
       font-size:13px
     }
 
+    .monthly-combined-summary-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      margin-top:6px;
+      margin-bottom:18px;
+    }
+
+    .monthly-table-section{
+      margin-top:18px;
+    }
+
+    .monthly-table-section h3{
+      margin:0 0 10px;
+      font-size:16px;
+      font-weight:900;
+      color:var(--text);
+      letter-spacing:-.02em;
+    }
+
+    @media(max-width:980px){
+      .monthly-combined-summary-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
     .menu-label{
       display:flex;
       align-items:center;
@@ -1053,6 +1080,26 @@
         border-radius:0 !important;
         font-family:"Times New Roman", Times, serif !important;
         padding:12px 14px !important;
+      }
+
+      .monthly-combined-summary-grid{
+        display:grid !important;
+        grid-template-columns:1fr 1fr !important;
+        gap:10px !important;
+        page-break-inside:avoid;
+      }
+
+      .monthly-table-section{
+        margin-top:16px !important;
+        page-break-inside:auto;
+      }
+
+      .monthly-table-section h3{
+        font-size:16px !important;
+        margin:0 0 8px !important;
+        color:#000 !important;
+        font-weight:700 !important;
+        font-family:"Times New Roman", Times, serif !important;
       }
 
       .summary-card.highlight::before{
@@ -1494,6 +1541,7 @@
                 <option value="jointmeter">Khe nhiệt hở</option>
                 <option value="piezometer">Áp lực thấm</option>
                 <option value="seepage">Lưu lượng thấm</option>
+                <option value="summary_all">Báo cáo tổng hợp</option>
               </select>
             </div>
 
@@ -2584,6 +2632,10 @@
           metric_subtype: 'flow',
           report_group: 'seepage',
           unit: 'L/s'
+        },
+        summary_all: {
+          title: 'Báo cáo tổng hợp',
+          unit: ''
         }
       };
       return map[group];
@@ -2758,6 +2810,77 @@
       `;
     }
 
+
+    function buildMonthlyTableSection(title, tableHtml) {
+      return `
+        <section class="monthly-table-section">
+          <h3>${title}</h3>
+          ${tableHtml}
+        </section>
+      `;
+    }
+
+    async function loadSingleMonthlyGroupReport(groupKey, fromTs, toTs) {
+      const cfg = getMonthlyGroupConfig(groupKey);
+      if (!cfg || groupKey === 'summary_all') return null;
+
+      const rowsPromise = rpcMonthlyStats(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype);
+      const designPromise = rpcDesignLimit(cfg.report_group, cfg.metric_subtype);
+
+      if (groupKey === 'seepage') {
+        const [rows, totalSummary, design] = await Promise.all([
+          rowsPromise,
+          rpcMonthlySeepageTotalSummary(fromTs, toTs),
+          designPromise
+        ]);
+
+        return {
+          key: groupKey,
+          cfg,
+          rows,
+          summaryCardHtml: buildSeepageTotalSummaryCard(cfg.title, totalSummary, design, cfg.unit),
+          tableHtml: renderMonthlyStatTable(rows, cfg.unit)
+        };
+      }
+
+      const [rows, summary, design] = await Promise.all([
+        rowsPromise,
+        rpcMonthlySummary(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype),
+        designPromise
+      ]);
+
+      const evaluation = evaluateMonthlyReport(summary, design);
+
+      return {
+        key: groupKey,
+        cfg,
+        rows,
+        summaryCardHtml: buildMonthlySummaryCard(cfg.title, summary, evaluation, cfg.unit),
+        tableHtml: renderMonthlyStatTable(rows, cfg.unit)
+      };
+    }
+
+    async function loadCombinedMonthlyReport(fromTs, toTs, monthValue) {
+      const keys = ['temperature', 'jointmeter', 'piezometer', 'seepage'];
+      const results = await Promise.all(keys.map(key => loadSingleMonthlyGroupReport(key, fromTs, toTs)));
+
+      const monthText = monthValue.replace('-', ' / ');
+      $('monthlyMeta').textContent = `${monthValue} • Báo cáo tổng hợp`;
+      if($('printReportMonth')) $('printReportMonth').textContent = monthText;
+      if($('printReportGroup')) $('printReportGroup').textContent = 'Báo cáo tổng hợp';
+
+      const summaryHtml = results.map(item => item.summaryCardHtml).join('');
+      const tablesHtml = results.map(item => buildMonthlyTableSection(item.cfg.title, item.tableHtml)).join('');
+
+      return `
+        <div class="monthly-combined-summary-grid">
+          ${summaryHtml}
+        </div>
+        ${tablesHtml}
+      `;
+    }
+
+
     async function loadMonthlyReport() {
       try {
         const monthValue = $('reportMonth').value;
@@ -2771,42 +2894,24 @@
         }
 
         const { fromTs, toTs } = getMonthRange(monthValue);
+        preview.innerHTML = '<div class="empty-box">Đang tải báo cáo tháng...</div>';
+
+        if (groupValue === 'summary_all') {
+          preview.innerHTML = await loadCombinedMonthlyReport(fromTs, toTs, monthValue);
+          return;
+        }
+
         $('monthlyMeta').textContent = `${monthValue} • ${cfg.title}`;
 
         const monthText = monthValue.replace('-', ' / ');
         if($('printReportMonth')) $('printReportMonth').textContent = monthText;
         if($('printReportGroup')) $('printReportGroup').textContent = cfg.title;
 
-        preview.innerHTML = '<div class="empty-box">Đang tải báo cáo tháng...</div>';
-
-        const rowsPromise = rpcMonthlyStats(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype);
-        const designPromise = rpcDesignLimit(cfg.report_group, cfg.metric_subtype);
-
-        if (groupValue === 'seepage') {
-          const [rows, totalSummary, design] = await Promise.all([
-            rowsPromise,
-            rpcMonthlySeepageTotalSummary(fromTs, toTs),
-            designPromise
-          ]);
-
-          preview.innerHTML = `
-            ${buildSeepageTotalSummaryCard(cfg.title, totalSummary, design, cfg.unit)}
-            ${renderMonthlyStatTable(rows, cfg.unit)}
-          `;
-          return;
-        }
-
-        const [rows, summary, design] = await Promise.all([
-          rowsPromise,
-          rpcMonthlySummary(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype),
-          designPromise
-        ]);
-
-        const evaluation = evaluateMonthlyReport(summary, design);
+        const report = await loadSingleMonthlyGroupReport(groupValue, fromTs, toTs);
 
         preview.innerHTML = `
-          ${buildMonthlySummaryCard(cfg.title, summary, evaluation, cfg.unit)}
-          ${renderMonthlyStatTable(rows, cfg.unit)}
+          ${report.summaryCardHtml}
+          ${report.tableHtml}
         `;
       } catch (err) {
         console.error(err);
