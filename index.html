@@ -2,121 +2,394 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A Vương Dam Safety • VDV Dashboard V11</title>
+  <title>A Vương Dam Safety • VDV Dashboard V12</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <style>
-    :root{
-      --bg:#f4f7fb; --card:#ffffff; --line:rgba(15,23,42,.10); --line2:rgba(15,23,42,.06);
-      --text:#0f172a; --muted:#64748b; --blue:#2563eb; --blue2:#1d4ed8;
-      --green:#10b981; --amber:#f59e0b; --red:#ef4444; --slate:#475569;
-      --shadow:0 10px 28px rgba(15,23,42,.06); --radius:18px;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    .app{min-height:100vh;display:grid;grid-template-rows:72px 1fr}
-    .header{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-    .brand{display:flex;align-items:center;gap:14px}
-    .logo{width:96px;height:40px;border-radius:12px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden;padding:4px}.logo img{max-width:100%;max-height:100%;object-fit:contain}
-    .brand h1{margin:0;font-size:18px;font-weight:900}
-    .brand small{display:block;color:var(--blue2);font-weight:700;margin-top:3px}
-    .head-actions{display:flex;gap:12px;align-items:center}
-    .btn{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:14px;font-weight:800;cursor:pointer;color:var(--text)}
-    .btn:hover{transform:translateY(-1px)}
-    .btn.primary{background:rgba(37,99,235,.08);color:var(--blue);border-color:rgba(37,99,235,.22)}
-    .btn.active{border:2px solid var(--blue2);padding:9px 13px}
-    .badge{padding:8px 12px;border-radius:14px;font-size:12px;font-weight:900}
-    .badge.online{background:rgba(16,185,129,.10);color:#047857;border:1px solid rgba(16,185,129,.18)}
-    .layout{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:16px}
-    @media(max-width:1180px){.layout{grid-template-columns:1fr}}
-    .sidebar,.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
-    .sidebar{padding:14px;height:fit-content;position:sticky;top:88px}
-    @media(max-width:1180px){.sidebar{position:static}}
-    .side-title{font-size:12px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin:12px 8px 8px}
-    .side-link{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;border:1px solid var(--line2);margin-bottom:8px;background:#fff;cursor:pointer;font-weight:800}
-    .side-link.active{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.22);color:var(--blue)}
-    .sidebar-panel{display:block}
-    .page-section{display:block}
-    .page-section.hidden{display:none}
-    .content{min-width:0}
-    .card{padding:16px;margin-bottom:16px}
-    .card h2{margin:0;font-size:16px}
-    .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-    .chip{padding:7px 11px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted);font-weight:800;background:#fff}
-    .filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
-    @media(max-width:1250px){.filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
-    @media(max-width:760px){.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    .field{display:flex;flex-direction:column;gap:6px}
-    .field label{font-size:12px;font-weight:800;color:var(--muted)}
-    select,input{width:100%;padding:11px 12px;border-radius:14px;border:1px solid var(--line);font:inherit;background:#fff;color:var(--text)}
-    .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .quick-row{display:flex;gap:10px;flex-wrap:nowrap;overflow-x:auto;margin-top:10px;padding-bottom:2px}
-    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-    @media(max-width:1180px){.stats{grid-template-columns:repeat(3,1fr)}}
-    @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
-    .stat{padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff}
-    .stat .k{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
-    .stat .v{font-size:24px;font-weight:900;margin-top:8px}
-    .stat .s{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.45}
-    .stat .v.compact{font-size:18px;line-height:1.35}
-    .overview-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-    #errorBody{font-size:14px;line-height:1.5}
-    .hidden{display:none!important}
-    @media(max-width:1180px){.overview-grid{grid-template-columns:repeat(3,1fr)}}
-    @media(max-width:760px){.overview-grid{grid-template-columns:repeat(2,1fr)}}
-    .grid2{display:grid;grid-template-columns:420px 1fr;gap:16px}
-    @media(max-width:1260px){.grid2{grid-template-columns:1fr}}
-    .alarm-columns{display:grid;grid-template-columns:1fr;gap:10px}
-    .alarm-box{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff}
-    .alarm-box h3{margin:0 0 8px;font-size:14px}
-    .alarm-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line2);font-size:13px}
-    .alarm-item:last-child{border-bottom:none}
-    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:11px;font-weight:900}
-    .red{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.18);color:#b91c1c}
-    .amber{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.18);color:#b45309}
-    .green{background:rgba(16,185,129,.10);border-color:rgba(16,185,129,.18);color:#047857}
-    .gray{background:rgba(100,116,139,.10);border-color:rgba(100,116,139,.18);color:#475569}
-    .chart-wrap{height:560px}
-    .heatmap-wrap{min-height:420px}
-    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px}
-    table{width:100%;border-collapse:collapse;font-size:13px}
-    th,td{padding:12px 10px;border-bottom:1px solid var(--line2);text-align:left;white-space:nowrap}
-    th{position:sticky;top:0;background:#fff;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.6px}
-    .empty{padding:24px;text-align:center;color:var(--muted)}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-    .health{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    @media(max-width:980px){.health{grid-template-columns:1fr}}
-    .health-box{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff}
-  
-.app.hidden{display:none}
-.login-overlay{position:fixed;inset:0;background:radial-gradient(1200px 600px at 20% 0%, rgba(37,99,235,.18) 0%, rgba(244,247,251,1) 55%),radial-gradient(900px 500px at 80% 20%, rgba(16,185,129,.12) 0%, rgba(244,247,251,1) 55%);z-index:9999;padding:20px;overflow:auto}
-.login-overlay.hidden{display:none}
-.login-wrap{min-height:100%;display:flex;align-items:center;justify-content:center}
-.login-card{width:100%;max-width:560px;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:32px;padding:34px 28px;text-align:center;box-shadow:0 24px 60px rgba(15,23,42,.14)}
-.login-logo-box{width:200px;height:66px;margin:0 auto 20px;background:#fff url('https://ubsqkaqqwdegvqrkyddx.supabase.co/storage/v1/object/sign/Picture/Logo%20AVC.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mZmFkZjVmMC1lMWQxLTRlNjEtYWNlMy02ZWUyZjY2ZTUxMDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQaWN0dXJlL0xvZ28gQVZDLnBuZyIsImlhdCI6MTc3MzYzNjU0NCwiZXhwIjoyMDg4OTk2NTQ0fQ.x0qY8Ftc0kG5NJiMwbfCUAMxxdVlt00dsc5bQ6q78XU') center/85% no-repeat;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 24px rgba(15,23,42,.08)}
-.login-title{font-size:24px;font-weight:900;letter-spacing:-.4px;color:var(--text);margin:0 0 6px}
-.login-desc{font-size:13px;color:var(--muted);margin:0 0 24px;font-weight:600}
-.login-field{text-align:left;margin-bottom:14px}
-.login-field label{display:block;font-size:12px;font-weight:900;color:var(--muted);margin:0 0 8px}
-.login-input{width:100%;padding:14px 16px;border-radius:18px;background:#fff;border:1px solid var(--line);color:var(--text);outline:none;font-size:15px;box-shadow:0 8px 18px rgba(15,23,42,.06)}
-.login-input:focus{border-color:rgba(37,99,235,.45);box-shadow:0 0 0 3px rgba(37,99,235,.14),0 10px 22px rgba(15,23,42,.08)}
-.btn-login{width:100%;padding:14px 16px;border:none;border-radius:18px;background:linear-gradient(90deg,#2563eb,#1d4ed8);color:#fff;font-weight:1000;cursor:pointer;box-shadow:0 14px 34px rgba(37,99,235,.22);margin-top:8px}
-.btn-login:disabled{opacity:.7;cursor:not-allowed}
-.login-error{min-height:20px;color:#dc2626;font-size:13px;font-weight:800;text-align:left;margin-top:12px}
-.login-hint{margin-top:14px;color:var(--muted);font-size:12px;text-align:left;line-height:1.5}
+  :root{
+    --bg:#eef4fb;
+    --bg-2:#f7faff;
+    --card:rgba(255,255,255,.92);
+    --card-strong:#ffffff;
+    --line:rgba(30,41,59,.10);
+    --line2:rgba(30,41,59,.06);
+    --text:#0f172a;
+    --muted:#64748b;
+    --blue:#2563eb;
+    --blue2:#1d4ed8;
+    --green:#10b981;
+    --amber:#f59e0b;
+    --red:#ef4444;
+    --slate:#475569;
+    --shadow:0 18px 40px rgba(15,23,42,.08);
+    --shadow-lg:0 28px 60px rgba(15,23,42,.12);
+    --shadow-sm:0 8px 22px rgba(15,23,42,.05);
+    --header-h:82px;
+    --sidebar-w:312px;
+    --accent:linear-gradient(135deg,#2563eb 0%,#1d4ed8 45%,#0ea5e9 100%);
+    --surface:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(248,251,255,.95) 100%);
+  }
 
-.report-table{width:100%;border-collapse:collapse;margin-top:16px;background:#fff}
-.report-table th,.report-table td{border:1px solid #dbe3ef;padding:10px 12px;text-align:left;font-size:14px}
-.report-table th{background:#f3f7fc;font-weight:800}
-.summary-card{border:1px solid #dbe3ef;border-radius:16px;background:#fff;padding:16px;margin-bottom:16px}
-.empty-box{padding:16px;border:1px dashed #cbd5e1;border-radius:12px;color:#64748b;background:#fff}
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    min-height:100%;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 520px at -5% -10%, rgba(37,99,235,.12), transparent 55%),
+      radial-gradient(900px 460px at 105% 0%, rgba(14,165,233,.10), transparent 50%),
+      linear-gradient(180deg,#f7fbff 0%,#eef4fb 38%,#edf3fa 100%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(to right, rgba(255,255,255,.18) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,.16) 1px, transparent 1px);
+    background-size:32px 32px;
+    opacity:.14;
+    mask-image:linear-gradient(180deg, rgba(0,0,0,.4), transparent 85%);
+  }
+
+  .hidden{display:none!important}
+  .app{
+    min-height:100vh;
+    display:grid;
+    grid-template-rows:var(--header-h) 1fr;
+    position:relative;
+    z-index:1;
+  }
+  .app.hidden{display:none}
+
+  .header{
+    position:sticky;
+    top:0;
+    z-index:40;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:14px 22px;
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(18px) saturate(1.2);
+    -webkit-backdrop-filter:blur(18px) saturate(1.2);
+    border-bottom:1px solid rgba(255,255,255,.8);
+    box-shadow:0 6px 30px rgba(15,23,42,.05);
+  }
+
+  .brand{display:flex;align-items:center;gap:16px;min-width:0}
+  .logo{
+    width:112px;height:46px;border-radius:16px;border:1px solid rgba(37,99,235,.12);
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%);
+    overflow:hidden;padding:6px 10px;box-shadow:0 10px 24px rgba(37,99,235,.08);flex:0 0 auto;
+  }
+  .logo img{max-width:100%;max-height:100%;object-fit:contain}
+  .brand h1{margin:0;font-size:26px;line-height:1.05;font-weight:900;letter-spacing:-.03em;color:#0f172a}
+  .brand small{display:block;color:var(--blue2);font-weight:800;margin-top:6px;font-size:13px;letter-spacing:.01em}
+  .head-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+
+  .btn{
+    border:1px solid var(--line);background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%);
+    padding:11px 16px;border-radius:16px;font-weight:900;cursor:pointer;color:var(--text);
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+    box-shadow:var(--shadow-sm);font-size:14px;letter-spacing:.01em;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(37,99,235,.10);border-color:rgba(37,99,235,.18)}
+  .btn.primary{background:linear-gradient(180deg,#eff6ff 0%,#e8f0ff 100%);color:var(--blue);border-color:rgba(37,99,235,.24);box-shadow:0 12px 28px rgba(37,99,235,.12)}
+  .btn.active{border:2px solid var(--blue2);padding:10px 15px;background:linear-gradient(180deg,#eef4ff 0%,#e3edff 100%);color:var(--blue2)}
+
+  .badge{padding:10px 14px;border-radius:16px;font-size:12px;font-weight:900;letter-spacing:.03em;text-transform:uppercase;box-shadow:var(--shadow-sm)}
+  .badge.online{background:rgba(16,185,129,.10);color:#047857;border:1px solid rgba(16,185,129,.20)}
+
+  .layout{display:grid;grid-template-columns:var(--sidebar-w) 1fr;gap:18px;padding:18px;align-items:start}
+  @media(max-width:1220px){.layout{grid-template-columns:1fr}}
+
+  .sidebar,.card{
+    background:var(--surface);border:1px solid rgba(255,255,255,.8);
+    border-radius:26px;box-shadow:var(--shadow);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+  }
+  .sidebar{
+    padding:16px;position:sticky;top:calc(var(--header-h) + 8px);
+    max-height:calc(100vh - var(--header-h) - 26px);overflow:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(37,99,235,.35) transparent;
+  }
+  .sidebar::-webkit-scrollbar{width:8px}
+  .sidebar::-webkit-scrollbar-thumb{background:rgba(37,99,235,.24);border-radius:999px}
+  @media(max-width:1220px){.sidebar{position:static;max-height:none}}
+
+  .side-title{
+    font-size:11px;font-weight:900;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.10em;margin:14px 10px 10px;
+  }
+
+  .side-link{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:13px 15px;border-radius:16px;border:1px solid rgba(30,41,59,.06);
+    margin-bottom:8px;background:rgba(255,255,255,.76);cursor:pointer;font-weight:850;
+    transition:all .18s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+  }
+  .side-link:hover{transform:translateX(2px);border-color:rgba(37,99,235,.18);box-shadow:0 12px 24px rgba(37,99,235,.08)}
+  .side-link.active{
+    background:linear-gradient(135deg,rgba(37,99,235,.12) 0%,rgba(14,165,233,.08) 100%);
+    border-color:rgba(37,99,235,.24);color:var(--blue);box-shadow:0 16px 28px rgba(37,99,235,.12)
+  }
+
+  .sidebar-panel{display:block}
+  .page-section{display:block}
+  .page-section.hidden{display:none}
+  .content{min-width:0}
+
+  .card{padding:18px;margin-bottom:16px;position:relative;overflow:hidden}
+  .card::before{
+    content:"";position:absolute;inset:0 0 auto 0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.85),transparent);pointer-events:none;
+  }
+  .card h2{margin:0;font-size:17px;font-weight:900;letter-spacing:-.02em}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+
+  .chip{
+    padding:8px 12px;border-radius:999px;border:1px solid rgba(30,41,59,.08);
+    font-size:12px;color:var(--muted);font-weight:850;background:rgba(255,255,255,.84);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+  }
+
+  .filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+  @media(max-width:1320px){.filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:820px){.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+  .field{display:flex;flex-direction:column;gap:7px}
+  .field label{font-size:12px;font-weight:850;color:var(--muted);letter-spacing:.01em}
+  select,input{
+    width:100%;padding:12px 14px;border-radius:16px;border:1px solid rgba(30,41,59,.10);
+    font:inherit;background:rgba(255,255,255,.86);color:var(--text);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+    transition:border-color .16s ease, box-shadow .16s ease, background .16s ease;outline:none;
+  }
+  select:focus,input:focus{
+    border-color:rgba(37,99,235,.34);
+    box-shadow:0 0 0 4px rgba(37,99,235,.10), inset 0 1px 0 rgba(255,255,255,.9);
+    background:#fff;
+  }
+
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .quick-row{display:flex;gap:10px;flex-wrap:nowrap;overflow-x:auto;margin-top:12px;padding-bottom:4px;scrollbar-width:none}
+  .quick-row::-webkit-scrollbar{display:none}
+
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  @media(max-width:1260px){.stats{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  .stat,.summary-card,.alarm-box,.health-box{
+    border:1px solid rgba(30,41,59,.08);border-radius:20px;
+    background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);box-shadow:var(--shadow-sm);
+  }
+  .stat{padding:16px;position:relative;overflow:hidden}
+  .stat::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);opacity:.9}
+  .stat .k{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .stat .v{font-size:28px;font-weight:950;margin-top:10px;letter-spacing:-.03em;color:#0f172a}
+  .stat .s{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .stat .v.compact{font-size:18px;line-height:1.42;font-weight:900}
+
+  .overview-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  @media(max-width:1260px){.overview-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:820px){.overview-grid{grid-template-columns:repeat(2,1fr)}}
+
+  .grid2{display:grid;grid-template-columns:440px 1fr;gap:16px}
+  @media(max-width:1320px){.grid2{grid-template-columns:1fr}}
+
+  .alarm-columns{display:grid;grid-template-columns:1fr;gap:12px}
+  .alarm-box{padding:14px}
+  .alarm-box h3{margin:0 0 10px;font-size:14px}
+  .alarm-item{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed rgba(30,41,59,.08);font-size:13px}
+  .alarm-item:last-child{border-bottom:none}
+
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;
+    border:1px solid rgba(30,41,59,.10);font-size:11px;font-weight:900;letter-spacing:.02em;
+  }
+  .red{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.18);color:#b91c1c}
+  .amber{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.18);color:#b45309}
+  .green{background:rgba(16,185,129,.10);border-color:rgba(16,185,129,.18);color:#047857}
+  .gray{background:rgba(100,116,139,.10);border-color:rgba(100,116,139,.18);color:#475569}
+
+  .chart-wrap{
+    height:580px;border-radius:20px;padding:12px 8px 0;
+    background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.3));
+    border:1px solid rgba(255,255,255,.75);
+  }
+  .heatmap-wrap{
+    min-height:440px;border-radius:20px;padding:10px;
+    background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.3));
+    border:1px solid rgba(255,255,255,.75);
+  }
+
+  .table-wrap{
+    overflow:auto;border:1px solid rgba(30,41,59,.08);border-radius:20px;
+    background:rgba(255,255,255,.84);box-shadow:var(--shadow-sm);
+  }
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:13px 12px;border-bottom:1px solid rgba(30,41,59,.06);text-align:left;white-space:nowrap}
+  th{
+    position:sticky;top:0;background:linear-gradient(180deg,#f8fbff 0%,#f1f6fd 100%);
+    color:#64748b;font-size:12px;text-transform:uppercase;letter-spacing:.08em;z-index:1;font-weight:900;
+  }
+  tbody tr:hover td{background:rgba(37,99,235,.03)}
+  .empty{padding:24px;text-align:center;color:var(--muted)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+
+  .health{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:980px){.health{grid-template-columns:1fr}}
+  .health-box{padding:14px}
+
+  .login-overlay{
+    position:fixed;inset:0;
+    background:
+      linear-gradient(180deg, rgba(9,22,43,.42) 0%, rgba(10,22,41,.50) 100%),
+      radial-gradient(900px 420px at 15% 0%, rgba(37,99,235,.22) 0%, rgba(20,31,48,.20) 60%),
+      url('https://ubsqkaqqwdegvqrkyddx.supabase.co/storage/v1/object/sign/Picture/2010_DapDangTran.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mZmFkZjVmMC1lMWQxLTRlNjEtYWNlMy02ZWUyZjY2ZTUxMDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQaWN0dXJlLzIwMTBfRGFwRGFuZ1RyYW4uanBnIiwiaWF0IjoxNzczNzE3NzM2LCJleHAiOjQ5MjczMTc3MzZ9.lTqNkaCXQ2T-h19lzF9Vrq14jJTp0XPJEYQSMBD7vXQ') center/cover no-repeat;
+    z-index:9999;padding:24px;overflow:auto;
+  }
+  .login-overlay.hidden{display:none}
+  .login-wrap{min-height:100%;display:flex;align-items:center;justify-content:center}
+  .login-card{
+    width:100%;max-width:580px;background:rgba(255,255,255,.90);
+    backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.85);border-radius:34px;
+    padding:34px 30px;text-align:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+  }
+  .login-card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--accent)}
+  .login-logo-box{
+    width:220px;height:72px;margin:0 auto 22px;
+    background:#fff url('https://ubsqkaqqwdegvqrkyddx.supabase.co/storage/v1/object/sign/Picture/Logo%20AVC.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mZmFkZjVmMC1lMWQxLTRlNjEtYWNlMy02ZWUyZjY2ZTUxMDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQaWN0dXJlL0xvZ28gQVZDLnBuZyIsImlhdCI6MTc3MzYzNjU0NCwiZXhwIjoyMDg4OTk2NTQ0fQ.x0qY8Ftc0kG5NJiMwbfCUAMxxdVlt00dsc5bQ6q78XU') center/82% no-repeat;
+    border:1px solid rgba(30,41,59,.08);border-radius:20px;box-shadow:0 12px 28px rgba(15,23,42,.08);
+  }
+  .login-title{font-size:34px;font-weight:950;letter-spacing:-.04em;color:var(--text);margin:0 0 6px}
+  .login-desc{font-size:15px;color:var(--muted);margin:0 0 28px;font-weight:600}
+  .login-field{text-align:left;margin-bottom:14px}
+  .login-field label{
+    display:block;font-size:12px;font-weight:900;color:var(--muted);
+    margin:0 0 8px;letter-spacing:.03em;text-transform:uppercase;
+  }
+  .login-input{
+    width:100%;padding:15px 16px;border-radius:18px;background:#fff;border:1px solid rgba(30,41,59,.10);
+    color:var(--text);outline:none;font-size:16px;box-shadow:var(--shadow-sm);transition:border-color .16s ease, box-shadow .16s ease;
+  }
+  .login-input:focus{border-color:rgba(37,99,235,.45);box-shadow:0 0 0 4px rgba(37,99,235,.12), 0 12px 28px rgba(15,23,42,.08)}
+  .btn-login{
+    width:100%;padding:15px 16px;border:none;border-radius:18px;background:var(--accent);color:#fff;
+    font-weight:1000;cursor:pointer;box-shadow:0 18px 34px rgba(37,99,235,.24);
+    margin-top:10px;letter-spacing:.04em;font-size:15px;transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-login:hover{transform:translateY(-1px);box-shadow:0 22px 40px rgba(37,99,235,.26)}
+  .btn-login:disabled{opacity:.7;cursor:not-allowed}
+  .login-error{min-height:20px;color:#dc2626;font-size:13px;font-weight:800;text-align:left;margin-top:12px}
+  .login-hint{margin-top:16px;color:var(--muted);font-size:12px;text-align:left;line-height:1.6}
+
+  .report-table{
+    width:100%;border-collapse:collapse;margin-top:16px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);
+  }
+  .report-table th,.report-table td{border:1px solid #e6eef8;padding:11px 13px;text-align:left;font-size:14px}
+  .report-table th{background:linear-gradient(180deg,#f5f9ff 0%,#edf4fd 100%);font-weight:900;color:#5b708f}
+  .summary-card{padding:18px;margin-bottom:16px}
+  .summary-card h3{margin:0 0 14px;font-size:16px;font-weight:900;letter-spacing:-.02em}
+  .summary-card p{margin:0 0 10px;font-size:15px;line-height:1.58}
+  .empty-box{
+    padding:18px;border:1px dashed #cbd5e1;border-radius:16px;color:#64748b;
+    background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+  }
+
+  @media(max-width:860px){
+    .header{padding:12px 14px}
+    .brand h1{font-size:20px}
+    .layout{padding:12px}
+    .card,.sidebar{border-radius:22px}
+    .filters[style*="repeat(4"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  }
+
+  .menu-label{display:flex;align-items:center;gap:10px}
+  .menu-ico{
+    width:28px;height:28px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,#eff6ff 0%,#e0ebff 100%);color:var(--blue);font-size:14px;
+    border:1px solid rgba(37,99,235,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)
+  }
+  .side-link.active .menu-ico{
+    background:linear-gradient(180deg,#2563eb 0%,#1d4ed8 100%);
+    color:#fff;border-color:rgba(37,99,235,.4)
+  }
+
+  .watch{background:rgba(59,130,246,.10);border-color:rgba(59,130,246,.18);color:#1d4ed8}
+  .warning{background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.22);color:#b45309}
+  .alarm{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.20);color:#b91c1c}
+  .emergency{background:rgba(127,29,29,.14);border-color:rgba(127,29,29,.24);color:#7f1d1d}
+
+  .summary-card.highlight{position:relative;overflow:hidden}
+  .summary-card.highlight::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent)
+  }
+  .monthly-print-note{
+    margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(37,99,235,.06);color:var(--muted);font-size:13px
+  }
+
+  @page{
+    size:A4 portrait;
+    margin:12mm;
+  }
+  @media print{
+    body{background:#fff !important}
+    body::before,.sidebar,.header,.login-overlay,#errorPanel,.btn,.chip:not(#monthlyMeta){display:none !important}
+    .layout,.content{display:block !important;padding:0 !important}
+    .card{box-shadow:none !important;border:1px solid #dbe3ef !important;background:#fff !important}
+    .page-section{display:none !important}
+    #sectionMonthlyReport{display:block !important;visibility:visible !important}
+    #sectionMonthlyReport *{visibility:visible !important}
+    #sectionMonthlyReport{
+      position:static !important;
+      width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+      background:#fff !important
+    }
+    #sectionMonthlyReport .card-head{
+      border-bottom:2px solid #cfdced;
+      padding-bottom:10px;
+      margin-bottom:12px
+    }
+    #sectionMonthlyReport .filters{
+      grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+      margin-bottom:12px
+    }
+    .report-table th,.report-table td{
+      font-size:11px !important;
+      padding:7px 8px !important;
+      color:#111827 !important;
+      border:1px solid #dbe3ef !important
+    }
+    .summary-card{
+      break-inside:avoid;
+      page-break-inside:avoid;
+      box-shadow:none !important;
+      border:1px solid #dbe3ef !important
+    }
+    .empty-box,.monthly-print-note{
+      border:1px dashed #cbd5e1 !important;
+      background:#fff !important;
+      color:#334155 !important
+    }
+  }
 
 </style>
 </head>
@@ -127,7 +400,7 @@
     <div class="login-card">
       <div class="login-logo-box"></div>
       <div class="login-title">Đăng Nhập Hệ Thống</div>
-      <div class="login-desc">Hệ thống hỗ trợ vận hành hồ chứa thủy điện A Vương</div>
+      <div class="login-desc">Hệ thống giám sát an toàn đập thủy điện A Vương</div>
 
       <div class="login-field">
         <label>Email</label>
@@ -151,7 +424,7 @@
     <div class="brand">
       <div class="logo"><img src="https://ubsqkaqqwdegvqrkyddx.supabase.co/storage/v1/object/sign/Picture/Logo%20AVC.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mZmFkZjVmMC1lMWQxLTRlNjEtYWNlMy02ZWUyZjY2ZTUxMDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQaWN0dXJlL0xvZ28gQVZDLnBuZyIsImlhdCI6MTc3MzYzNjU0NCwiZXhwIjoyMDg4OTk2NTQ0fQ.x0qY8Ftc0kG5NJiMwbfCUAMxxdVlt00dsc5bQ6q78XU" alt="AVC Logo"></div>
       <div>
-        <h1>A Vương Dam Safety • VDV Dashboard V11</h1>
+        <h1>A Vương Dam Safety • VDV Dashboard V12</h1>
         <small id="lastUpdate">Cập nhật: --</small>
       </div>
     </div>
@@ -165,59 +438,61 @@
   <div class="layout">
     <aside class="sidebar">
       <div class="side-title">Điều hướng</div>
-      <div class="side-link nav-main active" data-view="overview">Tổng quan <span>›</span></div>
-      <div class="side-link nav-main" data-view="trend">Trend <span>›</span></div>
-      <div class="side-link nav-main" data-view="heatmap">Heatmap <span>›</span></div>
-      <div class="side-link nav-main" data-view="anomaly">Anomaly <span>›</span></div>
-      <div class="side-link nav-main" data-view="monthly">Báo cáo tháng <span>›</span></div>
+      <div class="side-link nav-main active" data-view="overview"><span class="menu-label"><span class="menu-ico">⌂</span>Tổng quan</span><span>›</span></div>
+      <div class="side-link nav-main" data-view="trend"><span class="menu-label"><span class="menu-ico">⟈</span>Trend</span><span>›</span></div>
+      <div class="side-link nav-main" data-view="heatmap"><span class="menu-label"><span class="menu-ico">▦</span>Heatmap</span><span>›</span></div>
+      <div class="side-link nav-main" data-view="anomaly"><span class="menu-label"><span class="menu-ico">⚠</span>Anomaly</span><span>›</span></div>
+      <div class="side-link nav-main" data-view="monthly"><span class="menu-label"><span class="menu-ico">🗎</span>Báo cáo tháng</span><span>›</span></div>
 
       <div id="sidebarOverview" class="sidebar-panel">
         <div class="side-title">Nhóm khu vực</div>
-        <div class="side-link station-link" data-station="AVUONG-BLOCK-01">Block 01 <span>›</span></div>
-        <div class="side-link station-link" data-station="AVUONG-BLOCK-02">Block 02 <span>›</span></div>
-        <div class="side-link station-link" data-station="AVUONG-BLOCK-03">Block 03 <span>›</span></div>
-        <div class="side-link station-link" data-station="AVUONG-BLOCK-04">Block 04 <span>›</span></div>
-        <div class="side-link station-link" data-station="AVUONG-BLOCK-06">Block 06 <span>›</span></div>
-        <div class="side-link station-link" data-station="AVUONG-GALLERY-305">Gallery 305 <span>›</span></div>
-        <div class="side-link station-link" data-station="AVUONG-GALLERY-330">Gallery 330 <span>›</span></div>
-        <div class="side-link station-link" data-station="AVUONG-GALLERY-356">Gallery 356 <span>›</span></div>
+        <div class="side-link station-link" data-station="AVUONG-BLOCK-01"><span class="menu-label"><span class="menu-ico">◫</span>Block 01</span><span>›</span></div>
+        <div class="side-link station-link" data-station="AVUONG-BLOCK-02"><span class="menu-label"><span class="menu-ico">◫</span>Block 02</span><span>›</span></div>
+        <div class="side-link station-link" data-station="AVUONG-BLOCK-03"><span class="menu-label"><span class="menu-ico">◫</span>Block 03</span><span>›</span></div>
+        <div class="side-link station-link" data-station="AVUONG-BLOCK-04"><span class="menu-label"><span class="menu-ico">◫</span>Block 04</span><span>›</span></div>
+        <div class="side-link station-link" data-station="AVUONG-BLOCK-06"><span class="menu-label"><span class="menu-ico">◫</span>Block 06</span><span>›</span></div>
+        <div class="side-link station-link" data-station="AVUONG-GALLERY-305"><span class="menu-label"><span class="menu-ico">◎</span>Gallery 305</span><span>›</span></div>
+        <div class="side-link station-link" data-station="AVUONG-GALLERY-330"><span class="menu-label"><span class="menu-ico">◎</span>Gallery 330</span><span>›</span></div>
+        <div class="side-link station-link" data-station="AVUONG-GALLERY-356"><span class="menu-label"><span class="menu-ico">◎</span>Gallery 356</span><span>›</span></div>
 
         <div class="side-title">Gợi ý vận hành</div>
-        <div class="side-link preset-link" data-preset="piezometer">Piezometer <span>›</span></div>
-        <div class="side-link preset-link" data-preset="temperature">Temperature <span>›</span></div>
-        <div class="side-link preset-link" data-preset="level">Level <span>›</span></div>
-        <div class="side-link preset-link" data-preset="seepage">Seepage <span>›</span></div>
-        <div class="side-link preset-link" data-preset="jointmeter">Jointmeter <span>›</span></div>
+        <div class="side-link preset-link" data-preset="piezometer"><span class="menu-label"><span class="menu-ico">◈</span>Piezometer</span><span>›</span></div>
+        <div class="side-link preset-link" data-preset="temperature"><span class="menu-label"><span class="menu-ico">◈</span>Temperature</span><span>›</span></div>
+        <div class="side-link preset-link" data-preset="level"><span class="menu-label"><span class="menu-ico">◈</span>Level</span><span>›</span></div>
+        <div class="side-link preset-link" data-preset="seepage"><span class="menu-label"><span class="menu-ico">◈</span>Seepage</span><span>›</span></div>
+        <div class="side-link preset-link" data-preset="jointmeter"><span class="menu-label"><span class="menu-ico">◈</span>Jointmeter</span><span>›</span></div>
       </div>
 
       <div id="sidebarTrend" class="sidebar-panel" style="display:none">
         <div class="side-title">Preset biểu đồ</div>
-        <div class="side-link preset-link" data-preset="piezometer">Trend Piezometer <span>›</span></div>
-        <div class="side-link preset-link" data-preset="temperature">Trend Temperature <span>›</span></div>
-        <div class="side-link preset-link" data-preset="level">Trend Level <span>›</span></div>
-        <div class="side-link preset-link" data-preset="seepage">Trend Seepage <span>›</span></div>
-        <div class="side-link preset-link" data-preset="jointmeter">Trend Jointmeter <span>›</span></div>
+        <div class="side-link preset-link" data-preset="piezometer"><span class="menu-label"><span class="menu-ico">⟈</span>Trend Piezometer</span><span>›</span></div>
+        <div class="side-link preset-link" data-preset="temperature"><span class="menu-label"><span class="menu-ico">⟈</span>Trend Temperature</span><span>›</span></div>
+        <div class="side-link preset-link" data-preset="level"><span class="menu-label"><span class="menu-ico">⟈</span>Trend Level</span><span>›</span></div>
+        <div class="side-link preset-link" data-preset="seepage"><span class="menu-label"><span class="menu-ico">⟈</span>Trend Seepage</span><span>›</span></div>
+        <div class="side-link preset-link" data-preset="jointmeter"><span class="menu-label"><span class="menu-ico">⟈</span>Trend Jointmeter</span><span>›</span></div>
 
         <div class="side-title">Khoảng thời gian nhanh</div>
-        <div class="side-link" onclick="setQuickRange(6,'6 giờ gần nhất')">6 giờ <span>›</span></div>
-        <div class="side-link" onclick="setQuickRange(24,'24 giờ gần nhất')">24 giờ <span>›</span></div>
-        <div class="side-link" onclick="setQuickRange(72,'3 ngày gần nhất')">3 ngày <span>›</span></div>
-        <div class="side-link" onclick="setQuickRange(168,'7 ngày gần nhất')">7 ngày <span>›</span></div>
-        <div class="side-link" onclick="setQuickRange(720,'30 ngày gần nhất')">30 ngày <span>›</span></div>
+        <div class="side-link" onclick="setQuickRange(6,'6 giờ gần nhất')"><span class="menu-label"><span class="menu-ico">◷</span>6 giờ</span><span>›</span></div>
+        <div class="side-link" onclick="setQuickRange(24,'24 giờ gần nhất')"><span class="menu-label"><span class="menu-ico">◷</span>24 giờ</span><span>›</span></div>
+        <div class="side-link" onclick="setQuickRange(72,'3 ngày gần nhất')"><span class="menu-label"><span class="menu-ico">◷</span>3 ngày</span><span>›</span></div>
+        <div class="side-link" onclick="setQuickRange(168,'7 ngày gần nhất')"><span class="menu-label"><span class="menu-ico">◷</span>7 ngày</span><span>›</span></div>
+        <div class="side-link" onclick="setQuickRange(720,'30 ngày gần nhất')"><span class="menu-label"><span class="menu-ico">◷</span>30 ngày</span><span>›</span></div>
       </div>
 
       <div id="sidebarHeatmap" class="sidebar-panel" style="display:none">
         <div class="side-title">Heatmap theo nhóm</div>
-        <div class="side-link heatmap-preset-link" data-preset="piezometer">Heatmap Piezometer <span>›</span></div>
-        <div class="side-link heatmap-preset-link" data-preset="temperature">Heatmap Temperature <span>›</span></div>
-        <div class="side-link heatmap-preset-link" data-preset="level">Heatmap Level <span>›</span></div>
-        <div class="side-link heatmap-preset-link" data-preset="seepage">Heatmap Seepage <span>›</span></div>
-        <div class="side-link heatmap-preset-link" data-preset="jointmeter">Heatmap Jointmeter <span>›</span></div>
+        <div class="side-link heatmap-preset-link" data-preset="piezometer"><span class="menu-label"><span class="menu-ico">▦</span>Heatmap Piezometer</span><span>›</span></div>
+        <div class="side-link heatmap-preset-link" data-preset="temperature"><span class="menu-label"><span class="menu-ico">▦</span>Heatmap Temperature</span><span>›</span></div>
+        <div class="side-link heatmap-preset-link" data-preset="level"><span class="menu-label"><span class="menu-ico">▦</span>Heatmap Level</span><span>›</span></div>
+        <div class="side-link heatmap-preset-link" data-preset="seepage"><span class="menu-label"><span class="menu-ico">▦</span>Heatmap Seepage</span><span>›</span></div>
+        <div class="side-link heatmap-preset-link" data-preset="jointmeter"><span class="menu-label"><span class="menu-ico">▦</span>Heatmap Jointmeter</span><span>›</span></div>
 
         <div class="side-title">Chú thích màu</div>
-        <div class="side-link"><span><span class="pill green">Bình thường</span></span></div>
-        <div class="side-link"><span><span class="pill amber">Theo dõi</span></span></div>
-        <div class="side-link"><span><span class="pill red">Cảnh báo</span></span></div>
+        <div class="side-link"><span><span class="pill green">Normal</span></span></div>
+        <div class="side-link"><span><span class="pill watch">Watch</span></span></div>
+        <div class="side-link"><span><span class="pill warning">Warning</span></span></div>
+        <div class="side-link"><span><span class="pill alarm">Alarm</span></span></div>
+        <div class="side-link"><span><span class="pill emergency">Emergency</span></span></div>
       </div>
 
       <div id="sidebarAnomaly" class="sidebar-panel" style="display:none">
@@ -226,11 +501,11 @@
         <div class="side-link"><span>2.5 ≤ Z-score < 3</span><span>…</span></div>
 
         <div class="side-title">Lọc nhanh</div>
-        <div class="side-link anomaly-preset-link" data-preset="piezometer">Anomaly Piezometer <span>›</span></div>
-        <div class="side-link anomaly-preset-link" data-preset="temperature">Anomaly Temperature <span>›</span></div>
-        <div class="side-link anomaly-preset-link" data-preset="level">Anomaly Level <span>›</span></div>
-        <div class="side-link anomaly-preset-link" data-preset="seepage">Anomaly Seepage <span>›</span></div>
-        <div class="side-link anomaly-preset-link" data-preset="jointmeter">Anomaly Jointmeter <span>›</span></div>
+        <div class="side-link anomaly-preset-link" data-preset="piezometer"><span class="menu-label"><span class="menu-ico">⚠</span>Anomaly Piezometer</span><span>›</span></div>
+        <div class="side-link anomaly-preset-link" data-preset="temperature"><span class="menu-label"><span class="menu-ico">⚠</span>Anomaly Temperature</span><span>›</span></div>
+        <div class="side-link anomaly-preset-link" data-preset="level"><span class="menu-label"><span class="menu-ico">⚠</span>Anomaly Level</span><span>›</span></div>
+        <div class="side-link anomaly-preset-link" data-preset="seepage"><span class="menu-label"><span class="menu-ico">⚠</span>Anomaly Seepage</span><span>›</span></div>
+        <div class="side-link anomaly-preset-link" data-preset="jointmeter"><span class="menu-label"><span class="menu-ico">⚠</span>Anomaly Jointmeter</span><span>›</span></div>
       </div>
     </aside>
 
@@ -379,6 +654,7 @@
     </div>
   </div>
 
+  <div class="monthly-print-note">Bản in A4 tối ưu cho báo cáo tháng. Khi bấm In / Xuất PDF, hệ thống sẽ chỉ in riêng trang Báo cáo tháng.</div>
   <div id="monthlyReportPreview" style="margin-top:16px"></div>
 </section>
     </main>
@@ -526,10 +802,27 @@ async function handleLogout(){
     const th = resolveThreshold(row);
     if(!Number.isFinite(val)) return { key:'gray', text:'N/A' };
     if(!th) return { key:'gray', text:'NO LIMIT' };
-    if(th.critHigh !== undefined && th.critHigh !== null && val > Number(th.critHigh)) return { key:'red', text:'CRITICAL HIGH' };
-    if(th.warnHigh !== undefined && th.warnHigh !== null && val > Number(th.warnHigh)) return { key:'amber', text:'WARNING HIGH' };
-    if(th.critLow !== undefined && th.critLow !== null && val < Number(th.critLow)) return { key:'red', text:'CRITICAL LOW' };
-    if(th.warnLow !== undefined && th.warnLow !== null && val < Number(th.warnLow)) return { key:'amber', text:'WARNING LOW' };
+
+    const warnHigh = th.warnHigh !== undefined && th.warnHigh !== null ? Number(th.warnHigh) : null;
+    const critHigh = th.critHigh !== undefined && th.critHigh !== null ? Number(th.critHigh) : null;
+    const warnLow = th.warnLow !== undefined && th.warnLow !== null ? Number(th.warnLow) : null;
+    const critLow = th.critLow !== undefined && th.critLow !== null ? Number(th.critLow) : null;
+
+    const highWatch = Number.isFinite(warnHigh) ? warnHigh * 0.9 : null;
+    const highEmergency = Number.isFinite(critHigh) ? critHigh * 1.1 : null;
+    const lowWatch = Number.isFinite(warnLow) ? warnLow * 1.1 : null;
+    const lowEmergency = Number.isFinite(critLow) ? critLow * 0.9 : null;
+
+    if(Number.isFinite(highEmergency) && val > highEmergency) return { key:'emergency', text:'EMERGENCY HIGH' };
+    if(Number.isFinite(critHigh) && val > critHigh) return { key:'alarm', text:'ALARM HIGH' };
+    if(Number.isFinite(warnHigh) && val > warnHigh) return { key:'warning', text:'WARNING HIGH' };
+    if(Number.isFinite(highWatch) && val >= highWatch) return { key:'watch', text:'WATCH HIGH' };
+
+    if(Number.isFinite(lowEmergency) && val < lowEmergency) return { key:'emergency', text:'EMERGENCY LOW' };
+    if(Number.isFinite(critLow) && val < critLow) return { key:'alarm', text:'ALARM LOW' };
+    if(Number.isFinite(warnLow) && val < warnLow) return { key:'warning', text:'WARNING LOW' };
+    if(Number.isFinite(lowWatch) && val <= lowWatch) return { key:'watch', text:'WATCH LOW' };
+
     return { key:'green', text:'NORMAL' };
   }
 
@@ -1403,7 +1696,7 @@ function evaluateMonthlyReport(summary, design) {
 function buildMonthlySummaryCard(title, summary, evaluation, unit) {
   if (!summary) {
     return `
-      <div class="summary-card">
+      <div class="summary-card highlight">
         <h3>${title}</h3>
         <p>Không có dữ liệu.</p>
       </div>
@@ -1411,7 +1704,7 @@ function buildMonthlySummaryCard(title, summary, evaluation, unit) {
   }
 
   return `
-    <div class="summary-card">
+    <div class="summary-card highlight">
       <h3>${title}</h3>
       <p><b>Max lớn nhất:</b> ${summary.sensor_max || '--'} = ${fmtNum(summary.value_max)} ${unit}</p>
       <p><b>Min nhỏ nhất:</b> ${summary.sensor_min || '--'} = ${fmtNum(summary.value_min)} ${unit}</p>
