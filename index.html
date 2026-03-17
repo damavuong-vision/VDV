@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -1321,6 +1322,16 @@ async function rpcDesignLimit(reportGroup, metricSubtype) {
   return (data && data[0]) || null;
 }
 
+
+async function rpcMonthlySeepageTotalSummary(fromTs, toTs) {
+  const { data, error } = await sb.rpc('fn_monthly_seepage_total_summary', {
+    p_from_ts: fromTs,
+    p_to_ts: toTs
+  });
+  if (error) throw error;
+  return (data && data[0]) || null;
+}
+
 function renderMonthlyStatTable(rows, unit) {
   if (!rows || rows.length === 0) {
     return `<div class="empty-box">Không có dữ liệu trong tháng.</div>`;
@@ -1411,6 +1422,47 @@ function buildMonthlySummaryCard(title, summary, evaluation, unit) {
   `;
 }
 
+
+function buildSeepageTotalSummaryCard(title, summary, design, unit) {
+  if (!summary) {
+    return `
+      <div class="summary-card">
+        <h3>${title}</h3>
+        <p>Không có dữ liệu.</p>
+      </div>
+    `;
+  }
+
+  const qMax = Number(summary.q_total_max ?? 0);
+  const qMin = Number(summary.q_total_min ?? 0);
+  const amp = Number(summary.q_total_amp ?? 0);
+  const designValue = Number(design?.design_value ?? NaN);
+
+  let assessment = 'Chưa cấu hình ngưỡng';
+  if (Number.isFinite(designValue)) {
+    if (qMax > designValue) {
+      assessment = 'Cảnh báo';
+    } else if (qMax > designValue * 0.8) {
+      assessment = 'Theo dõi';
+    } else {
+      assessment = 'Bình thường';
+    }
+  }
+
+  return `
+    <div class="summary-card">
+      <h3>${title}</h3>
+      <p><b>Q tổng lớn nhất:</b> ${fmtNum(qMax)} ${unit}</p>
+      <p><b>Q tổng nhỏ nhất:</b> ${fmtNum(qMin)} ${unit}</p>
+      <p><b>Biên độ Q tổng:</b> ${fmtNum(amp)} ${unit}</p>
+      <p><b>Ngưỡng thiết kế:</b> ${Number.isFinite(designValue) ? fmtNum(designValue) : '--'} ${unit}</p>
+      <p><b>Đánh giá:</b> ${assessment}</p>
+      <p><b>Ghi chú:</b> Q tổng = tổng lưu lượng tại các vị trí seepage theo cùng thời điểm.</p>
+    </div>
+  `;
+}
+
+
 async function loadMonthlyReport() {
   try {
     const monthValue = $('reportMonth').value;
@@ -1425,13 +1477,29 @@ async function loadMonthlyReport() {
 
     const { fromTs, toTs } = getMonthRange(monthValue);
     $('monthlyMeta').textContent = `${monthValue} • ${cfg.title}`;
-
     preview.innerHTML = '<div class="empty-box">Đang tải báo cáo tháng...</div>';
 
+    const rowsPromise = rpcMonthlyStats(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype);
+    const designPromise = rpcDesignLimit(cfg.report_group, cfg.metric_subtype);
+
+    if (groupValue === 'seepage') {
+      const [rows, totalSummary, design] = await Promise.all([
+        rowsPromise,
+        rpcMonthlySeepageTotalSummary(fromTs, toTs),
+        designPromise
+      ]);
+
+      preview.innerHTML = `
+        ${buildSeepageTotalSummaryCard(cfg.title, totalSummary, design, cfg.unit)}
+        ${renderMonthlyStatTable(rows, cfg.unit)}
+      `;
+      return;
+    }
+
     const [rows, summary, design] = await Promise.all([
-      rpcMonthlyStats(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype),
+      rowsPromise,
       rpcMonthlySummary(fromTs, toTs, cfg.sensor_group, cfg.metric_subtype),
-      rpcDesignLimit(cfg.report_group, cfg.metric_subtype)
+      designPromise
     ]);
 
     const evaluation = evaluateMonthlyReport(summary, design);
@@ -1449,6 +1517,7 @@ async function loadMonthlyReport() {
     `;
   }
 }
+
 
   init();
 </script>
