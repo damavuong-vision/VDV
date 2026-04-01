@@ -52,6 +52,156 @@
     .stat,.summary-card,.alarm-box,.health-box,.cross-section-card{border:1px solid rgba(30,41,59,.08);border-radius:20px;background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);box-shadow:var(--shadow-sm)}.stat{padding:16px;position:relative;overflow:hidden}.stat::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);opacity:.9}.stat .k{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.stat .v{font-size:28px;font-weight:950;margin-top:10px;letter-spacing:-.03em;color:#0f172a}.stat .s{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}.stat .v.compact{font-size:18px;line-height:1.42;font-weight:900}
     .overview-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}@media(max-width:1260px){.overview-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:820px){.overview-grid{grid-template-columns:repeat(2,1fr)}}
     .grid2{display:grid;grid-template-columns:440px 1fr;gap:16px}@media(max-width:1320px){.grid2{grid-template-columns:1fr}}
+
+    .overview-hero{
+      padding:22px 22px 18px;
+      background:
+        radial-gradient(520px 220px at 0% 0%, rgba(37,99,235,.10), transparent 65%),
+        radial-gradient(420px 180px at 100% 0%, rgba(14,165,233,.08), transparent 60%),
+        linear-gradient(180deg,#fdfefe 0%,#f7fbff 100%);
+    }
+    .overview-hero-grid{
+      display:grid;
+      grid-template-columns:1.2fr .95fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    .overview-status-card{
+      border:1px solid rgba(30,41,59,.08);
+      border-radius:22px;
+      padding:20px 20px 18px;
+      background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+      box-shadow:var(--shadow-sm);
+      position:relative;
+      overflow:hidden;
+    }
+    .overview-status-card::before{
+      content:"";
+      position:absolute; inset:0 auto 0 0; width:5px;
+      background:var(--accent);
+      opacity:.95;
+    }
+    .overview-status-card.status-normal::before{background:linear-gradient(180deg,#10b981,#059669)}
+    .overview-status-card.status-watch::before{background:linear-gradient(180deg,#3b82f6,#2563eb)}
+    .overview-status-card.status-warning::before{background:linear-gradient(180deg,#f59e0b,#d97706)}
+    .overview-status-card.status-invalid::before{background:linear-gradient(180deg,#ef4444,#dc2626)}
+    .overview-status-card.status-emergency::before{background:linear-gradient(180deg,#991b1b,#7f1d1d)}
+    .overview-status-top{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:10px;
+    }
+    .overview-status-label{font-size:12px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; color:#64748b}
+    .overview-status-title{font-size:32px; line-height:1.04; letter-spacing:-.05em; font-weight:950; margin:0 0 10px; color:#0f172a}
+    .overview-status-note{font-size:15px; line-height:1.65; color:#334155; margin:0 0 12px}
+    .overview-status-bullets{display:grid; gap:8px; margin:0; padding:0; list-style:none}
+    .overview-status-bullets li{
+      display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.5; color:#334155;
+    }
+    .overview-status-bullets li::before{
+      content:"•"; color:#2563eb; font-weight:900; line-height:1.1; margin-top:1px;
+    }
+    .overview-mini-grid{
+      display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px;
+    }
+    .overview-mini-card{
+      border:1px solid rgba(30,41,59,.08);
+      border-radius:18px;
+      padding:14px 14px 12px;
+      background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+      box-shadow:var(--shadow-sm);
+      min-height:104px;
+    }
+    .overview-mini-card .k{font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:.08em; color:#64748b}
+    .overview-mini-card .v{font-size:24px; line-height:1.08; font-weight:950; letter-spacing:-.03em; margin-top:8px; color:#0f172a}
+    .overview-mini-card .s{font-size:13px; line-height:1.5; color:#64748b; margin-top:6px}
+    .overview-summary-grid{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:14px;
+    }
+    .overview-summary-card{
+      border:1px solid rgba(30,41,59,.08);
+      border-radius:22px;
+      padding:18px 16px 16px;
+      background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+      box-shadow:var(--shadow-sm);
+      position:relative;
+      overflow:hidden;
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .overview-summary-card::before{
+      content:"";
+      position:absolute; inset:0 auto 0 0; width:4px;
+      background:linear-gradient(180deg,#94a3b8,#cbd5e1);
+    }
+    .overview-summary-card[data-state="normal"]::before{background:linear-gradient(180deg,#10b981,#059669)}
+    .overview-summary-card[data-state="watch"]::before{background:linear-gradient(180deg,#3b82f6,#2563eb)}
+    .overview-summary-card[data-state="warning"]::before{background:linear-gradient(180deg,#f59e0b,#d97706)}
+    .overview-summary-card[data-state="invalid"]::before{background:linear-gradient(180deg,#ef4444,#dc2626)}
+    .overview-summary-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
+    .overview-summary-title{font-size:12px; font-weight:900; letter-spacing:.10em; text-transform:uppercase; color:#64748b}
+    .overview-summary-value{font-size:20px; line-height:1.32; font-weight:950; letter-spacing:-.03em; color:#0f172a}
+    .overview-summary-meta{font-size:13px; line-height:1.6; color:#475569}
+    .overview-summary-note{
+      margin-top:auto;
+      font-size:13px; line-height:1.58; color:#1e293b;
+      padding-top:10px; border-top:1px dashed rgba(30,41,59,.10);
+    }
+    .overview-priority-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:16px;
+    }
+    .overview-priority-box{
+      border:1px solid rgba(30,41,59,.08);
+      border-radius:22px;
+      background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+      box-shadow:var(--shadow-sm);
+      padding:18px;
+    }
+    .overview-priority-box h3{margin:0 0 12px; font-size:16px; font-weight:900}
+    .overview-priority-list{display:grid; gap:10px; margin:0; padding:0; list-style:none}
+    .overview-priority-item{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:12px 0; border-bottom:1px dashed rgba(30,41,59,.10);
+    }
+    .overview-priority-item:last-child{border-bottom:none; padding-bottom:0}
+    .overview-priority-item:first-child{padding-top:0}
+    .overview-priority-index{
+      width:22px; height:22px; border-radius:999px;
+      display:inline-flex; align-items:center; justify-content:center;
+      font-size:11px; font-weight:900; flex:0 0 auto;
+      background:#eff6ff; color:#1d4ed8; border:1px solid rgba(37,99,235,.18);
+    }
+    .overview-priority-text{font-size:14px; line-height:1.55; color:#334155}
+    .overview-source-health{
+      display:grid; gap:12px;
+    }
+    .overview-health-row{
+      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
+      padding:12px 0; border-bottom:1px dashed rgba(30,41,59,.10);
+    }
+    .overview-health-row:last-child{border-bottom:none; padding-bottom:0}
+    .overview-health-row:first-child{padding-top:0}
+    .overview-health-label{font-size:14px; font-weight:800; color:#0f172a}
+    .overview-health-desc{font-size:13px; line-height:1.5; color:#64748b; margin-top:4px}
+    @media(max-width:1320px){
+      .overview-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media(max-width:1080px){
+      .overview-hero-grid,.overview-priority-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:820px){
+      .overview-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .overview-mini-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:640px){
+      .overview-summary-grid,.overview-mini-grid{grid-template-columns:1fr}
+      .overview-status-title{font-size:26px}
+    }
+
     .alarm-columns{display:grid;grid-template-columns:1fr;gap:12px}.alarm-box{padding:14px}.alarm-item{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed rgba(30,41,59,.08);font-size:13px}.alarm-item:last-child{border-bottom:none}
     .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(30,41,59,.10);font-size:11px;font-weight:900;letter-spacing:.02em}.green{background:rgba(16,185,129,.10);border-color:rgba(16,185,129,.18);color:#047857}.gray{background:rgba(100,116,139,.10);border-color:rgba(100,116,139,.18);color:#475569}.watch{background:rgba(59,130,246,.10);border-color:rgba(59,130,246,.18);color:#1d4ed8}.warning{background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.22);color:#b45309}.alarm{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.20);color:#b91c1c}.emergency{background:rgba(127,29,29,.14);border-color:rgba(127,29,29,.24);color:#7f1d1d}.invalid{background:rgba(220,38,38,.14);border-color:rgba(220,38,38,.28);color:#991b1b}
     .chart-wrap{height:560px;border-radius:20px;padding:12px 8px 0;background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.3));border:1px solid rgba(255,255,255,.75)}.heatmap-wrap{min-height:440px;border-radius:20px;padding:10px;background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.3));border:1px solid rgba(255,255,255,.75)}
@@ -823,17 +973,152 @@
 
         <section class="card hidden" id="errorPanel"><div class="card-head"><h2>Thông báo hệ thống</h2><span class="chip" id="errorMeta">Ready</span></div><div id="errorBody" style="color:#b91c1c;font-weight:700;white-space:pre-wrap">Không có lỗi.</div></section>
 
-        <section class="card page-section" id="sectionSafetyOverview"><div class="card-head"><h2>Tổng quan an toàn đập gần nhất</h2><span class="chip" id="safetyMeta">Latest summary</span></div><div class="overview-grid"><div class="stat"><div class="k">Nhiệt độ Min - Max</div><div class="v compact" id="ovTemp">--</div><div class="s" id="ovTempPos"></div></div><div class="stat"><div class="k">Khe nhiệt Min - Max</div><div class="v compact" id="ovJoint">--</div><div class="s" id="ovJointPos"></div></div><div class="stat"><div class="k">Áp lực đẩy nổi Min - Max</div><div class="v compact" id="ovUplift">--</div><div class="s" id="ovUpliftPos"></div></div><div class="stat"><div class="k">Ứng suất nền TL / HL</div><div class="v compact" id="ovStress">--</div><div class="s" id="ovStressPos"></div></div><div class="stat"><div class="k">Tổng lưu lượng thấm</div><div class="v compact" id="ovSeepage">--</div><div class="s" id="ovSeepagePos"></div></div></div></section>
-
-      <section class="card page-section invalid-card" id="sectionInvalidData">
-        <div class="card-head"><h2>Dữ liệu không hợp lệ</h2><span class="chip" id="invalidMeta">--</span></div>
-        <div id="invalidDataBody" class="invalid-list">
-          <div class="empty">Đang kiểm tra dữ liệu không hợp lệ.</div>
+        
+<section class="card page-section overview-hero" id="sectionOverviewHero">
+  <div class="card-head"><h2>Tổng quan vận hành an toàn đập</h2><span class="chip" id="overviewHeroMeta">24 giờ gần nhất</span></div>
+  <div class="overview-hero-grid">
+    <div class="overview-status-card status-normal" id="overviewStatusCard">
+      <div class="overview-status-top">
+        <div>
+          <div class="overview-status-label">Trạng thái tổng thể</div>
+          <h3 class="overview-status-title" id="overviewGlobalTitle">ĐANG ĐÁNH GIÁ</h3>
         </div>
-      </section>
+        <span class="pill gray" id="overviewGlobalBadge">N/A</span>
+      </div>
+      <p class="overview-status-note" id="overviewGlobalNote">Đang tổng hợp trạng thái từ dữ liệu latest, cảnh báo active và dữ liệu không hợp lệ.</p>
+      <ul class="overview-status-bullets" id="overviewGlobalBullets">
+        <li>Chưa có dữ liệu.</li>
+      </ul>
+    </div>
+    <div class="overview-mini-grid">
+      <div class="overview-mini-card">
+        <div class="k">Dữ liệu mới nhất</div>
+        <div class="v mono" id="heroLatestTs">--</div>
+        <div class="s" id="heroLatestDesc">Mốc mới nhất trong vùng lọc</div>
+      </div>
+      <div class="overview-mini-card">
+        <div class="k">Độ trễ dữ liệu</div>
+        <div class="v mono" id="heroDelay">--</div>
+        <div class="s" id="heroDelayDesc">Kiểm tra đồng bộ realtime</div>
+      </div>
+      <div class="overview-mini-card">
+        <div class="k">Sensor lỗi / invalid</div>
+        <div class="v mono" id="heroInvalidCount">0</div>
+        <div class="s" id="heroInvalidDesc">Không có dữ liệu lỗi</div>
+      </div>
+      <div class="overview-mini-card">
+        <div class="k">Watch / Warning</div>
+        <div class="v mono" id="heroWatchCount">0</div>
+        <div class="s" id="heroWatchDesc">Không có cảnh báo cần chú ý</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<section class="card page-section" id="sectionOverviewTop"><div class="card-head"><h2>KPI Summary</h2><span class="chip" id="kpiMeta">--</span></div><div class="stats"><div class="stat"><div class="k">Mốc dữ liệu mới nhất</div><div class="v mono" id="kLatest">--</div></div><div class="stat"><div class="k">Sensor có dữ liệu</div><div class="v mono" id="kSensors">0</div></div><div class="stat"><div class="k">Bản ghi trong vùng lọc</div><div class="v mono" id="kRows">0</div></div><div class="stat"><div class="k">Cảnh báo active</div><div class="v mono" id="kAlerts">0</div></div><div class="stat"><div class="k">Anomaly latest</div><div class="v mono" id="kAnomaly">0</div></div></div></section>
-        <section class="grid2 page-section" id="sectionOverviewMain"><section class="card"><div class="card-head"><h2>Alarm Panel</h2><span class="chip" id="alarmMeta">--</span></div><div class="alarm-columns"><div class="alarm-box"><h3><span class="pill emergency">EMERGENCY / ALARM</span></h3><div id="criticalList"></div></div><div class="alarm-box"><h3><span class="pill warning">WARNING / WATCH</span></h3><div id="warningList"></div></div><div class="alarm-box"><h3><span class="pill green">NORMAL / NO LIMIT</span></h3><div id="normalList"></div></div></div></section><section class="card"><div class="card-head"><h2>Heatmap Sensor</h2><span class="chip" id="heatmapMeta">--</span></div><div id="heatmap" class="heatmap-wrap"></div></section></section>
+<section class="card page-section" id="sectionSafetyOverview">
+  <div class="card-head"><h2>5 nhóm trọng tâm cần theo dõi</h2><span class="chip" id="safetyMeta">Latest summary</span></div>
+  <div class="overview-summary-grid">
+    <div class="overview-summary-card" id="ovCardTemp" data-state="normal">
+      <div class="overview-summary-head">
+        <div class="overview-summary-title">Nhiệt độ bê tông</div>
+        <span class="pill gray" id="ovTempBadge">N/A</span>
+      </div>
+      <div class="overview-summary-value" id="ovTemp">--</div>
+      <div class="overview-summary-meta" id="ovTempPos"></div>
+      <div class="overview-summary-note" id="ovTempNote">Đang tổng hợp đánh giá.</div>
+    </div>
+    <div class="overview-summary-card" id="ovCardJoint" data-state="normal">
+      <div class="overview-summary-head">
+        <div class="overview-summary-title">Khe nhiệt hở</div>
+        <span class="pill gray" id="ovJointBadge">N/A</span>
+      </div>
+      <div class="overview-summary-value" id="ovJoint">--</div>
+      <div class="overview-summary-meta" id="ovJointPos"></div>
+      <div class="overview-summary-note" id="ovJointNote">Đang tổng hợp đánh giá.</div>
+    </div>
+    <div class="overview-summary-card" id="ovCardUplift" data-state="normal">
+      <div class="overview-summary-head">
+        <div class="overview-summary-title">Áp lực đẩy nổi</div>
+        <span class="pill gray" id="ovUpliftBadge">N/A</span>
+      </div>
+      <div class="overview-summary-value" id="ovUplift">--</div>
+      <div class="overview-summary-meta" id="ovUpliftPos"></div>
+      <div class="overview-summary-note" id="ovUpliftNote">Đang tổng hợp đánh giá.</div>
+    </div>
+    <div class="overview-summary-card" id="ovCardStress" data-state="normal">
+      <div class="overview-summary-head">
+        <div class="overview-summary-title">Ứng suất nền TL / HL</div>
+        <span class="pill gray" id="ovStressBadge">N/A</span>
+      </div>
+      <div class="overview-summary-value" id="ovStress">--</div>
+      <div class="overview-summary-meta" id="ovStressPos"></div>
+      <div class="overview-summary-note" id="ovStressNote">Đang tổng hợp đánh giá.</div>
+    </div>
+    <div class="overview-summary-card" id="ovCardSeepage" data-state="normal">
+      <div class="overview-summary-head">
+        <div class="overview-summary-title">Tổng lưu lượng thấm</div>
+        <span class="pill gray" id="ovSeepageBadge">N/A</span>
+      </div>
+      <div class="overview-summary-value" id="ovSeepage">--</div>
+      <div class="overview-summary-meta" id="ovSeepagePos"></div>
+      <div class="overview-summary-note" id="ovSeepageNote">Đang tổng hợp đánh giá.</div>
+    </div>
+  </div>
+</section>
+
+<section class="card page-section invalid-card" id="sectionInvalidData">
+  <div class="card-head"><h2>Dữ liệu không hợp lệ</h2><span class="chip" id="invalidMeta">--</span></div>
+  <div id="invalidDataBody" class="invalid-list">
+    <div class="empty">Đang kiểm tra dữ liệu không hợp lệ.</div>
+  </div>
+</section>
+
+<section class="card page-section" id="sectionOverviewTop">
+  <div class="card-head"><h2>Ưu tiên xử lý & độ tin cậy dữ liệu</h2><span class="chip" id="kpiMeta">--</span></div>
+  <div class="overview-priority-grid">
+    <div class="overview-priority-box">
+      <h3>Ưu tiên xử lý</h3>
+      <div class="overview-priority-list" id="overviewPriorityList">
+        <div class="empty">Đang tổng hợp ưu tiên xử lý.</div>
+      </div>
+    </div>
+    <div class="overview-priority-box">
+      <h3>Chỉ số nguồn dữ liệu</h3>
+      <div class="overview-source-health">
+        <div class="overview-health-row">
+          <div>
+            <div class="overview-health-label">Mốc dữ liệu mới nhất</div>
+            <div class="overview-health-desc">Dùng để đối chiếu độ tươi của dữ liệu trên dashboard.</div>
+          </div>
+          <div class="mono" id="kLatest">--</div>
+        </div>
+        <div class="overview-health-row">
+          <div>
+            <div class="overview-health-label">Sensor có dữ liệu / bản ghi trong vùng lọc</div>
+            <div class="overview-health-desc">Thể hiện độ phủ dữ liệu trong cửa sổ đang xem.</div>
+          </div>
+          <div class="mono"><span id="kSensors">0</span> / <span id="kRows">0</span></div>
+        </div>
+        <div class="overview-health-row">
+          <div>
+            <div class="overview-health-label">Cảnh báo active</div>
+            <div class="overview-health-desc" id="heroWatchDescInline">Theo latest rows sau khi áp bộ lọc.</div>
+          </div>
+          <div class="mono" id="kAlerts">0</div>
+        </div>
+        <div class="overview-health-row">
+          <div>
+            <div class="overview-health-label">Anomaly latest</div>
+            <div class="overview-health-desc">Số điểm bất thường phát hiện theo rule hiện tại.</div>
+          </div>
+          <div class="mono" id="kAnomaly">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="grid2 page-section" id="sectionOverviewMain"><section class="card"><div class="card-head"><h2>Alarm Panel</h2><span class="chip" id="alarmMeta">--</span></div><div class="alarm-columns"><div class="alarm-box"><h3><span class="pill emergency">EMERGENCY / ALARM</span></h3><div id="criticalList"></div></div><div class="alarm-box"><h3><span class="pill warning">WARNING / WATCH</span></h3><div id="warningList"></div></div><div class="alarm-box"><h3><span class="pill green">NORMAL / NO LIMIT</span></h3><div id="normalList"></div></div></div></section><section class="card"><div class="card-head"><h2>Heatmap Sensor</h2><span class="chip" id="heatmapMeta">--</span></div><div id="heatmap" class="heatmap-wrap"></div></section></section>
         <section class="card page-section" id="sectionTrend"><div class="card-head"><h2>Trend Chart</h2><span class="chip" id="chartMeta">--</span></div><div class="filters" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:12px"><div class="field"><label>Sensor để vẽ</label><select id="chartSensorFilter"><option value="ALL">Tất cả</option></select></div><div class="field"><label>Metric subtype</label><select id="metricFilter"><option value="ALL">Tất cả</option></select></div><div class="field"><label>Số line hiển thị</label><select id="seriesLimitFilter"><option value="12">12 line</option><option value="24">24 line</option><option value="9999">Tất cả</option></select></div><div class="field"><label>Kiểu chọn line</label><select id="seriesModeFilter"><option value="top_abs">Ưu tiên biến động lớn</option><option value="all">Giữ nguyên thứ tự</option></select></div></div><div class="chart-wrap"><canvas id="trendChart"></canvas></div></section>
 
         <section class="card page-section" id="sectionTempRadar">
@@ -1001,7 +1286,7 @@
 
         <section class="card page-section hidden" id="sectionMonthlyReport">
           <div class="card-head"><h2>Báo cáo tháng</h2><span class="chip" id="monthlyMeta">--</span></div>
-          <div class="filters" style="grid-template-columns:repeat(5,minmax(0,1fr))"><div class="field"><label>Tháng báo cáo</label><input type="month" id="reportMonth" value="2026-02"></div><div class="field"><label>Nhóm báo cáo</label><select id="reportGroup"><option value="temperature">Nhiệt độ bê tông</option><option value="jointmeter">Khe nhiệt hở</option><option value="piezometer">Áp lực thấm</option><option value="seepage">Lưu lượng thấm</option><option value="summary_all">Báo cáo tổng hợp</option></select></div><div class="field"><label>&nbsp;</label><button class="btn primary" id="btnLoadMonthlyReport">Tải báo cáo tháng</button></div><div class="field"><label>&nbsp;</label><button class="btn primary" id="btnGenerateMonthlyAI">Tạo nhận định AI</button></div><div class="field"><label>&nbsp;</label><button class="btn" id="btnPrintMonthly">In / Xuất PDF</button></div></div>
+          <div class="filters" style="grid-template-columns:repeat(5,minmax(0,1fr))"><div class="field"><label>Tháng báo cáo</label><input type="month" id="reportMonth" value="2026-02"></div><div class="field"><label>Nhóm báo cáo</label><select id="reportGroup"><option value="summary_all">Báo cáo tổng hợp</option><option value="temperature">Nhiệt độ bê tông</option><option value="jointmeter">Khe nhiệt hở</option><option value="piezometer">Áp lực thấm</option><option value="seepage">Lưu lượng thấm</option></select></div><div class="field"><label>&nbsp;</label><button class="btn primary" id="btnLoadMonthlyReport">Tải báo cáo tháng</button></div><div class="field"><label>&nbsp;</label><button class="btn primary" id="btnGenerateMonthlyAI">Tạo nhận định AI</button></div><div class="field"><label>&nbsp;</label><button class="btn" id="btnPrintMonthly">In / Xuất PDF</button></div></div>
           <div class="monthly-print-note">Bản in A4 tối ưu cho báo cáo tháng. Khi bấm In / Xuất PDF, hệ thống sẽ chỉ in riêng trang Báo cáo tháng.</div>
           <div class="report-print-header"><div class="company-row"><div class="company-left"><img src="https://ubsqkaqqwdegvqrkyddx.supabase.co/storage/v1/object/sign/Picture/Logo%20AVC.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mZmFkZjVmMC1lMWQxLTRlNjEtYWNlMy02ZWUyZjY2ZTUxMDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQaWN0dXJlL0xvZ28gQVZDLnBuZyIsImlhdCI6MTc3MzYzNjU0NCwiZXhwIjoyMDg4OTk2NTQ0fQ.x0qY8Ftc0kG5NJiMwbfCUAMxxdVlt00dsc5bQ6q78XU" alt="AVC Logo"></div><div class="company-center"><div class="company-name">CÔNG TY CỔ PHẦN THỦY ĐIỆN A VƯƠNG</div><div class="system-name">HỆ THỐNG GIÁM SÁT AN TOÀN ĐẬP</div><div class="report-title">BÁO CÁO QUAN TRẮC THÁNG</div><div class="report-subtitle">Tháng báo cáo: <span id="printReportMonth">--</span><br>Nhóm báo cáo: <span id="printReportGroup">--</span></div></div><div class="company-right"><img src="https://ubsqkaqqwdegvqrkyddx.supabase.co/storage/v1/object/sign/Picture/Logo%20AVC.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mZmFkZjVmMC1lMWQxLTRlNjEtYWNlMy02ZWUyZjY2ZTUxMDgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQaWN0dXJlL0xvZ28gQVZDLnBuZyIsImlhdCI6MTc3MzYzNjU0NCwiZXhwIjoyMDg4OTk2NTQ0fQ.x0qY8Ftc0kG5NJiMwbfCUAMxxdVlt00dsc5bQ6q78XU" alt="AVC Logo"></div></div></div>
           <div id="monthlyReportPreview" style="margin-top:16px"></div>
@@ -1285,8 +1570,49 @@
     function getDefaultDates(){ return getRangeHours(24); }
     function setQuickRange(hours,label){ const d=getRangeHours(hours); $('dateFrom').value=d.from; $('dateTo').value=d.to; $('rangeChip').textContent=label; document.querySelectorAll('#btn6h,#btn24hQuick,#btn3d,#btn7d,#btn30d').forEach(btn=>btn.classList.remove('active')); const activeMap={6:'btn6h',24:'btn24hQuick',72:'btn3d',168:'btn7d',720:'btn30d'}; const activeBtn=$(activeMap[hours]); if(activeBtn) activeBtn.classList.add('active'); void applyFilters(); }
     function buildSensorMap(){ return Object.fromEntries(sensors.map(s=>[s.sensor_code,s])); }
-    function resolveDisplayUnit(row){ const metric=(row.metric_subtype||'').toLowerCase(); if(metric==='raw_digit') return 'count'; if(metric==='temp') return '°C'; if(metric==='flow') return 'L/s'; if(metric==='level') return 'mm'; if(metric==='microstrain') return 'µε'; return row.unit||row.sensor?.unit_default||''; }
-    function isInvalidTemperatureRow(row){ return String(row?.metric_subtype||'').toLowerCase()==='temp' && Number(row?.value) <= 0; }
+    function resolveDisplayUnit(row){ const metric=(row.metric_subtype||'').toLowerCase(); if(metric==='raw_digit') return 'count'; if(metric==='temp') return '°C'; if(metric==='flow') return 'L/s'; if(metric==='level') return 'mm'; if(metric==='microstrain') return 'µε'; if(metric==='eng_value' && /^AV04/i.test(String(row?.sensor_code||''))) return '°C'; return row.unit||row.sensor?.unit_default||''; }
+    const SPECIAL_SENSOR_METRIC_PRIORITY = Object.freeze({ AV04026:['eng_value','temp'] });
+    function getMetricCandidatesForSensor(sensorCode, fallback){
+      const base = Array.isArray(fallback) ? fallback : [fallback];
+      const preferred = SPECIAL_SENSOR_METRIC_PRIORITY[String(sensorCode||'').toUpperCase()];
+      if(!preferred) return base;
+      return [...new Set([...preferred, ...base])];
+    }
+    function pickPreferredRowsBySensor(rows, defaultCandidates){
+      const bySensor = new Map();
+      (rows||[]).forEach(row=>{
+        const sensorCode = String(row?.sensor_code || '').toUpperCase();
+        if(!sensorCode) return;
+        const metric = String(row?.metric_subtype || '').toLowerCase();
+        const candidates = getMetricCandidatesForSensor(sensorCode, defaultCandidates).map(v=>String(v).toLowerCase());
+        if(!candidates.includes(metric)) return;
+        const current = bySensor.get(sensorCode);
+        const nextIdx = candidates.indexOf(metric);
+        const currentIdx = current ? candidates.indexOf(String(current.metric_subtype||'').toLowerCase()) : 999;
+        if(!current || nextIdx < currentIdx){
+          bySensor.set(sensorCode, row);
+        }
+      });
+      return [...bySensor.values()];
+    }
+    function isInvalidTemperatureRow(row, rowsContext){
+      const metric = String(row?.metric_subtype||'').toLowerCase();
+      if(metric !== 'temp') return false;
+      if(Number(row?.value) > 0) return false;
+      const sensorCode = String(row?.sensor_code || '').toUpperCase();
+      const preferred = SPECIAL_SENSOR_METRIC_PRIORITY[sensorCode];
+      if(preferred && Array.isArray(rowsContext)){
+        const alt = rowsContext.find(r =>
+          String(r?.sensor_code || '').toUpperCase() === sensorCode &&
+          preferred.includes(String(r?.metric_subtype || '').toLowerCase()) &&
+          String(r?.metric_subtype || '').toLowerCase() !== 'temp' &&
+          Number.isFinite(Number(r?.value)) &&
+          Number(r?.value) > 0
+        );
+        if(alt) return false;
+      }
+      return true;
+    }
     function resolveThreshold(row){ const s=row.sensor||{}; if(s.alarm_low!==null || s.alarm_high!==null){ return { warnLow:s.alarm_low, critLow:s.alarm_low, warnHigh:s.alarm_high!==null?Number(s.alarm_high)*0.9:null, critHigh:s.alarm_high, unit:resolveDisplayUnit(row) }; } const group=(s.sensor_group||'').toLowerCase(); const metric=(row.metric_subtype||'').toLowerCase(); if(group==='temperature' && metric==='temp') return CONFIG.thresholds.temp_metric; const cfg=CONFIG.thresholds[group]; if(!cfg) return null; if(cfg.metric && cfg.metric!==metric) return null; return cfg; }
     function resolveState(row){ if(isInvalidTemperatureRow(row)) return {key:'invalid',text:'INVALID TEMP'}; const val=Number(row.value); const th=resolveThreshold(row); if(!Number.isFinite(val)) return {key:'gray',text:'N/A'}; if(!th) return {key:'gray',text:'NO LIMIT'}; const warnHigh=th.warnHigh!=null?Number(th.warnHigh):null; const critHigh=th.critHigh!=null?Number(th.critHigh):null; const warnLow=th.warnLow!=null?Number(th.warnLow):null; const critLow=th.critLow!=null?Number(th.critLow):null; const highWatch=Number.isFinite(warnHigh)?warnHigh*0.9:null; const highEmergency=Number.isFinite(critHigh)?critHigh*1.1:null; const lowWatch=Number.isFinite(warnLow)?warnLow*1.1:null; const lowEmergency=Number.isFinite(critLow)?critLow*0.9:null; if(Number.isFinite(highEmergency)&&val>highEmergency) return {key:'emergency',text:'EMERGENCY HIGH'}; if(Number.isFinite(critHigh)&&val>critHigh) return {key:'alarm',text:'ALARM HIGH'}; if(Number.isFinite(warnHigh)&&val>warnHigh) return {key:'warning',text:'WARNING HIGH'}; if(Number.isFinite(highWatch)&&val>=highWatch) return {key:'watch',text:'WATCH HIGH'}; if(Number.isFinite(lowEmergency)&&val<lowEmergency) return {key:'emergency',text:'EMERGENCY LOW'}; if(Number.isFinite(critLow)&&val<critLow) return {key:'alarm',text:'ALARM LOW'}; if(Number.isFinite(warnLow)&&val<warnLow) return {key:'warning',text:'WARNING LOW'}; if(Number.isFinite(lowWatch)&&val<=lowWatch) return {key:'watch',text:'WATCH LOW'}; return {key:'green',text:'NORMAL'}; }
 
@@ -1315,29 +1641,64 @@
     async function loadLatestSummaryRows(){ const sensorCodes=getCurrentFilterSensorCodesForSummary(); if(sensorCodes.length===0){ latestSummaryRows=[]; return; } const source=$('sourceFilter').value; const collected=[]; let offset=0; const pageSize=1000; const sensorMap=buildSensorMap(); const seenKeys=new Set(); const targetMax=sensorCodes.length*6; while(offset<=10000 && seenKeys.size<targetMax){ let q=sb.from('measurements').select('ts,sensor_code,metric_subtype,value,unit,quality_code,source_file,record_no').in('sensor_code',sensorCodes).order('ts',{ascending:false}).range(offset,offset+pageSize-1); if(source!=='ALL') q=q.eq('source_file',source); const res=await q; if(res.error) throw res.error; const rows=res.data||[]; if(rows.length===0) break; for(const r of rows){ const key=`${r.sensor_code}|${r.metric_subtype}`; if(!seenKeys.has(key)){ seenKeys.add(key); collected.push({...r,sensor:sensorMap[r.sensor_code]||null}); } } if(rows.length<pageSize) break; offset+=pageSize; } latestSummaryRows=collected; }
     function getFilteredRows(){ const source=$('sourceFilter').value; const station=$('stationFilter').value; const group=$('groupFilter').value; const sensorCode=$('sensorFilter').value; const sensorMap=buildSensorMap(); let rows=measurements.map(r=>({...r,sensor:sensorMap[r.sensor_code]||null})); if(source!=='ALL') rows=rows.filter(r=>r.source_file===source); if(station!=='ALL') rows=rows.filter(r=>r.sensor?.station_code===station); if(group!=='ALL') rows=rows.filter(r=>r.sensor?.sensor_group===group); if(sensorCode!=='ALL') rows=rows.filter(r=>r.sensor_code===sensorCode); return rows; }
     function getLatestRows(rows){ const map=new Map(); rows.forEach(r=>{ const key=`${r.sensor_code}|${r.metric_subtype}`; if(!map.has(key)) map.set(key,r); }); return [...map.values()]; }
-    function renderSafetyOverview(latestRows){
+    
+function renderSafetyOverview(latestRows){
       $('safetyMeta').textContent = `Latest summary • ${latestRows.length} latest rows`;
 
-      const tempRows = latestRows.filter(r => String(r.metric_subtype || '').toLowerCase() === 'temp');
-      const validTempRows = tempRows.filter(r => Number(r.value) > 0);
-      const invalidTempRows = tempRows.filter(r => Number(r.value) <= 0);
+      const setOverviewCard = ({ key, value, meta, note, stateKey='gray', stateText='N/A' }) => {
+        const valueEl = $(`ov${key}`);
+        const metaEl = $(`ov${key}Pos`);
+        const noteEl = $(`ov${key}Note`);
+        const badgeEl = $(`ov${key}Badge`);
+        const cardEl = $(`ovCard${key}`);
+        if(valueEl) valueEl.textContent = value || '--';
+        if(metaEl) metaEl.textContent = meta || '';
+        if(noteEl) noteEl.textContent = note || 'Đang tổng hợp đánh giá.';
+        if(badgeEl){
+          badgeEl.textContent = stateText || 'N/A';
+          badgeEl.className = `pill ${stateKey === 'alarm' ? 'warning' : stateKey === 'emergency' ? 'emergency' : stateKey || 'gray'}`;
+        }
+        if(cardEl) cardEl.dataset.state = (stateKey === 'alarm' ? 'warning' : stateKey || 'gray');
+      };
 
+      const invalidTempRows = latestRows.filter(r => isInvalidTemperatureRow(r, latestRows));
+      const invalidCodes = [...new Set(invalidTempRows.map(r => r.sensor_code))];
+
+      const tempCandidateRows = latestRows.filter(r => {
+        const group = String(r.sensor?.sensor_group || '').toLowerCase();
+        const metric = String(r.metric_subtype || '').toLowerCase();
+        return group === 'temperature' && ['temp','eng_value'].includes(metric);
+      });
+      const tempRows = pickPreferredRowsBySensor(tempCandidateRows, ['temp']);
+      const validTempRows = tempRows.filter(r => Number(r.value) > 0);
+      const tempUnit = validTempRows[0] ? resolveDisplayUnit(validTempRows[0]) : '°C';
       if(validTempRows.length){
         const mn = validTempRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, validTempRows[0]);
         const mx = validTempRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, validTempRows[0]);
-        const invalidCodes = [...new Set(invalidTempRows.map(r => r.sensor_code))];
-
-        $('ovTemp').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} °C`;
-        $('ovTempPos').textContent =
-          `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}` +
-          (invalidCodes.length ? ` • Sai âm: ${invalidCodes.join(', ')}` : '');
-      } else if(invalidTempRows.length){
-        $('ovTemp').textContent = '--';
-        $('ovTempPos').textContent =
-          `Không có nhiệt độ > 0 °C • Sai âm: ${[...new Set(invalidTempRows.map(r => r.sensor_code))].join(', ')}`;
+        const preferredNote = String(mx.sensor_code||'').toUpperCase()==='AV04026' || String(mn.sensor_code||'').toUpperCase()==='AV04026'
+          ? ' • AV04026 đang ưu tiên eng_value'
+          : '';
+        setOverviewCard({
+          key:'Temp',
+          value:`${fmtNum(mn.value)} - ${fmtNum(mx.value)} ${tempUnit}`,
+          meta:`Min: ${mn.sensor_code} • Max: ${mx.sensor_code}` + preferredNote + (invalidCodes.length ? ` • Sai âm: ${invalidCodes.join(', ')}` : ''),
+          note: invalidCodes.length
+            ? `Có ${invalidCodes.length} sensor nhiệt độ âm hoặc không phù hợp; riêng AV04026 đang ưu tiên eng_value để tránh lấy nhầm temp âm.`
+            : `Giá trị nhiệt độ hiện còn nằm dưới ngưỡng thiết kế ${CONFIG.thresholds.temp_metric.critHigh} °C.`,
+          stateKey: invalidCodes.length ? 'invalid' : (Number(mx.value) >= CONFIG.thresholds.temp_metric.warnHigh ? 'watch' : 'normal'),
+          stateText: invalidCodes.length ? 'INVALID DATA' : (Number(mx.value) >= CONFIG.thresholds.temp_metric.warnHigh ? 'WATCH' : 'NORMAL')
+        });
+      } else if(invalidCodes.length){
+        setOverviewCard({
+          key:'Temp',
+          value:'--',
+          meta:`Không có nhiệt độ > 0 °C • Sai âm: ${invalidCodes.join(', ')}`,
+          note:'Toàn bộ latest nhiệt độ đang bị loại do giá trị âm/không phù hợp.',
+          stateKey:'invalid',
+          stateText:'INVALID DATA'
+        });
       } else {
-        $('ovTemp').textContent = '--';
-        $('ovTempPos').textContent = '';
+        setOverviewCard({ key:'Temp', value:'--', meta:'', note:'Chưa có dữ liệu nhiệt độ trong latest.', stateKey:'gray', stateText:'N/A' });
       }
 
       const jointRows = latestRows.filter(r =>
@@ -1347,11 +1708,19 @@
       if(jointRows.length){
         const mn = jointRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, jointRows[0]);
         const mx = jointRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, jointRows[0]);
-        $('ovJoint').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} mm`;
-        $('ovJointPos').textContent = `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`;
+        const state = resolveState(mx);
+        setOverviewCard({
+          key:'Joint',
+          value:`${fmtNum(mn.value)} - ${fmtNum(mx.value)} mm`,
+          meta:`Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`,
+          note: Number(mx.value) >= CONFIG.thresholds.jointmeter.warnHigh
+            ? `Giá trị lớn nhất đang tiến gần ngưỡng thiết kế ${CONFIG.thresholds.jointmeter.critHigh} mm, cần theo dõi tăng giảm theo ca.`
+            : `Khe nhiệt hiện vẫn dưới ngưỡng thiết kế ${CONFIG.thresholds.jointmeter.critHigh} mm.`,
+          stateKey: ['alarm','emergency'].includes(state.key) ? 'warning' : (state.key === 'watch' ? 'watch' : 'normal'),
+          stateText: ['warning','alarm','emergency'].includes(state.key) ? 'WARNING' : (state.key === 'watch' ? 'WATCH' : 'NORMAL')
+        });
       } else {
-        $('ovJoint').textContent = '--';
-        $('ovJointPos').textContent = '';
+        setOverviewCard({ key:'Joint', value:'--', meta:'', note:'Chưa có dữ liệu latest cho khe nhiệt.', stateKey:'gray', stateText:'N/A' });
       }
 
       const upliftRows = latestRows.filter(r =>
@@ -1361,11 +1730,19 @@
       if(upliftRows.length){
         const mn = upliftRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, upliftRows[0]);
         const mx = upliftRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, upliftRows[0]);
-        $('ovUplift').textContent = `${fmtNum(mn.value)} - ${fmtNum(mx.value)} kg/cm2`;
-        $('ovUpliftPos').textContent = `Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`;
+        const state = resolveState(mx);
+        setOverviewCard({
+          key:'Uplift',
+          value:`${fmtNum(mn.value)} - ${fmtNum(mx.value)} kg/cm2`,
+          meta:`Min: ${mn.sensor_code} • Max: ${mx.sensor_code}`,
+          note: Number(mx.value) >= CONFIG.thresholds.piezometer.warnHigh
+            ? `Áp lực đẩy nổi lớn nhất đang tiệm cận / vượt ngưỡng cảnh báo, cần ưu tiên so sánh với mực nước hồ và kỳ trước.`
+            : `Áp lực đẩy nổi hiện chưa vượt ngưỡng thiết kế ${CONFIG.thresholds.piezometer.critHigh} kg/cm2.`,
+          stateKey: ['alarm','emergency'].includes(state.key) ? 'warning' : (state.key === 'warning' || state.key === 'watch' ? 'watch' : 'normal'),
+          stateText: ['alarm','emergency'].includes(state.key) ? 'WARNING' : (state.key === 'warning' || state.key === 'watch' ? 'WATCH' : 'NORMAL')
+        });
       } else {
-        $('ovUplift').textContent = '--';
-        $('ovUpliftPos').textContent = '';
+        setOverviewCard({ key:'Uplift', value:'--', meta:'', note:'Chưa có dữ liệu latest cho áp lực đẩy nổi.', stateKey:'gray', stateText:'N/A' });
       }
 
       const usRows = latestRows.filter(r =>
@@ -1381,15 +1758,22 @@
         const usMax = usRows.length ? usRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, usRows[0]) : null;
         const dsMin = dsRows.length ? dsRows.reduce((m,r)=>Number(r.value) < Number(m.value) ? r : m, dsRows[0]) : null;
         const dsMax = dsRows.length ? dsRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, dsRows[0]) : null;
-        $('ovStress').textContent =
-          `TL ${usMin ? fmtNum(usMin.value) : '--'}..${usMax ? fmtNum(usMax.value) : '--'} | ` +
-          `HL ${dsMin ? fmtNum(dsMin.value) : '--'}..${dsMax ? fmtNum(dsMax.value) : '--'}`;
-        $('ovStressPos').textContent =
-          `TL: ${usMin ? usMin.sensor_code : '--'} / ${usMax ? usMax.sensor_code : '--'} • ` +
-          `HL: ${dsMin ? dsMin.sensor_code : '--'} / ${dsMax ? dsMax.sensor_code : '--'}`;
+        const stressValues = [usMin, usMax, dsMin, dsMax].filter(Boolean);
+        const stressState = stressValues.reduce((acc,row)=>{
+          const st=resolveState(row);
+          const rank = {gray:0,normal:1,watch:2,warning:3,alarm:4,emergency:5,invalid:5};
+          return rank[st.key] > rank[acc.key] ? st : acc;
+        }, {key:'normal', text:'NORMAL'});
+        setOverviewCard({
+          key:'Stress',
+          value:`TL ${usMin ? fmtNum(usMin.value) : '--'}..${usMax ? fmtNum(usMax.value) : '--'} | HL ${dsMin ? fmtNum(dsMin.value) : '--'}..${dsMax ? fmtNum(dsMax.value) : '--'}`,
+          meta:`TL: ${usMin ? usMin.sensor_code : '--'} / ${usMax ? usMax.sensor_code : '--'} • HL: ${dsMin ? dsMin.sensor_code : '--'} / ${dsMax ? dsMax.sensor_code : '--'}`,
+          note:`Theo dõi chênh lệch TL/HL để phát hiện sớm xu thế mất cân bằng ứng suất nền.`,
+          stateKey: ['alarm','emergency'].includes(stressState.key) ? 'warning' : (stressState.key === 'warning' || stressState.key === 'watch' ? 'watch' : 'normal'),
+          stateText: ['alarm','emergency'].includes(stressState.key) ? 'WARNING' : (stressState.key === 'warning' || stressState.key === 'watch' ? 'WATCH' : 'NORMAL')
+        });
       } else {
-        $('ovStress').textContent = '--';
-        $('ovStressPos').textContent = '';
+        setOverviewCard({ key:'Stress', value:'--', meta:'', note:'Chưa có dữ liệu latest cho ứng suất nền.', stateKey:'gray', stateText:'N/A' });
       }
 
       const seepRows = latestRows.filter(r =>
@@ -1398,19 +1782,29 @@
       );
       if(seepRows.length){
         const total = seepRows.reduce((a,c)=>a + (Number(c.value) || 0), 0);
-        $('ovSeepage').textContent = `${fmtNum(total)} L/s`;
-        $('ovSeepagePos').textContent = `Có ${seepRows.length} sensor seepage có dữ liệu latest`;
+        const maxRow = seepRows.reduce((m,r)=>Number(r.value) > Number(m.value) ? r : m, seepRows[0]);
+        const seepState = resolveState({ ...maxRow, value: total, sensor: { ...(maxRow.sensor||{}), sensor_group:'seepage' }, metric_subtype:'flow' });
+        setOverviewCard({
+          key:'Seepage',
+          value:`${fmtNum(total)} L/s`,
+          meta:`Có ${seepRows.length} sensor seepage có dữ liệu latest • Max điểm: ${maxRow.sensor_code}`,
+          note: total >= CONFIG.thresholds.seepage.warnHigh
+            ? `Tổng lưu lượng thấm đang tiến gần ngưỡng thiết kế ${CONFIG.thresholds.seepage.critHigh} L/s, cần đối chiếu theo gallery và mực nước hồ.`
+            : `Tổng lưu lượng thấm hiện chưa vượt ngưỡng thiết kế ${CONFIG.thresholds.seepage.critHigh} L/s.`,
+          stateKey: ['alarm','emergency'].includes(seepState.key) ? 'warning' : (seepState.key === 'warning' || seepState.key === 'watch' ? 'watch' : 'normal'),
+          stateText: ['alarm','emergency'].includes(seepState.key) ? 'WARNING' : (seepState.key === 'warning' || seepState.key === 'watch' ? 'WATCH' : 'NORMAL')
+        });
       } else {
-        $('ovSeepage').textContent = '--';
-        $('ovSeepagePos').textContent = '';
+        setOverviewCard({ key:'Seepage', value:'--', meta:'', note:'Chưa có dữ liệu latest cho lưu lượng thấm.', stateKey:'gray', stateText:'N/A' });
       }
 
       renderInvalidDataPanel(latestRows);
     }
 
+
     function renderInvalidDataPanel(latestRows){
       const invalidRows = latestRows
-        .filter(isInvalidTemperatureRow)
+        .filter(r => isInvalidTemperatureRow(r, latestRows))
         .sort((a,b)=>String(a.sensor_code).localeCompare(String(b.sensor_code)));
 
       $('invalidMeta').textContent = `${invalidRows.length} sensor lỗi`;
@@ -1434,7 +1828,7 @@
 
     function getRadarGroupConfig(){
       return {
-        temperature:{ title:'Temperature', metricCandidates:['temp'], unit:'°C', color:'#2563eb', fill:'rgba(37,99,235,.12)', valid:(r)=>Number(r.value)>0 },
+        temperature:{ title:'Temperature', metricCandidates:['temp','eng_value'], unit:'°C', color:'#2563eb', fill:'rgba(37,99,235,.12)', valid:(r)=>Number(r.value)>0 },
         jointmeter:{ title:'Jointmeter', metricCandidates:['eng_value'], unit:'mm', color:'#f59e0b', fill:'rgba(245,158,11,.14)', valid:(r)=>Number.isFinite(Number(r.value)) },
         piezometer:{ title:'Piezometer', metricCandidates:['eng_value'], unit:'kg/cm2', color:'#10b981', fill:'rgba(16,185,129,.14)', valid:(r)=>Number.isFinite(Number(r.value)) },
         seepage:{ title:'Seepage', metricCandidates:['flow'], unit:'L/s', color:'#ef4444', fill:'rgba(239,68,68,.12)', valid:(r)=>Number.isFinite(Number(r.value)) },
@@ -1451,11 +1845,12 @@
         const sensorGroup = String(sensor?.sensor_group || '').toLowerCase();
         const metric = String(row.metric_subtype || '').toLowerCase();
         if(sensorGroup !== groupKey) return;
-        if(!cfg.metricCandidates.includes(metric)) return;
+        const sensorCandidates = getMetricCandidatesForSensor(row.sensor_code, cfg.metricCandidates).map(v=>String(v).toLowerCase());
+        if(!sensorCandidates.includes(metric)) return;
         if(!cfg.valid(row)) return;
         const current = bySensor.get(row.sensor_code);
-        const currentIdx = current ? cfg.metricCandidates.indexOf(String(current.metric_subtype || '').toLowerCase()) : 999;
-        const nextIdx = cfg.metricCandidates.indexOf(metric);
+        const currentIdx = current ? sensorCandidates.indexOf(String(current.metric_subtype || '').toLowerCase()) : 999;
+        const nextIdx = sensorCandidates.indexOf(metric);
         if(!current || nextIdx < currentIdx){
           bySensor.set(row.sensor_code, {...row, sensor});
         }
@@ -1552,7 +1947,113 @@
       $('tempRadarMeta').textContent = `6 biểu đồ • ${totalSensors} sensor`;
     }
 
-    function renderKpis(rows,latestRows){ $('kLatest').textContent=rows.length?fmtDateTime(rows[0].ts):'--'; $('kSensors').textContent=new Set(rows.map(r=>r.sensor_code)).size; $('kRows').textContent=rows.length.toLocaleString('vi-VN'); $('kAlerts').textContent=latestRows.filter(r=>['alarm','warning','watch','emergency'].includes(resolveState(r).key)).length; $('kpiMeta').textContent=`${$('dateFrom').value} → ${$('dateTo').value}`; }
+    
+function renderKpis(rows,latestRows){
+      const latestTs = rows.length ? rows.reduce((m,r)=> parseAppTimestamp(r.ts) > parseAppTimestamp(m.ts) ? r : m, rows[0]).ts : null;
+      const latestDt = latestTs ? parseAppTimestamp(latestTs) : null;
+      const latestText = latestTs ? fmtDateTime(latestTs) : '--';
+      const sensorCount = new Set(rows.map(r=>r.sensor_code)).size;
+      const rowCount = rows.length;
+      const warningCount = latestRows.filter(r=>['alarm','warning','watch','emergency'].includes(resolveState(r).key)).length;
+      const invalidRows = latestRows.filter(isInvalidTemperatureRow);
+      const invalidCount = invalidRows.length;
+      const anomalyCount = latestRows.filter(r=>['warning','alarm','emergency','invalid'].includes(resolveState(r).key)).length;
+      const delayMinutes = latestDt ? Math.max(0, Math.round((Date.now() - latestDt.getTime())/60000)) : null;
+
+      $('kLatest').textContent = latestText;
+      $('kSensors').textContent = sensorCount.toLocaleString('vi-VN');
+      $('kRows').textContent = rowCount.toLocaleString('vi-VN');
+      $('kAlerts').textContent = warningCount.toLocaleString('vi-VN');
+      $('kAnomaly').textContent = anomalyCount.toLocaleString('vi-VN');
+      $('kpiMeta').textContent = `${$('dateFrom').value} → ${$('dateTo').value}`;
+
+      if($('overviewHeroMeta')) $('overviewHeroMeta').textContent = `${$('rangeChip').textContent} • ${sensorCount} sensor • ${rowCount.toLocaleString('vi-VN')} bản ghi`;
+      if($('heroLatestTs')) $('heroLatestTs').textContent = latestText;
+      if($('heroLatestDesc')) $('heroLatestDesc').textContent = latestDt ? 'Mốc dữ liệu mới nhất trong vùng lọc hiện tại.' : 'Chưa có dữ liệu trong vùng lọc.';
+      if($('heroDelay')) $('heroDelay').textContent = delayMinutes==null ? '--' : `${delayMinutes} phút`;
+      if($('heroDelayDesc')) $('heroDelayDesc').textContent = delayMinutes==null ? 'Không xác định độ trễ.' : (delayMinutes <= 15 ? 'Dữ liệu đang khá tươi, phù hợp theo dõi vận hành.' : 'Độ trễ tăng, cần kiểm tra nguồn thu thập hoặc lịch import.');
+      if($('heroInvalidCount')) $('heroInvalidCount').textContent = invalidCount.toLocaleString('vi-VN');
+      if($('heroInvalidDesc')) $('heroInvalidDesc').textContent = invalidCount ? `${invalidCount} sensor latest đang lỗi hoặc bất thường.` : 'Không phát hiện sensor latest lỗi.';
+      if($('heroWatchCount')) $('heroWatchCount').textContent = warningCount.toLocaleString('vi-VN');
+      if($('heroWatchDesc')) $('heroWatchDesc').textContent = warningCount ? `${warningCount} sensor đang ở mức watch / warning / alarm.` : 'Không có sensor cần watch hoặc warning.';
+      if($('heroWatchDescInline')) $('heroWatchDescInline').textContent = warningCount ? `Hiện có ${warningCount} sensor ở mức watch / warning / alarm.` : 'Không có cảnh báo active đáng chú ý trong latest.';
+
+      let statusKey = 'normal';
+      let statusText = 'NORMAL';
+      let statusTitle = 'ỔN ĐỊNH VẬN HÀNH';
+      let statusNote = 'Các nhóm quan trắc trọng tâm hiện chưa ghi nhận tín hiệu vượt ngưỡng nghiêm trọng trong latest rows.';
+      if(latestRows.some(r=>['emergency','alarm'].includes(resolveState(r).key))){
+        statusKey = 'warning';
+        statusText = 'WARNING';
+        statusTitle = 'CẦN ƯU TIÊN KIỂM TRA';
+        statusNote = 'Có cảm biến đã chạm vùng cảnh báo cao, cần ưu tiên kiểm tra tương quan với điều kiện vận hành và dữ liệu gốc.';
+      } else if(invalidCount){
+        statusKey = 'invalid';
+        statusText = 'INVALID DATA';
+        statusTitle = 'ƯU TIÊN KIỂM TRA DỮ LIỆU';
+        statusNote = 'Phát hiện dữ liệu latest không hợp lệ. Cần phân biệt lỗi cảm biến / logger với bất thường công trình trước khi kết luận.';
+      } else if(warningCount){
+        statusKey = 'watch';
+        statusText = 'WATCH';
+        statusTitle = 'THEO DÕI CHẶT';
+        statusNote = 'Có tín hiệu đang tiến gần ngưỡng hoặc biến động cần theo dõi theo ca, theo ngày.';
+      }
+
+      const badgeMap = { normal:'green', watch:'watch', warning:'warning', invalid:'invalid', emergency:'emergency' };
+      if($('overviewGlobalBadge')){
+        $('overviewGlobalBadge').textContent = statusText;
+        $('overviewGlobalBadge').className = `pill ${badgeMap[statusKey] || 'gray'}`;
+      }
+      if($('overviewGlobalTitle')) $('overviewGlobalTitle').textContent = statusTitle;
+      if($('overviewGlobalNote')) $('overviewGlobalNote').textContent = statusNote;
+      const statusCard = $('overviewStatusCard');
+      if(statusCard) statusCard.className = `overview-status-card status-${statusKey}`;
+
+      const bullets = [];
+      if(invalidCount){
+        const codes = [...new Set(invalidRows.map(r=>r.sensor_code))].slice(0,4).join(', ');
+        bullets.push(`Có ${invalidCount} sensor dữ liệu không hợp lệ${codes ? `: ${codes}` : ''}.`);
+      }
+      const alarmRows = latestRows.filter(r=>['emergency','alarm'].includes(resolveState(r).key));
+      if(alarmRows.length){
+        bullets.push(`${alarmRows.length} sensor đang ở mức alarm/emergency, ưu tiên xác minh ngay trên trend và dữ liệu gốc.`);
+      }
+      const watchRows = latestRows.filter(r=>['warning','watch'].includes(resolveState(r).key));
+      if(watchRows.length){
+        bullets.push(`${watchRows.length} sensor ở mức watch/warning cần tiếp tục theo dõi cùng mực nước hồ và điều kiện vận hành.`);
+      }
+      if(latestDt){
+        bullets.push(`Dữ liệu mới nhất tại ${latestText}${delayMinutes!=null ? ` • độ trễ khoảng ${delayMinutes} phút.` : '.'}`);
+      }
+      if(!bullets.length){
+        bullets.push('Chưa ghi nhận tín hiệu vượt ngưỡng hoặc dữ liệu lỗi trong latest rows.');
+      }
+      if($('overviewGlobalBullets')){
+        $('overviewGlobalBullets').innerHTML = bullets.map(item=>`<li>${item}</li>`).join('');
+      }
+
+      const priorities = [];
+      if(invalidCount){
+        priorities.push('Kiểm tra ngay các sensor có dữ liệu âm / không hợp lệ; đối chiếu logger, scale và sensor lân cận trước khi kết luận kỹ thuật.');
+      }
+      if(alarmRows.length){
+        const top = alarmRows.slice(0,2).map(r=>`${r.sensor_code} (${fmtNum(r.value)} ${resolveDisplayUnit(r)})`).join(', ');
+        priorities.push(`Rà soát các sensor đang ở mức alarm: ${top}. Ưu tiên so sánh với điều kiện vận hành, mực nước hồ và lịch sử gần nhất.`);
+      }
+      if(watchRows.length && priorities.length < 3){
+        priorities.push('Theo dõi các nhóm đang ở mức watch/warning theo ca; nếu xu thế tiếp tục tăng thì chuyển sang kiểm tra chi tiết trên Trend.');
+      }
+      if(delayMinutes != null && delayMinutes > 15 && priorities.length < 4){
+        priorities.push('Kiểm tra độ trễ dữ liệu và trạng thái đồng bộ nguồn thu thập để tránh nhận định sai do dữ liệu cập nhật chậm.');
+      }
+      if(!priorities.length){
+        priorities.push('Tiếp tục giám sát định kỳ, ưu tiên đối chiếu báo cáo tháng và trạng thái hiện trường để xác nhận hệ thống vận hành ổn định.');
+      }
+      if($('overviewPriorityList')){
+        $('overviewPriorityList').innerHTML = priorities.slice(0,4).map((item,idx)=>`<div class="overview-priority-item"><span class="overview-priority-index">${idx+1}</span><div class="overview-priority-text">${item}</div></div>`).join('');
+      }
+    }
+
     function renderAlarmPanel(latestRows){ const critical=[]; const warning=[]; const normal=[]; const invalid=[]; latestRows.forEach(r=>{ const st=resolveState(r); const item={...r,state:st}; if(st.key==='invalid') invalid.push(item); else if(['alarm','emergency'].includes(st.key)) critical.push(item); else if(['warning','watch'].includes(st.key)) warning.push(item); else normal.push(item); }); $('alarmMeta').textContent=`${critical.length} critical • ${warning.length} warning • ${invalid.length} invalid`; const listHtml=(arr,cls)=>arr.length?arr.slice(0,10).map(r=>`<div class="alarm-item"><div><b>${r.sensor_code}</b> • ${r.metric_subtype}<br><span class="mono">${fmtDateTime(r.ts)}</span></div><div style="text-align:right"><div class="mono">${fmtNum(r.value)} ${resolveDisplayUnit(r)}</div><span class="pill ${cls}">${r.state.text}</span></div></div>`).join(''):'<div class="empty">Không có dữ liệu.</div>'; const invalidHtml=invalid.length?`<div style="margin-bottom:10px"><h3><span class="pill invalid">INVALID DATA</span></h3>${listHtml(invalid,'invalid')}</div>`:''; $('criticalList').innerHTML=invalidHtml + listHtml(critical,'alarm'); $('warningList').innerHTML=listHtml(warning,'warning'); $('normalList').innerHTML=normal.length?`<div class="empty">${normal.length} sensor ở trạng thái bình thường.</div>`:'<div class="empty">Không có dữ liệu.</div>'; }
     function buildTrendDatasets(rows){ const grouped=new Map(); rows.forEach(r=>{ const key=`${r.sensor_code} • ${r.metric_subtype}`; if(!grouped.has(key)) grouped.set(key,[]); grouped.get(key).push({x:parseAppTimestamp(r.ts).getTime(), y:Number(r.value)}); }); const palette=['#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#84cc16','#ec4899','#f97316','#14b8a6','#22c55e','#3b82f6','#a855f7','#f43f5e','#0ea5e9']; const seriesMode=$('seriesModeFilter').value; const limit=Number($('seriesLimitFilter').value); let entries=[...grouped.entries()].map(([label,data])=>{ const sorted=data.sort((a,b)=>a.x-b.x); const ys=sorted.map(p=>p.y).filter(Number.isFinite); const span=ys.length?Math.max(...ys)-Math.min(...ys):0; return {label,data:sorted,span}; }); if(seriesMode==='top_abs') entries.sort((a,b)=>b.span-a.span); if(Number.isFinite(limit)&&limit>0&&limit!==9999) entries=entries.slice(0,limit); return entries.map((item,idx)=>({label:item.label,data:item.data,borderColor:palette[idx%palette.length],backgroundColor:palette[idx%palette.length]+'22',fill:false,tension:.18,spanGaps:true,parsing:false,pointRadius:item.data.length>300?0:1.8,pointHoverRadius:3,borderWidth:2})); }
     function renderTrendChart(rows){
@@ -1637,7 +2138,7 @@
     function populateMetricFilter(rows){ const chartSensor=$('chartSensorFilter').value; let list=rows; if(chartSensor!=='ALL') list=list.filter(r=>r.sensor_code===chartSensor); const metrics=[...new Set(list.map(r=>r.metric_subtype).filter(Boolean))].sort(); const oldVal=$('metricFilter').value; $('metricFilter').innerHTML='<option value="ALL">Tất cả</option>'+metrics.map(m=>`<option value="${m}">${m}</option>`).join(''); $('metricFilter').value=metrics.includes(oldVal)?oldVal:'ALL'; }
     function getCrossSectionLatestPoint(sensorCode,rows,metricPriority=CROSS_SECTION_METRIC_PRIORITY){ const candidates=rows.filter(r=>r.sensor_code===sensorCode).sort((a,b)=>{ const pa=metricPriority.indexOf(String(a.metric_subtype||'').toLowerCase()); const pb=metricPriority.indexOf(String(b.metric_subtype||'').toLowerCase()); const va=pa===-1?999:pa; const vb=pb===-1?999:pb; if(va!==vb) return va-vb; return new Date(b.ts)-new Date(a.ts); }); return candidates[0]||null; }
     function getCrossStateClass(st){ if(!st) return 'state-gray'; if(st.key==='green') return 'state-normal'; if(st.key==='watch') return 'state-watch'; if(st.key==='warning') return 'state-warning'; if(st.key==='alarm') return 'state-alarm'; if(st.key==='emergency') return 'state-emergency'; if(st.key==='invalid') return 'state-invalid'; return 'state-gray'; }
-    function renderCrossSectionFigure(figureId, tsChipId, points, latestRows, metricPriority=CROSS_SECTION_METRIC_PRIORITY){ const figure=$(figureId); const tsChip=$(tsChipId); if(!figure||!tsChip) return []; figure.querySelectorAll('.sensor-overlay').forEach(el=>el.remove()); const enriched=points.map(point=>{ const row=getCrossSectionLatestPoint(point.sensor_code, latestRows, metricPriority); const st=row?resolveState(row):{key:'gray',text:'NO DATA'}; return {point,row,state:st}; }); const latestTs=enriched.map(x=>x.row?.ts).filter(Boolean).sort((a,b)=>new Date(b)-new Date(a))[0]||null; tsChip.textContent=latestTs?`Mốc latest: ${fmtDateTime(latestTs)}`:'Chưa có dữ liệu latest'; enriched.forEach(({point,row,state})=>{ const box=document.createElement('button'); box.type='button'; box.className=`sensor-overlay ${getCrossStateClass(state)}`; box.dataset.anchor=point.anchor||'top'; box.style.left=`${point.x}%`; box.style.top=`${point.y}%`; const val=row?fmtNum(row.value):'--'; const unit=row?resolveDisplayUnit(row):''; const metric=row?String(row.metric_subtype||'').toLowerCase():'--'; const ts=row?fmtDateTime(row.ts):'Chưa có dữ liệu latest'; const displayCode=point.display_code||point.sensor_code; const invalidNote=isInvalidTemperatureRow(row)?'<div class="tip-line"><b>Ghi chú:</b> Nhiệt độ âm, dữ liệu không phù hợp</div>':''; box.innerHTML=`<span class="sensor-point"></span><span class="sensor-line"></span><span class="sensor-box"><span class="sensor-value">${val}</span>${unit?`<span class="sensor-unit">${unit}</span>`:''}</span><div class="sensor-tooltip"><div class="tip-code">${displayCode}</div><div class="tip-line"><b>Giá trị:</b> ${val}${unit?` ${unit}`:''}</div><div class="tip-line"><b>Metric:</b> ${metric}</div><div class="tip-line"><b>Trạng thái:</b> ${state.text}</div>${invalidNote}<div class="tip-line"><b>Mốc latest:</b> ${ts}</div></div>`; box.addEventListener('click',()=>{ if(row){ switchView('trend'); $('sourceFilter').value='ALL'; refreshFilterOptions(); $('groupFilter').value='ALL'; refreshFilterOptions(); $('sensorFilter').value=row.sensor_code; refreshFilterOptions(); $('sensorFilter').value=row.sensor_code; $('chartSensorFilter').value=row.sensor_code; populateMetricFilter(getFilteredRows()); $('metricFilter').value=row.metric_subtype||'ALL'; renderAll(); window.scrollTo({top:0,behavior:'smooth'}); } }); figure.appendChild(box); }); return enriched; }
+    function renderCrossSectionFigure(figureId, tsChipId, points, latestRows, metricPriority=CROSS_SECTION_METRIC_PRIORITY){ const figure=$(figureId); const tsChip=$(tsChipId); if(!figure||!tsChip) return []; figure.querySelectorAll('.sensor-overlay').forEach(el=>el.remove()); const enriched=points.map(point=>{ const row=getCrossSectionLatestPoint(point.sensor_code, latestRows, metricPriority); const st=row?resolveState(row):{key:'gray',text:'NO DATA'}; return {point,row,state:st}; }); const latestTs=enriched.map(x=>x.row?.ts).filter(Boolean).sort((a,b)=>new Date(b)-new Date(a))[0]||null; tsChip.textContent=latestTs?`Mốc latest: ${fmtDateTime(latestTs)}`:'Chưa có dữ liệu latest'; enriched.forEach(({point,row,state})=>{ const box=document.createElement('button'); box.type='button'; box.className=`sensor-overlay ${getCrossStateClass(state)}`; box.dataset.anchor=point.anchor||'top'; box.style.left=`${point.x}%`; box.style.top=`${point.y}%`; const val=row?fmtNum(row.value):'--'; const unit=row?resolveDisplayUnit(row):''; const metric=row?String(row.metric_subtype||'').toLowerCase():'--'; const ts=row?fmtDateTime(row.ts):'Chưa có dữ liệu latest'; const displayCode=point.display_code||point.sensor_code; const invalidNote=isInvalidTemperatureRow(row, latestRows)?'<div class="tip-line"><b>Ghi chú:</b> Nhiệt độ âm, dữ liệu không phù hợp</div>':''; box.innerHTML=`<span class="sensor-point"></span><span class="sensor-line"></span><span class="sensor-box"><span class="sensor-value">${val}</span>${unit?`<span class="sensor-unit">${unit}</span>`:''}</span><div class="sensor-tooltip"><div class="tip-code">${displayCode}</div><div class="tip-line"><b>Giá trị:</b> ${val}${unit?` ${unit}`:''}</div><div class="tip-line"><b>Metric:</b> ${metric}</div><div class="tip-line"><b>Trạng thái:</b> ${state.text}</div>${invalidNote}<div class="tip-line"><b>Mốc latest:</b> ${ts}</div></div>`; box.addEventListener('click',()=>{ if(row){ switchView('trend'); $('sourceFilter').value='ALL'; refreshFilterOptions(); $('groupFilter').value='ALL'; refreshFilterOptions(); $('sensorFilter').value=row.sensor_code; refreshFilterOptions(); $('sensorFilter').value=row.sensor_code; $('chartSensorFilter').value=row.sensor_code; populateMetricFilter(getFilteredRows()); $('metricFilter').value=row.metric_subtype||'ALL'; renderAll(); window.scrollTo({top:0,behavior:'smooth'}); } }); figure.appendChild(box); }); return enriched; }
 
     
     
@@ -1647,11 +2148,11 @@
       const enriched18=renderCrossSectionFigure('threeDFigure18','threeDTs18',THREE_D_POINTS_18,latestRows,THREE_D_METRIC_PRIORITY_18)||[];
       const enriched16B=renderCrossSectionFigure('threeDFigure16B','threeDTs16B',THREE_D_POINTS_16B,latestRows,THREE_D_METRIC_PRIORITY_16B)||[];
       const enriched=[...enrichedMain,...enriched16,...enriched18,...enriched16B];
-      const invalidTempCodes=[...new Set(enriched.filter(x=>isInvalidTemperatureRow(x.row)).map(x=>x.point.display_code||x.point.sensor_code))];
+      const invalidTempCodes=[...new Set(enriched.filter(x=>isInvalidTemperatureRow(x.row, latestRows)).map(x=>x.point.display_code||x.point.sensor_code))];
       $('threeDMeta').textContent=`${enriched.filter(x=>x.row).length}/${enriched.length} sensor có latest${invalidTempCodes.length ? ' • Sai âm: ' + invalidTempCodes.join(', ') : ''}`;
       $('threeDList').innerHTML=enriched.map(({point,row,state})=>{
         const pillClass=state.key==='green'?'green':state.key==='watch'?'watch':state.key==='warning'?'warning':state.key==='alarm'?'alarm':state.key==='emergency'?'emergency':state.key==='invalid'?'invalid':'gray';
-        const invalidNote=isInvalidTemperatureRow(row)?'<div class="meta-inline" style="color:#b91c1c">Nhiệt độ âm (sai)</div>':'';
+        const invalidNote=isInvalidTemperatureRow(row, latestRows)?'<div class="meta-inline" style="color:#b91c1c">Nhiệt độ âm (sai)</div>':'';
         const displayCode=point.display_code||point.sensor_code;
         return `<div class="cross-row"><div><div class="name">${displayCode}</div><div class="meta">${row?`${row.metric_subtype} • ${fmtDateTime(row.ts)}`:'Chưa có dữ liệu latest'}</div>${invalidNote}</div><div class="val"><div>${row?`${fmtNum(row.value)} ${resolveDisplayUnit(row)}`:'--'}</div><div class="meta-inline"><span class="pill ${pillClass}">${state.text}</span></div></div></div>`;
       }).join('');
@@ -1668,7 +2169,7 @@
     }
 
 
-    function renderCrossSection(latestRows){ const enriched1=renderCrossSectionFigure('damFigure1','crossSectionTs1',CROSS_SECTION_POINTS_MCD1,latestRows)||[]; const enriched2=renderCrossSectionFigure('damFigure2','crossSectionTs2',CROSS_SECTION_POINTS_MCD2,latestRows)||[]; const enriched11=renderCrossSectionFigure('damFigure11','crossSectionTs11',CROSS_SECTION_POINTS_MCD11,latestRows)||[]; const all=[...enriched1,...enriched2,...enriched11]; const invalidTempCodes=[...new Set(all.filter(x=>isInvalidTemperatureRow(x.row)).map(x=>x.point.sensor_code))]; $('crossSectionMeta').textContent=`${all.filter(x=>x.row).length}/${all.length} sensor có latest${invalidTempCodes.length ? ' • Sai âm: ' + invalidTempCodes.join(', ') : ''}`; $('crossSectionList').innerHTML=all.map(({point,row,state})=>{ const pillClass=state.key==='green'?'green':state.key==='watch'?'watch':state.key==='warning'?'warning':state.key==='alarm'?'alarm':state.key==='emergency'?'emergency':state.key==='invalid'?'invalid':'gray'; const invalidNote=isInvalidTemperatureRow(row)?'<div class="meta-inline" style="color:#b91c1c">Nhiệt độ âm (sai)</div>':''; return `<div class="cross-row"><div><div class="name">${point.sensor_code}</div><div class="meta">${row?`${row.metric_subtype} • ${fmtDateTime(row.ts)}`:'Chưa có dữ liệu latest'}</div>${invalidNote}</div><div class="val"><div>${row?`${fmtNum(row.value)} ${resolveDisplayUnit(row)}`:'--'}</div><div class="meta-inline"><span class="pill ${pillClass}">${state.text}</span></div></div></div>`; }).join(''); }
+    function renderCrossSection(latestRows){ const enriched1=renderCrossSectionFigure('damFigure1','crossSectionTs1',CROSS_SECTION_POINTS_MCD1,latestRows)||[]; const enriched2=renderCrossSectionFigure('damFigure2','crossSectionTs2',CROSS_SECTION_POINTS_MCD2,latestRows)||[]; const enriched11=renderCrossSectionFigure('damFigure11','crossSectionTs11',CROSS_SECTION_POINTS_MCD11,latestRows)||[]; const all=[...enriched1,...enriched2,...enriched11]; const invalidTempCodes=[...new Set(all.filter(x=>isInvalidTemperatureRow(x.row, latestRows)).map(x=>x.point.sensor_code))]; $('crossSectionMeta').textContent=`${all.filter(x=>x.row).length}/${all.length} sensor có latest${invalidTempCodes.length ? ' • Sai âm: ' + invalidTempCodes.join(', ') : ''}`; $('crossSectionList').innerHTML=all.map(({point,row,state})=>{ const pillClass=state.key==='green'?'green':state.key==='watch'?'watch':state.key==='warning'?'warning':state.key==='alarm'?'alarm':state.key==='emergency'?'emergency':state.key==='invalid'?'invalid':'gray'; const invalidNote=isInvalidTemperatureRow(row, latestRows)?'<div class="meta-inline" style="color:#b91c1c">Nhiệt độ âm (sai)</div>':''; return `<div class="cross-row"><div><div class="name">${point.sensor_code}</div><div class="meta">${row?`${row.metric_subtype} • ${fmtDateTime(row.ts)}`:'Chưa có dữ liệu latest'}</div>${invalidNote}</div><div class="val"><div>${row?`${fmtNum(row.value)} ${resolveDisplayUnit(row)}`:'--'}</div><div class="meta-inline"><span class="pill ${pillClass}">${state.text}</span></div></div></div>`; }).join(''); }
     function scrollToCrossSection(key){ const target=key==='mcd2' ? $('mcd2Stage') : key==='mcd11' ? $('mcd11Stage') : $('mcd1Stage'); if(target) target.scrollIntoView({behavior:'smooth', block:'start'}); }
     function renderAll(){ const rows=getFilteredRows(); const latestRows=getLatestRows(rows).map(r=>({...r,sensor:buildSensorMap()[r.sensor_code]||null})); renderSafetyOverview(latestSummaryRows.length?latestSummaryRows:latestRows); renderTempRadar(latestSummaryRows.length?latestSummaryRows:latestRows); renderKpis(rows,latestRows); renderAlarmPanel(latestRows); renderHeatmap(rows); populateMetricFilter(rows); renderTrendChart(rows); renderCrossSection(latestSummaryRows.length?latestSummaryRows:latestRows); renderThreeDView(latestSummaryRows.length?latestSummaryRows:latestRows); renderAnomaly(rows); renderLatest(latestRows); if($('lastUpdate')) $('lastUpdate').textContent='Cập nhật: '+new Date().toLocaleTimeString('vi-VN'); }
     function resetFilters(){ $('sourceFilter').value='ALL'; $('stationFilter').value='ALL'; $('groupFilter').value='ALL'; $('sensorFilter').value='ALL'; $('chartSensorFilter').value='ALL'; $('metricFilter').innerHTML='<option value="ALL">Tất cả</option>'; const d=getDefaultDates(); $('dateFrom').value=d.from; $('dateTo').value=d.to; $('rangeChip').textContent='24 giờ gần nhất'; document.querySelectorAll('#btn6h,#btn24hQuick,#btn3d,#btn7d,#btn30d').forEach(btn=>btn.classList.remove('active')); $('btn24hQuick').classList.add('active'); }
@@ -1680,10 +2181,55 @@
 
     function getMonthRange(monthValue){ return monthRangeToOffsetIso(monthValue, APP_TZ_OFFSET_MINUTES); }
     function getMonthlyGroupConfig(group){ const map={ temperature:{title:'Nhiệt độ bê tông',sensor_group:'temperature',metric_subtype:'temp',report_group:'temperature',ai_group_name:'nhiet_do_be_tong',unit:'°C',design_limit:43,abnormal_delta_limit:2,compare_rule:'max_lt_design'}, jointmeter:{title:'Khe nhiệt hở',sensor_group:'jointmeter',metric_subtype:'eng_value',report_group:'jointmeter',ai_group_name:'khe_nhiet_ho',unit:'mm',design_limit:20,abnormal_delta_limit:5,compare_rule:'abs_lt_design'}, piezometer:{title:'Áp lực thấm',sensor_group:'piezometer',metric_subtype:'eng_value',report_group:'piezometer',ai_group_name:'ap_luc_tham',unit:'kg/cm2',design_limit:3.7,abnormal_delta_limit:1,compare_rule:'abs_lt_design'}, seepage:{title:'Lưu lượng thấm',sensor_group:'seepage',metric_subtype:'flow',report_group:'seepage',ai_group_name:'luu_luong_tham',unit:'L/s',design_limit:4.3,abnormal_delta_limit:1,compare_rule:'max_lt_design'} }; return map[group]; }
-    async function loadTemperatureMonthlyRaw(fromTs,toTs){ const temperatureSensorCodes=sensors.filter(s=>String(s.sensor_group||'').toLowerCase()==='temperature').map(s=>s.sensor_code); if(!temperatureSensorCodes.length) return []; const allRows=[]; const pageSize=1000; for(let offset=0; offset<=50000; offset+=pageSize){ const {data,error}=await sb.from('measurements').select('ts,sensor_code,metric_subtype,value,unit').in('sensor_code', temperatureSensorCodes).eq('metric_subtype','temp').gte('ts',fromTs).lt('ts',toTs).order('ts',{ascending:true}).range(offset, offset+pageSize-1); if(error) throw error; const rows=data||[]; allRows.push(...rows); if(rows.length<pageSize) break; } return allRows; }
+    function canonicalizeTemperatureMonthlyRows(rawRows){
+      const bucket=new Map();
+      (rawRows||[]).forEach(row=>{
+        const sensorCode=String(row?.sensor_code||'').toUpperCase();
+        const ts=String(row?.ts||'');
+        if(!sensorCode || !ts) return;
+        const key=`${sensorCode}__${ts}`;
+        const candidates=getMetricCandidatesForSensor(sensorCode,['temp']).map(v=>String(v).toLowerCase());
+        const metric=String(row?.metric_subtype||'').toLowerCase();
+        if(!candidates.includes(metric)) return;
+        const current=bucket.get(key);
+        const nextIdx=candidates.indexOf(metric);
+        const currentIdx=current ? candidates.indexOf(String(current.metric_subtype||'').toLowerCase()) : 999;
+        if(!current || nextIdx < currentIdx){
+          bucket.set(key,row);
+        }
+      });
+      return [...bucket.values()].sort((a,b)=>parseAppTimestamp(a.ts)-parseAppTimestamp(b.ts)||String(a.sensor_code).localeCompare(String(b.sensor_code)));
+    }
+    async function loadTemperatureMonthlyRaw(fromTs,toTs){
+      const temperatureSensorCodes=sensors.filter(s=>String(s.sensor_group||'').toLowerCase()==='temperature').map(s=>s.sensor_code);
+      if(!temperatureSensorCodes.length) return [];
+      const allRows=[]; const pageSize=1000;
+      for(let offset=0; offset<=50000; offset+=pageSize){
+        const {data,error}=await sb.from('measurements').select('ts,sensor_code,metric_subtype,value,unit').in('sensor_code', temperatureSensorCodes).eq('metric_subtype','temp').gte('ts',fromTs).lt('ts',toTs).order('ts',{ascending:true}).range(offset, offset+pageSize-1);
+        if(error) throw error;
+        const rows=data||[];
+        allRows.push(...rows);
+        if(rows.length<pageSize) break;
+      }
+      const specialSensorCodes=Object.keys(SPECIAL_SENSOR_METRIC_PRIORITY||{}).filter(code=>temperatureSensorCodes.includes(code));
+      for(const sensorCode of specialSensorCodes){
+        const preferredMetrics=(SPECIAL_SENSOR_METRIC_PRIORITY[sensorCode]||[]).filter(metric=>String(metric).toLowerCase()!=='temp');
+        for(const metricSubtype of preferredMetrics){
+          for(let offset=0; offset<=50000; offset+=pageSize){
+            const {data,error}=await sb.from('measurements').select('ts,sensor_code,metric_subtype,value,unit').eq('sensor_code', sensorCode).eq('metric_subtype', metricSubtype).gte('ts',fromTs).lt('ts',toTs).order('ts',{ascending:true}).range(offset, offset+pageSize-1);
+            if(error) throw error;
+            const rows=data||[];
+            allRows.push(...rows);
+            if(rows.length<pageSize) break;
+          }
+        }
+      }
+      return canonicalizeTemperatureMonthlyRows(allRows);
+    }
     function buildTemperatureMonthlyReport(rawRows, design){
-      const validRows=rawRows.filter(r=>Number(r.value)>0);
-      const invalidRows=rawRows.filter(r=>Number(r.value)<=0);
+      const canonicalRows=canonicalizeTemperatureMonthlyRows(rawRows);
+      const validRows=canonicalRows.filter(r=>Number(r.value)>0);
+      const invalidRows=canonicalRows.filter(r=>Number(r.value)<=0 && isInvalidTemperatureRow(r, canonicalRows));
       const invalidSensorCodes=[...new Set(invalidRows.map(r=>r.sensor_code))].sort();
 
       const bySensor=new Map();
@@ -1701,6 +2247,7 @@
         return {
           sensor_code:sensorCode,
           station_code:(sensors.find(s=>s.sensor_code===sensorCode)?.station_code)||'',
+          metric_subtype:getMetricCandidatesForSensor(sensorCode,['temp']).find(metric=>rows.some(r=>String(r.metric_subtype).toLowerCase()===String(metric).toLowerCase()))||'temp',
           max_value:maxValue,
           max_ts:maxRow?.ts||null,
           min_value:minValue,
@@ -1727,7 +2274,7 @@
         };
       }
       const evaluation=evaluateMonthlyReport(summary, design);
-      return { summary, evaluation, tableRows, invalidSensorCodes, invalidCount:invalidRows.length };
+      return { summary, evaluation, tableRows, rawRows:canonicalRows, invalidSensorCodes, invalidCount:invalidRows.length };
     }
     async function rpcMonthlyStats(fromTs,toTs,sensorGroup,metricSubtype){ const {data,error}=await sb.rpc('fn_monthly_stats',{p_from_ts:fromTs,p_to_ts:toTs,p_sensor_group:sensorGroup,p_metric_subtype:metricSubtype}); if(error) throw error; return data||[]; }
     async function rpcMonthlySummary(fromTs,toTs,sensorGroup,metricSubtype){ const {data,error}=await sb.rpc('fn_monthly_group_summary',{p_from_ts:fromTs,p_to_ts:toTs,p_sensor_group:sensorGroup,p_metric_subtype:metricSubtype}); if(error) throw error; return (data&&data[0])||null; }
@@ -1846,49 +2393,95 @@
 
     function buildSeepageTotalSummaryData(rawRows, design){
       const validRows = rawRows.filter(r => Number.isFinite(Number(r.value)));
-      const byTs = new Map();
+      const designValue = Number(design?.design_value ?? NaN);
 
-      validRows.forEach(r => {
-        const ts = r.ts;
-        if(!byTs.has(ts)) byTs.set(ts, 0);
-        byTs.set(ts, byTs.get(ts) + (Number(r.value) || 0));
-      });
-
-      const totals = [...byTs.entries()].map(([ts, total]) => ({ ts, total })).sort((a,b)=>new Date(a.ts)-new Date(b.ts));
-
-      if(!totals.length){
+      if(!validRows.length){
         return {
           summary: null,
-          evaluation: { assessment:'Không có dữ liệu', design_value: Number.isFinite(Number(design?.design_value)) ? Number(design.design_value) : null },
-          noteHtml: '<p><b>Ghi chú:</b> Q tổng = tổng lưu lượng tại các vị trí seepage theo cùng thời điểm.</p>'
+          evaluation: { assessment:'Không có dữ liệu', design_value: Number.isFinite(designValue) ? designValue : null },
+          noteHtml: '<p><b>Ghi chú:</b> Q tổng = tổng lưu lượng thấm của Q_305, Q_330 và Q_356. Ưu tiên tính theo cùng thời điểm; nếu dữ liệu lệch nhịp thì Min/Max sẽ lấy theo tổng các giá trị cực trị của từng sensor.</p>'
         };
       }
 
-      const maxRow = totals.reduce((m,r)=>r.total > m.total ? r : m, totals[0]);
-      const minRow = totals.reduce((m,r)=>r.total < m.total ? r : m, totals[0]);
-      const amp = Number(maxRow.total) - Number(minRow.total);
+      const sensorStats = new Map();
+      const byTs = new Map();
 
-      const designValue = Number(design?.design_value ?? NaN);
+      validRows.forEach(r => {
+        const sensor = String(r.sensor_code || '').trim();
+        const ts = r.ts;
+        const value = Number(r.value);
+
+        if(!sensorStats.has(sensor)){
+          sensorStats.set(sensor, {
+            sensor_code: sensor,
+            min_value: value,
+            min_ts: ts,
+            max_value: value,
+            max_ts: ts
+          });
+        }else{
+          const stat = sensorStats.get(sensor);
+          if(value < stat.min_value){
+            stat.min_value = value;
+            stat.min_ts = ts;
+          }
+          if(value > stat.max_value){
+            stat.max_value = value;
+            stat.max_ts = ts;
+          }
+        }
+
+        if(!byTs.has(ts)) byTs.set(ts, new Map());
+        byTs.get(ts).set(sensor, value);
+      });
+
+      const sensors = [...sensorStats.keys()].sort();
+      const fullTotals = [...byTs.entries()]
+        .filter(([, sensorMap]) => sensors.every(sensor => sensorMap.has(sensor)))
+        .map(([ts, sensorMap]) => ({
+          ts,
+          total: sensors.reduce((sum, sensor) => sum + Number(sensorMap.get(sensor) || 0), 0)
+        }))
+        .sort((a,b)=>new Date(a.ts)-new Date(b.ts));
+
+      const statList = [...sensorStats.values()];
+      const sumOfSensorMins = statList.reduce((sum, stat) => sum + Number(stat.min_value || 0), 0);
+      const sumOfSensorMaxs = statList.reduce((sum, stat) => sum + Number(stat.max_value || 0), 0);
+      const latestMinTs = statList.map(stat => stat.min_ts).filter(Boolean).sort()[0] || null;
+      const latestMaxTs = statList.map(stat => stat.max_ts).filter(Boolean).sort().slice(-1)[0] || null;
+
+      const maxRow = fullTotals.length
+        ? fullTotals.reduce((m,r)=>r.total > m.total ? r : m, fullTotals[0])
+        : { ts: latestMaxTs, total: sumOfSensorMaxs };
+
+      const minRow = fullTotals.length
+        ? fullTotals.reduce((m,r)=>r.total < m.total ? r : m, fullTotals[0])
+        : { ts: latestMinTs, total: sumOfSensorMins };
+
+      const summaryMax = Number.isFinite(sumOfSensorMaxs) ? Math.max(Number(maxRow.total || 0), sumOfSensorMaxs) : Number(maxRow.total || 0);
+      const summaryMin = Number.isFinite(sumOfSensorMins) ? sumOfSensorMins : Number(minRow.total || 0);
+      const amp = summaryMax - summaryMin;
+
       let assessment = 'Chưa cấu hình ngưỡng';
       if(Number.isFinite(designValue)){
-        if(maxRow.total > designValue) assessment = 'Cảnh báo';
-        else if(maxRow.total > designValue * 0.8) assessment = 'Theo dõi';
+        if(summaryMax > designValue) assessment = 'Cảnh báo';
+        else if(summaryMax > designValue * 0.8) assessment = 'Theo dõi';
         else assessment = 'Bình thường';
       }
 
       return {
         summary:{
           sensor_max:'Q_TONG',
-          value_max:Number(maxRow.total),
+          value_max:summaryMax,
           max_ts:maxRow.ts,
           sensor_min:'Q_TONG',
-          value_min:Number(minRow.total),
+          value_min:summaryMin,
           min_ts:minRow.ts,
           sensor_amp:'Q_TONG',
           value_amp:amp
         },
         evaluation:{ assessment, design_value: Number.isFinite(designValue) ? designValue : null },
-        noteHtml:'<p><b>Ghi chú:</b> Q tổng = tổng lưu lượng tại các vị trí seepage theo cùng thời điểm.</p>'
+        noteHtml:'<p><b>Ghi chú:</b> Q tổng = tổng lưu lượng thấm của Q_305, Q_330 và Q_356. Giá trị Min trong báo cáo tháng lấy theo tổng các giá trị Min của từng sensor để tránh bị kéo về 0 khi dữ liệu lệch thời điểm.</p>'
       };
     }
     function buildSeepageTotalSummaryFromRaw(rawRows, design, unit, extraHtml=''){
@@ -2166,7 +2759,7 @@
         const seepageData = buildSeepageTotalSummaryData(report.rawRows, {design_value: report?.evaluation?.design_value ?? cfg.design_limit ?? null});
         report.summaryHtml = buildMonthlySummaryCard(cfg.title, seepageData.summary, seepageData.evaluation, cfg.unit, seepageData.noteHtml, aiHtml);
       }else{
-        const extraNoteHtml = report.invalidSensorCodes?.length ? `<div class="invalid-note"><b>INVALID TEMP:</b> Loại các giá trị nhiệt độ âm khỏi Min-Max. Cảm biến có nhiệt độ âm (sai): ${report.invalidSensorCodes.join(', ')}</div>` : '';
+        const extraNoteHtml = report.invalidSensorCodes?.length ? `<div class="invalid-note"><b>INVALID DATA:</b> Đã loại các giá trị không hợp lệ khỏi Min-Max sau khi ưu tiên metric phù hợp theo từng cảm biến. Sensor còn bất thường: ${report.invalidSensorCodes.join(', ')}</div>` : '';
         report.summaryHtml = buildMonthlySummaryCard(cfg.title, report.summary, report.evaluation, cfg.unit, extraNoteHtml, aiHtml);
       }
       return report;
@@ -2377,12 +2970,12 @@ async function loadSingleMonthlyGroupReport(groupValue,monthValue){
       if(groupValue==='temperature'){
         const [design, rawRows] = await Promise.all([designPromise, loadTemperatureMonthlyRaw(fromTs,toTs)]);
         const tempReport = buildTemperatureMonthlyReport(rawRows, design);
-        const invalidNote = tempReport.invalidSensorCodes.length ? `<div class="invalid-note"><b>INVALID TEMP:</b> Loại các giá trị nhiệt độ âm khỏi Min-Max. Cảm biến có nhiệt độ âm (sai): ${tempReport.invalidSensorCodes.join(', ')}</div>` : '';
+        const invalidNote = tempReport.invalidSensorCodes.length ? `<div class="invalid-note"><b>INVALID DATA:</b> Đã loại các giá trị không hợp lệ khỏi Min-Max sau khi ưu tiên metric phù hợp theo từng cảm biến. Sensor còn bất thường: ${tempReport.invalidSensorCodes.join(', ')}</div>` : '';
         return {
           key:groupValue,
           cfg,
           title:cfg.title,
-          rawRows,
+          rawRows:tempReport.rawRows || rawRows,
           summary:tempReport.summary,
           evaluation:tempReport.evaluation,
           invalidSensorCodes:tempReport.invalidSensorCodes,
