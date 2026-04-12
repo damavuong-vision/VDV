@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -251,6 +252,10 @@
         display:none !important;
       }
 
+      .monthly-ai-box.openai-missing{
+        display:none !important;
+      }
+
       .layout,.content{
         display:block !important;
         padding:0 !important;
@@ -460,7 +465,7 @@
       }
 
       .monthly-inline-trend{
-        margin-top:2.5mm !important;
+        margin-top:0.8mm !important;
         break-inside:avoid !important;
         page-break-inside:avoid !important;
       }
@@ -472,18 +477,18 @@
       }
 
       .monthly-inline-trend .monthly-chart-card h3{
-        font-size:10.8pt !important;
-        margin:0 0 1.4mm !important;
+        font-size:8.4pt !important;
+        margin:0 0 0.35mm !important;
       }
 
       .monthly-inline-trend .monthly-chart-note{
-        font-size:7.9pt !important;
-        margin:0 0 1.4mm !important;
+        font-size:5.8pt !important;
+        margin:0 0 0.25mm !important;
       }
 
       .monthly-inline-trend .monthly-canvas-wrap{
-        height:48mm !important;
-        min-height:48mm !important;
+        height:58mm !important;
+        min-height:58mm !important;
       }
 
       .monthly-summary-radar-page .monthly-chart-legend{
@@ -849,6 +854,562 @@
     .monthly-executive-item{padding:6px 0 !important}
     .monthly-executive-item .meta,.monthly-executive-actions{font-size:9.8pt !important;line-height:1.42 !important;color:#000 !important}
   }
+
+
+
+/* ===== V29 PRINT LAYOUT REFINEMENT ===== */
+@media print{
+  .monthly-report-part{
+    margin:0 !important;
+    break-before:page !important;
+    page-break-before:always !important;
+  }
+
+  .monthly-summary-radar-page{
+    margin:0 0 4mm 0 !important;
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  .monthly-part-title{
+    margin:0 0 3mm 0 !important;
+    font-size:15pt !important;
+    line-height:1.12 !important;
+    break-after:avoid-page !important;
+    page-break-after:avoid !important;
+  }
+
+  .monthly-summary-radar-grid{
+    grid-template-columns:82mm 94mm !important;
+    gap:3mm !important;
+    break-inside:auto !important;
+    page-break-inside:auto !important;
+  }
+
+  .monthly-summary-radar-page.compact .monthly-summary-radar-grid{
+    grid-template-columns:82mm 94mm !important;
+    gap:3mm !important;
+  }
+
+  .monthly-summary-radar-page .summary-card{
+    padding:10px 12px !important;
+  }
+
+  .monthly-summary-radar-page .summary-card h3{
+    font-size:13pt !important;
+    margin:0 0 4px !important;
+  }
+
+  .monthly-summary-radar-page .summary-card p{
+    font-size:9.6pt !important;
+    line-height:1.22 !important;
+    margin:0 0 3px 0 !important;
+  }
+
+  .monthly-summary-radar-page .invalid-note{
+    font-size:8.8pt !important;
+    line-height:1.2 !important;
+    padding:5px 7px !important;
+    margin-top:4px !important;
+  }
+
+  .monthly-ai-box{
+    margin-top:5px !important;
+    padding:7px 9px !important;
+  }
+
+  .monthly-ai-box .monthly-ai-title{
+    font-size:8.8pt !important;
+  }
+
+  .monthly-ai-box .monthly-ai-text{
+    font-size:9pt !important;
+    line-height:1.25 !important;
+  }
+
+  .monthly-ai-box .monthly-ai-actions{
+    font-size:8.1pt !important;
+    line-height:1.2 !important;
+    margin-top:4px !important;
+  }
+
+  .monthly-summary-radar-page .monthly-chart-card{
+    padding:5px 6px !important;
+  }
+
+  .monthly-summary-radar-page .monthly-chart-card h3{
+    font-size:10.4pt !important;
+    margin:0 0 1.2mm !important;
+  }
+
+  .monthly-summary-radar-page .monthly-chart-note{
+    font-size:7.2pt !important;
+    line-height:1.1 !important;
+    margin:0 0 1.1mm !important;
+  }
+
+  .monthly-summary-radar-page .monthly-canvas-wrap.radar{
+    max-width:68mm !important;
+    width:68mm !important;
+    padding:1.2mm !important;
+    margin:0 auto !important;
+  }
+
+  .monthly-inline-trend{
+    margin-top:0.8mm !important;
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-card{
+    padding:1px 3px !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-card h3{
+    font-size:8.4pt !important;
+    margin:0 0 0.35mm !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-note{
+    font-size:5.8pt !important;
+    line-height:1.08 !important;
+    margin:0 0 0.25mm !important;
+  }
+
+  .monthly-inline-trend .monthly-canvas-wrap{
+    height:58mm !important;
+    min-height:58mm !important;
+    padding:3px !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-legend{
+    margin-top:0.25mm !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-legend-item{
+    font-size:4.9pt !important;
+  }
+
+  .monthly-trend-blocks{
+    display:block !important;
+    break-before:auto !important;
+    page-break-before:auto !important;
+    margin:0 !important;
+  }
+
+  .monthly-trend-page{
+    break-before:page !important;
+    page-break-before:always !important;
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+    margin:0 0 0.8mm !important;
+  }
+
+  .monthly-trend-page .trend-card{
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+    margin:0 0 0.8mm !important;
+  }
+
+  .monthly-trend-page .trend-card:last-child{
+    margin-bottom:0 !important;
+  }
+
+  .monthly-trend-page .monthly-chart-card{
+    padding:1px 3px !important;
+  }
+
+  .monthly-trend-page .monthly-chart-card h3{
+    font-size:8.2pt !important;
+    margin:0 0 0.3mm !important;
+  }
+
+  .monthly-trend-page .monthly-chart-note{
+    font-size:5.6pt !important;
+    line-height:1.0 !important;
+    margin:0 0 0.2mm !important;
+  }
+
+  .monthly-trend-page .monthly-canvas-wrap{
+    height:88mm !important;
+    min-height:88mm !important;
+    padding:3px !important;
+  }
+
+  .monthly-trend-page .monthly-chart-legend{
+    margin-top:0.25mm !important;
+  }
+
+  .monthly-trend-page .monthly-chart-legend-item{
+    font-size:4.9pt !important;
+  }
+
+  .monthly-table-section{
+    margin:0 !important;
+    break-before:page !important;
+    page-break-before:always !important;
+  }
+}
+
+
+
+/* ===== V33 PDF POLISH ===== */
+@media print{
+  @page{
+    size:A4 portrait;
+    margin:11mm 11mm 17mm 11mm;
+  }
+
+  #monthlyReportPreview{
+    padding-bottom:18mm !important;
+  }
+
+  .report-print-header{
+    margin:0 0 6mm 0 !important;
+    padding:0 0 6px 0 !important;
+  }
+
+  .company-left img,
+  .company-right img{
+    width:124px !important;
+  }
+
+  .company-name,
+  .system-name{
+    font-size:17px !important;
+    line-height:1.28 !important;
+  }
+
+  .report-title{
+    margin:12px 0 8px !important;
+    font-size:25px !important;
+    line-height:1.15 !important;
+  }
+
+  .report-subtitle{
+    font-size:11.5pt !important;
+    line-height:1.45 !important;
+  }
+
+  .monthly-overview-page{
+    margin:0 0 4mm 0 !important;
+  }
+
+  .monthly-executive-box{
+    padding:10px 12px !important;
+    margin:0 0 3mm 0 !important;
+  }
+
+  .monthly-executive-title{
+    font-size:15pt !important;
+  }
+
+  .monthly-executive-grid{
+    grid-template-columns:1fr 1fr !important;
+    gap:3mm !important;
+  }
+
+  .monthly-executive-panel{
+    padding:8px 9px !important;
+  }
+
+  .monthly-executive-panel h3{
+    font-size:11pt !important;
+    margin:0 0 1.6mm !important;
+  }
+
+  .monthly-executive-item .meta,
+  .monthly-executive-actions{
+    font-size:9.2pt !important;
+    line-height:1.34 !important;
+  }
+
+  .monthly-report-part{
+    margin:0 !important;
+    break-before:page !important;
+    page-break-before:always !important;
+  }
+
+  .monthly-part-title{
+    margin:0 0 2.4mm 0 !important;
+    font-size:14.8pt !important;
+    line-height:1.08 !important;
+  }
+
+  .monthly-summary-radar-page{
+    margin:0 0 3mm 0 !important;
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  .monthly-summary-radar-grid{
+    grid-template-columns:84mm 92mm !important;
+    gap:2.8mm !important;
+    align-items:start !important;
+  }
+
+  .monthly-summary-radar-page.compact .monthly-summary-radar-grid{
+    grid-template-columns:84mm 92mm !important;
+    gap:2.8mm !important;
+  }
+
+  .summary-card{
+    padding:9px 11px !important;
+    min-height:0 !important;
+  }
+
+  .monthly-summary-radar-page .summary-card h3{
+    font-size:12.5pt !important;
+    margin:0 0 3px !important;
+  }
+
+  .monthly-summary-radar-page .summary-card p{
+    font-size:9.2pt !important;
+    line-height:1.2 !important;
+    margin:0 0 3px 0 !important;
+  }
+
+  .monthly-summary-radar-page .invalid-note{
+    font-size:8.3pt !important;
+    line-height:1.15 !important;
+    padding:4px 6px !important;
+    margin-top:4px !important;
+  }
+
+  .monthly-ai-box{
+    margin-top:4px !important;
+    padding:6px 8px !important;
+  }
+
+  .monthly-ai-box .monthly-ai-head{
+    margin-bottom:4px !important;
+  }
+
+  .monthly-ai-box .monthly-ai-title{
+    font-size:8.5pt !important;
+    letter-spacing:.04em !important;
+  }
+
+  .monthly-ai-box .monthly-ai-text{
+    font-size:8.7pt !important;
+    line-height:1.18 !important;
+  }
+
+  .monthly-ai-box .monthly-ai-actions{
+    font-size:7.8pt !important;
+    line-height:1.14 !important;
+    margin-top:3px !important;
+  }
+
+  .monthly-summary-radar-page .monthly-chart-card{
+    padding:4px 5px !important;
+  }
+
+  .monthly-summary-radar-page .monthly-chart-card h3{
+    font-size:9.8pt !important;
+    margin:0 0 .9mm !important;
+  }
+
+  .monthly-summary-radar-page .monthly-chart-note{
+    font-size:6.8pt !important;
+    line-height:1.06 !important;
+    margin:0 0 .8mm !important;
+  }
+
+  .monthly-summary-radar-page .monthly-canvas-wrap.radar{
+    width:74mm !important;
+    max-width:74mm !important;
+    padding:1mm !important;
+  }
+
+  .monthly-inline-trend{
+    margin-top:0.8mm !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-card{
+    padding:1px 3px !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-card h3{
+    font-size:8.4pt !important;
+    margin:0 0 0.35mm !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-note{
+    font-size:5.8pt !important;
+    line-height:1.04 !important;
+    margin:0 0 0.25mm !important;
+  }
+
+  .monthly-inline-trend .monthly-canvas-wrap{
+    height:58mm !important;
+    min-height:58mm !important;
+  }
+
+  .monthly-trend-blocks{
+    display:block !important;
+    break-before:page !important;
+    page-break-before:always !important;
+    margin:0 !important;
+  }
+
+  .monthly-trend-page{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:3mm !important;
+    align-content:start !important;
+    margin:0 0 0.8mm !important;
+    break-before:auto !important;
+    page-break-before:auto !important;
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  .monthly-trend-page + .monthly-trend-page{
+    break-before:page !important;
+    page-break-before:always !important;
+  }
+
+  .monthly-trend-page .trend-card{
+    margin:0 !important;
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  .monthly-trend-page .monthly-chart-card{
+    padding:1px 3px !important;
+  }
+
+  .monthly-trend-page .monthly-chart-card h3{
+    font-size:8.2pt !important;
+    margin:0 0 0.3mm !important;
+  }
+
+  .monthly-trend-page .monthly-chart-note{
+    font-size:5.6pt !important;
+    line-height:1.0 !important;
+    margin:0 0 0.2mm !important;
+  }
+
+  .monthly-trend-page .monthly-canvas-wrap{
+    height:88mm !important;
+    min-height:88mm !important;
+    padding:2px !important;
+  }
+
+  .monthly-trend-page .monthly-chart-legend{
+    margin-top:0.25mm !important;
+  }
+
+  .monthly-trend-page .monthly-chart-legend-item{
+    font-size:4.9pt !important;
+    line-height:1 !important;
+  }
+
+  .monthly-table-section{
+    margin:0 !important;
+  }
+
+  .monthly-table-section h3{
+    margin:0 0 2.2mm !important;
+    font-size:13.2pt !important;
+  }
+
+  .report-table{
+    table-layout:fixed !important;
+  }
+
+  .report-table th,
+  .report-table td{
+    padding:4px 5px !important;
+    font-size:8.6pt !important;
+    line-height:1.1 !important;
+  }
+
+  .report-table th{
+    font-size:8.2pt !important;
+  }
+
+  .report-table tbody tr:nth-child(even) td{
+    background:#fafafa !important;
+  }
+
+  .report-signatures{
+    margin-top:-6mm !important;
+    gap:16px !important;
+  }
+
+  .report-sign-box .role{
+    font-size:11.2pt !important;
+  }
+
+  .report-sign-box .hint{
+    font-size:10pt !important;
+  }
+
+  .report-page-footer{
+    font-size:9.2pt !important;
+    padding-top:4px !important;
+  }
+}
+
+
+/* ===== V34 TALLER TREND CHARTS ===== */
+@media print{
+  .monthly-inline-trend .monthly-chart-card{
+    padding:1px 3px !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-card h3{
+    font-size:8.4pt !important;
+    margin:0 0 0.35mm !important;
+  }
+
+  .monthly-inline-trend .monthly-chart-note{
+    font-size:5.8pt !important;
+    line-height:1.02 !important;
+    margin:0 0 0.25mm !important;
+  }
+
+  .monthly-inline-trend .monthly-canvas-wrap{
+    height:58mm !important;
+    min-height:58mm !important;
+  }
+
+  .monthly-trend-page{
+    gap:2.2mm !important;
+    margin:0 !important;
+  }
+
+  .monthly-trend-page .monthly-chart-card{
+    padding:1px 3px !important;
+  }
+
+  .monthly-trend-page .monthly-chart-card h3{
+    font-size:8.2pt !important;
+    margin:0 0 0.3mm !important;
+  }
+
+  .monthly-trend-page .monthly-chart-note{
+    font-size:5.6pt !important;
+    line-height:1.0 !important;
+    margin:0 0 0.2mm !important;
+  }
+
+  .monthly-trend-page .monthly-canvas-wrap{
+    height:88mm !important;
+    min-height:88mm !important;
+    padding:2px !important;
+  }
+
+  .monthly-trend-page .monthly-chart-legend{
+    margin-top:0.25mm !important;
+  }
+
+  .monthly-trend-page .monthly-chart-legend-item{
+    font-size:4.9pt !important;
+  }
+}
 
 </style>
 </head>
@@ -1306,6 +1867,8 @@
     const RES_CONST = { WL_MAX_CHECK:382.2, WL_NORMAL:380.0, WL_FLOOD:376.0, WL_FLOOD_MIN:370.0, WL_DEAD:340.0, VOL_DEAD:77.07, VOL_MAX:343.55 };
     const RES_COLOR = { WL:'34, 211, 238', IN:'59, 130, 246', TB:'245, 158, 11', SP:'239, 68, 68', RN:'167, 139, 250', IF:'255, 152, 0', RF:'34, 197, 94', ACC:'250, 204, 21', HEC:'255, 87, 34' };
     const sbReservoir = window.supabase.createClient(RES_SB_URL, RES_SB_KEY);
+    const MONTHLY_AI_FUNCTION_NAME = 'monthly-ai';
+    const monthlyAIGenerationCache = new Map();
     const $ = (id) => document.getElementById(id);
     const AUTH_REQUIRED = true;
 
@@ -2175,8 +2738,8 @@ function renderKpis(rows,latestRows){
     function resetFilters(){ $('sourceFilter').value='ALL'; $('stationFilter').value='ALL'; $('groupFilter').value='ALL'; $('sensorFilter').value='ALL'; $('chartSensorFilter').value='ALL'; $('metricFilter').innerHTML='<option value="ALL">Tất cả</option>'; const d=getDefaultDates(); $('dateFrom').value=d.from; $('dateTo').value=d.to; $('rangeChip').textContent='24 giờ gần nhất'; document.querySelectorAll('#btn6h,#btn24hQuick,#btn3d,#btn7d,#btn30d').forEach(btn=>btn.classList.remove('active')); $('btn24hQuick').classList.add('active'); }
     function applyPreset(groupName){ $('sourceFilter').value='ALL'; refreshFilterOptions(); $('stationFilter').value='ALL'; refreshFilterOptions(); $('groupFilter').value=groupName; refreshFilterOptions(); $('sensorFilter').value='ALL'; $('chartSensorFilter').value='ALL'; const metricMap={piezometer:'eng_value',temperature:'temp',level:'level',seepage:'flow',jointmeter:'eng_value'}; const targetMetric=metricMap[groupName]||'ALL'; const metricEl=$('metricFilter'); if(metricEl){ const hasTarget=[...metricEl.options].some(o=>o.value===targetMetric); metricEl.value=hasTarget?targetMetric:'ALL'; } void applyFilters(); }
     async function applyFilters(){ try{ await Promise.all([loadMeasurements(),loadLatestSummaryRows(),loadReservoirTrendData()]); renderAll(); $('apiStatus').textContent='ONLINE'; $('errorPanel').classList.add('hidden'); }catch(err){ console.error(err); $('apiStatus').textContent='ERROR'; $('errorPanel').classList.remove('hidden'); $('errorBody').textContent='Lỗi tải dữ liệu: '+(err?.message||err); $('errorMeta').textContent='Load error'; } }
-    function switchView(view){ const map={ overview:['sectionSafetyOverview','sectionInvalidData','sectionOverviewTop','sectionOverviewMain','sectionBottom'], trend:['sectionTrend'], radar:['sectionTempRadar'], view3d:['section3D'], crosssection:['sectionCrossSection'], heatmap:['sectionOverviewMain'], anomaly:['sectionBottom'], monthly:['sectionMonthlyReport'] }; document.querySelectorAll('.nav-main').forEach(el=>el.classList.toggle('active', el.dataset.view===view)); ['sidebarOverview','sidebarTrend','sidebarRadar','sidebar3D','sidebarCrossSection','sidebarHeatmap','sidebarAnomaly'].forEach(id=>{ const el=$(id); if(!el) return; el.classList.toggle('hidden', !((view==='overview'&&id==='sidebarOverview')||(view==='trend'&&id==='sidebarTrend')||(view==='radar'&&id==='sidebarRadar')||(view==='view3d'&&id==='sidebar3D')||(view==='crosssection'&&id==='sidebarCrossSection')||(view==='heatmap'&&id==='sidebarHeatmap')||(view==='anomaly'&&id==='sidebarAnomaly'))); }); ['sectionSafetyOverview','sectionTempRadar','section3D','sectionInvalidData','sectionOverviewTop','sectionOverviewMain','sectionTrend','sectionCrossSection','sectionBottom','sectionMonthlyReport'].forEach(id=>{ const el=$(id); if(!el) return; el.classList.toggle('hidden', !((map[view]||[]).includes(id))); }); }
-    function bindEvents(){ $('btnLogin')?.addEventListener('click',()=>{ void handleLogin(); }); $('loginPass')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') void handleLogin(); }); $('loginEmail')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') void handleLogin(); }); $('btnLogout')?.addEventListener('click',()=>{ void handleLogout(); }); $('btnLoadMonthlyReport')?.addEventListener('click',()=>{ void loadMonthlyReport(); }); $('btnGenerateMonthlyAI')?.addEventListener('click',async ()=>{ const btn=$('btnGenerateMonthlyAI'); if(btn){ btn.disabled=true; btn.textContent='Đang tạo AI...'; } try{ await loadMonthlyReport(); } finally { if(btn){ btn.disabled=false; btn.textContent='Tạo nhận định AI'; } } }); $('btnPrintMonthly')?.addEventListener('click',()=>{ window.print(); }); $('btnReload').addEventListener('click',()=>{ void applyFilters(); }); $('btnApply').addEventListener('click',()=>{ void applyFilters(); }); $('btnReset').addEventListener('click',()=>{ resetFilters(); refreshFilterOptions(); applyFilters(); }); $('sourceFilter').addEventListener('change', refreshFilterOptions); $('stationFilter').addEventListener('change', refreshFilterOptions); $('groupFilter').addEventListener('change', refreshFilterOptions); $('sensorFilter').addEventListener('change',()=>{ void applyFilters(); }); $('chartSensorFilter').addEventListener('change', renderAll); $('metricFilter').addEventListener('change', renderAll); $('seriesLimitFilter').addEventListener('change', renderAll); $('seriesModeFilter').addEventListener('change', renderAll); document.querySelectorAll('.preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('trend'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.radar-preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('radar'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.heatmap-preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('heatmap'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.nav-main').forEach(el=>el.addEventListener('click',()=>switchView(el.dataset.view))); document.querySelectorAll('.station-link').forEach(el=>el.addEventListener('click',()=>{ $('sourceFilter').value='ALL'; refreshFilterOptions(); $('stationFilter').value=el.dataset.station; refreshFilterOptions(); $('groupFilter').value='ALL'; $('sensorFilter').value='ALL'; $('chartSensorFilter').value='ALL'; applyFilters(); })); }
+    function switchView(view){ const map={ overview:['sectionOverviewHero','sectionSafetyOverview','sectionInvalidData','sectionOverviewTop','sectionOverviewMain','sectionBottom'], trend:['sectionTrend'], radar:['sectionTempRadar'], view3d:['section3D'], crosssection:['sectionCrossSection'], heatmap:['sectionOverviewMain'], anomaly:['sectionBottom'], monthly:['sectionMonthlyReport'] }; document.querySelectorAll('.nav-main').forEach(el=>el.classList.toggle('active', el.dataset.view===view)); ['sidebarOverview','sidebarTrend','sidebarRadar','sidebar3D','sidebarCrossSection','sidebarHeatmap','sidebarAnomaly'].forEach(id=>{ const el=$(id); if(!el) return; el.classList.toggle('hidden', !((view==='overview'&&id==='sidebarOverview')||(view==='trend'&&id==='sidebarTrend')||(view==='radar'&&id==='sidebarRadar')||(view==='view3d'&&id==='sidebar3D')||(view==='crosssection'&&id==='sidebarCrossSection')||(view==='heatmap'&&id==='sidebarHeatmap')||(view==='anomaly'&&id==='sidebarAnomaly'))); }); ['sectionOverviewHero','sectionSafetyOverview','sectionTempRadar','section3D','sectionInvalidData','sectionOverviewTop','sectionOverviewMain','sectionTrend','sectionCrossSection','sectionBottom','sectionMonthlyReport'].forEach(id=>{ const el=$(id); if(!el) return; el.classList.toggle('hidden', !((map[view]||[]).includes(id))); }); }
+    function bindEvents(){ $('btnLogin')?.addEventListener('click',()=>{ void handleLogin(); }); $('loginPass')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') void handleLogin(); }); $('loginEmail')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') void handleLogin(); }); $('btnLogout')?.addEventListener('click',()=>{ void handleLogout(); }); $('btnLoadMonthlyReport')?.addEventListener('click',()=>{ void loadMonthlyReport(); }); $('btnGenerateMonthlyAI')?.addEventListener('click',async ()=>{ const btn=$('btnGenerateMonthlyAI'); const monthValue=$('reportMonth')?.value; if(btn){ btn.disabled=true; btn.textContent='Đang tạo AI trên Supabase...'; } try{ if(!monthValue) throw new Error('Vui lòng chọn tháng báo cáo trước khi tạo nhận định AI.'); const runResult = await invokeMonthlyAIFunction(monthValue, true); const successRows = Array.isArray(runResult?.results) ? runResult.results.filter(x=>x.ok) : []; const failedRows = Array.isArray(runResult?.results) ? runResult.results.filter(x=>!x.ok) : []; const successCount = successRows.length; const totalCount = Array.isArray(runResult?.results) ? runResult.results.length : 0; await loadMonthlyReport(); const failText = failedRows.length ? ('\nNhóm lỗi: ' + failedRows.map(x=>`${x.group_name}: ${x.error || 'Lỗi không xác định'}`).join(' | ')) : ''; alert(`Đã tạo nhận định AI trên Supabase cho tháng ${monthValue}. Thành công: ${successCount}/${totalCount}.${failText}`); } catch(err){ console.error(err); alert('Lỗi tạo nhận định AI: ' + (err?.message || err)); } finally { if(btn){ btn.disabled=false; btn.textContent='Tạo nhận định AI'; } } }); $('btnPrintMonthly')?.addEventListener('click',()=>{ window.print(); }); $('btnReload').addEventListener('click',()=>{ void applyFilters(); }); $('btnApply').addEventListener('click',()=>{ void applyFilters(); }); $('btnReset').addEventListener('click',()=>{ resetFilters(); refreshFilterOptions(); applyFilters(); }); $('sourceFilter').addEventListener('change', refreshFilterOptions); $('stationFilter').addEventListener('change', refreshFilterOptions); $('groupFilter').addEventListener('change', refreshFilterOptions); $('sensorFilter').addEventListener('change',()=>{ void applyFilters(); }); $('chartSensorFilter').addEventListener('change', renderAll); $('metricFilter').addEventListener('change', renderAll); $('seriesLimitFilter').addEventListener('change', renderAll); $('seriesModeFilter').addEventListener('change', renderAll); document.querySelectorAll('.preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('trend'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.radar-preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('radar'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.heatmap-preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('heatmap'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.nav-main').forEach(el=>el.addEventListener('click',()=>switchView(el.dataset.view))); document.querySelectorAll('.station-link').forEach(el=>el.addEventListener('click',()=>{ $('sourceFilter').value='ALL'; refreshFilterOptions(); $('stationFilter').value=el.dataset.station; refreshFilterOptions(); $('groupFilter').value='ALL'; $('sensorFilter').value='ALL'; $('chartSensorFilter').value='ALL'; applyFilters(); })); }
     async function initDashboardAfterAuth(){ switchView('overview'); const d=getDefaultDates(); $('dateFrom').value=d.from; $('dateTo').value=d.to; await loadMaster(); await applyFilters(); }
 
     function getMonthRange(monthValue){ return monthRangeToOffsetIso(monthValue, APP_TZ_OFFSET_MINUTES); }
@@ -2306,7 +2869,9 @@ function renderKpis(rows,latestRows){
     function getMonthlyTrendInlineMode(groupKey, sensorCodes){
       const count = Array.isArray(sensorCodes) ? sensorCodes.length : 0;
       if((groupKey === 'jointmeter' && count <= 14) || (groupKey === 'seepage' && count <= 6)) return 'all';
-      if(groupKey === 'temperature' || groupKey === 'piezometer') return 'first';
+      if(groupKey === 'temperature' || groupKey === 'piezometer'){
+        return count <= 18 ? 'first' : 'none';
+      }
       return 'none';
     }
 
@@ -2678,15 +3243,193 @@ function renderKpis(rows,latestRows){
       const lead = risk === 'warning' ? 'cần kiểm tra kỹ thuật chi tiết' : (risk === 'watch' ? 'cần theo dõi chặt chẽ hơn' : 'nhìn chung ổn định');
       return `Trong tháng ${month}, nhóm ${title.toLowerCase()} dao động trong khoảng ${minText}–${maxText} ${unit}. Giá trị lớn nhất ghi nhận tại ${summary.max_sensor || '--'}, biên độ lớn nhất tại ${summary.max_delta_sensor || '--'} là ${deltaText} ${unit}. ${lead}.`;
     }
-    function buildMonthlyAIHtml(ai){
+
+    function normalizeBackendAIRisk(risk){
+      const value = String(risk || 'normal').toLowerCase();
+      if(value === 'invalid_data') return 'invalid';
+      return value;
+    }
+    function mapBackendAIToLegacy(outputJson){
+      if(!outputJson) return null;
+      const riskLevel = normalizeBackendAIRisk(outputJson.risk_level);
+      return {
+        summary_json: null,
+        rule_result_json: {
+          risk_level: riskLevel,
+          findings: Array.isArray(outputJson.top_findings) ? outputJson.top_findings : [],
+          actions: Array.isArray(outputJson.recommended_actions) ? outputJson.recommended_actions : []
+        },
+        narrative_text: outputJson.narrative_text || outputJson.narrative || '',
+        headline: outputJson.headline || '',
+        confidence: outputJson.confidence || '',
+        source_type: 'openai'
+      };
+    }
+    async function fetchSavedMonthlyAINarrative(monthValue, aiGroupName){
+      if(!monthValue || !aiGroupName) return null;
+      const { data, error } = await sb
+        .from('monthly_ai_narrative')
+        .select('report_month, group_name, narrative_text, risk_level, headline, confidence, output_json, status, updated_at, created_at')
+        .eq('report_month', monthValue)
+        .eq('group_name', aiGroupName)
+        .order('updated_at', { ascending:false })
+        .limit(1)
+        .maybeSingle();
+      if(error){
+        console.warn('fetchSavedMonthlyAINarrative error', error);
+        return null;
+      }
+      if(!data) return null;
+      const legacy = mapBackendAIToLegacy(data.output_json || {
+        group_name: data.group_name,
+        risk_level: data.risk_level,
+        headline: data.headline,
+        narrative: data.narrative_text,
+        top_findings: [],
+        recommended_actions: [],
+        confidence: data.confidence
+      }) || {};
+      legacy.source_type = 'openai';
+      legacy.status = data.status || 'draft';
+      legacy.updated_at = data.updated_at || data.created_at || null;
+      return legacy;
+    }
+    async function parseFunctionErrorResponse(response){
+      let detail = `HTTP ${response.status}`;
+      let rawText = '';
+      try{
+        rawText = await response.text();
+      }catch(_){}
+      if(rawText){
+        try{
+          const payload = JSON.parse(rawText);
+          if(payload?.error) detail = payload.error;
+          else if(Array.isArray(payload?.results)){
+            const failed = payload.results.filter(x=>!x.ok);
+            if(failed.length){
+              detail = failed.map(x=>`${x.group_name || 'unknown'}: ${x.error || 'Lỗi không xác định'}`).join(' | ');
+            }else{
+              detail = rawText;
+            }
+          }else{
+            detail = rawText;
+          }
+        }catch(_){
+          detail = rawText;
+        }
+      }
+      if(response.status === 401){
+        detail = `401 Unauthorized khi gọi Supabase Function. Vào Edge Function monthly-ai > Settings và tắt Verify JWT, hoặc bật cho phép gọi không cần user session. Chi tiết: ${detail}`;
+      }
+      return detail;
+    }
+    async function invokeMonthlyAIFunction(monthValue, forceRegenerate=true){
+      if(!monthValue) throw new Error('Thiếu report_month để chạy monthly-ai function.');
+      const cacheKey = `${monthValue}__${forceRegenerate ? 'force' : 'cache'}`;
+      if(monthlyAIGenerationCache.has(cacheKey)){
+        return monthlyAIGenerationCache.get(cacheKey);
+      }
+      const runner = (async ()=>{
+        const endpoint = `${SB_URL}/functions/v1/${MONTHLY_AI_FUNCTION_NAME}`;
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SB_KEY,
+            'Authorization': `Bearer ${SB_KEY}`
+          },
+          body: JSON.stringify({
+            report_month: monthValue,
+            force_regenerate: !!forceRegenerate
+          })
+        });
+
+        if(!response.ok){
+          const detail = await parseFunctionErrorResponse(response);
+          throw new Error(detail);
+        }
+
+        const data = await response.json();
+        if(!data?.ok){
+          const failed = Array.isArray(data?.results) ? data.results.filter(x=>!x.ok) : [];
+          if(failed.length){
+            throw new Error(failed.map(x=>`${x.group_name || 'unknown'}: ${x.error || 'Lỗi không xác định'}`).join(' | '));
+          }
+          throw new Error(data?.error || 'Supabase Function monthly-ai lỗi.');
+        }
+        return data;
+      })();
+      monthlyAIGenerationCache.set(cacheKey, runner);
+      try{
+        return await runner;
+      }finally{
+        setTimeout(()=>monthlyAIGenerationCache.delete(cacheKey), 1500);
+      }
+    }
+    async function generateMonthlyAINarrativeFromServer(monthValue, aiGroupName){
+      const fnResult = await invokeMonthlyAIFunction(monthValue, true);
+      const failed = Array.isArray(fnResult?.results) ? fnResult.results.filter(x=>!x.ok) : [];
+      const total = Array.isArray(fnResult?.results) ? fnResult.results.length : 0;
+      if(total && failed.length === total){
+        throw new Error(failed.map(x=>`${x.group_name || 'unknown'}: ${x.error || 'Lỗi không xác định'}`).join(' | '));
+      }
+
+      const matched = Array.isArray(fnResult?.results)
+        ? fnResult.results.find(x=>x?.group_name === aiGroupName && x?.ok && x?.data)
+        : null;
+      if(matched?.data){
+        const row = matched.data;
+        const legacy = mapBackendAIToLegacy(row.output_json || {
+          group_name: row.group_name,
+          risk_level: row.risk_level,
+          headline: row.headline,
+          narrative_text: row.narrative_text,
+          top_findings: [],
+          recommended_actions: [],
+          confidence: row.confidence
+        }) || {};
+        legacy.source_type = 'openai';
+        legacy.status = row.status || 'draft';
+        legacy.updated_at = row.updated_at || row.created_at || null;
+        legacy.headline = row.headline || legacy.headline || '';
+        legacy.narrative_text = row.narrative_text || legacy.narrative_text || legacy.narrative || '';
+        legacy.rule_result_json = legacy.rule_result_json || {};
+        if(row.risk_level && !legacy.rule_result_json.risk_level) legacy.rule_result_json.risk_level = row.risk_level;
+        return legacy;
+      }
+
+      for(let i=0;i<12;i++){
+        const saved = await fetchSavedMonthlyAINarrative(monthValue, aiGroupName);
+        if(saved?.narrative_text){
+          saved.source_type = 'openai';
+          return saved;
+        }
+        await new Promise(resolve=>setTimeout(resolve, 500));
+      }
+
+      throw new Error('OpenAI đã chạy trên Supabase nhưng UI chưa đọc được bản ghi monthly_ai_narrative.');
+    }
+    function buildMonthlyAIHtml(ai, title='🤖 Nhận định AI'){
       if(!ai?.narrative_text) return '';
-      const riskValue = String(ai.rule_result_json?.risk_level || 'normal').toLowerCase();
+      const riskValue = normalizeBackendAIRisk(ai.rule_result_json?.risk_level || 'normal');
       const riskClass = getAIRiskClass(riskValue);
       const riskLabel = riskValue === 'invalid' ? 'INVALID DATA' : riskValue.toUpperCase();
       const pillClass = ['normal','watch','warning','alarm','emergency'].includes(riskValue) ? riskValue : (riskValue === 'invalid' ? 'invalid' : 'gray');
       const actions = Array.isArray(ai.rule_result_json?.actions) ? ai.rule_result_json.actions.slice(0,1) : [];
+      const headlineHtml = ai.headline ? `<div style="font-weight:900; margin-bottom:8px;">${escapeHtml(ai.headline)}</div>` : '';
+      const sourceHtml = ai.source_type === 'openai'
+        ? `<div class="monthly-ai-actions" style="margin-top:8px; padding-left:0; list-style:none;"><div><b>Nguồn AI:</b> OpenAI • Supabase${ai.updated_at ? ` • ${escapeHtml(fmtTsShort(ai.updated_at))}` : ''}</div></div>`
+        : (ai.source_type === 'missing'
+            ? `<div class="monthly-ai-actions" style="margin-top:8px; padding-left:0; list-style:none; color:#b45309;"><div><b>Nguồn AI:</b> Chưa có bản ghi monthly_ai_narrative trong Supabase</div></div>`
+            : `<div class="monthly-ai-actions" style="margin-top:8px; padding-left:0; list-style:none;"><div><b>Nguồn AI:</b> Nhận định nội bộ / rule-based</div></div>`);
       const actionHtml = actions.length ? `<div class="monthly-ai-text" style="margin-top:6px"><b>Khuyến nghị:</b> ${escapeHtml(actions[0])}</div>` : '';
-      return `<div class="monthly-ai-box ${riskClass}"><div class="monthly-ai-head"><span class="monthly-ai-title">🤖 Nhận định AI</span><span class="pill ${pillClass}">${riskLabel}</span></div><p class="monthly-ai-text">${escapeHtml(ai.narrative_text)}</p>${actionHtml}</div>`;
+      const extraClass = ai.source_type === 'missing' ? ' openai-missing' : '';
+      return `<div class="monthly-ai-box ${riskClass}${extraClass}"><div class="monthly-ai-head"><span class="monthly-ai-title">${escapeHtml(title)}</span><span class="pill ${pillClass}">${riskLabel}</span></div>${headlineHtml}<p class="monthly-ai-text">${escapeHtml(ai.narrative_text)}</p>${actionHtml}${sourceHtml}</div>`;
+    }
+    function buildMonthlyAIStackHtml(localAi, openAi){
+      const localHtml = buildMonthlyAIHtml(localAi, '🤖 Nhận định AI nội bộ');
+      const openAiHtml = buildMonthlyAIHtml(openAi, '✨ Nhận định OpenAI');
+      return `${localHtml || ''}${openAiHtml || ''}`;
     }
     function buildMonthlyExecutiveSummary(reports, monthValue){
       const list = Array.isArray(reports) ? reports : [];
@@ -2745,16 +3488,42 @@ function renderKpis(rows,latestRows){
         }, { onConflict: 'report_month,group_name' });
       }catch(err){ console.warn('Không thể lưu monthly_ai_summary:', err?.message || err); }
     }
-    async function enrichMonthlyReportWithAI(groupKey, report, monthValue){
+    async function enrichMonthlyReportWithAI(groupKey, report, monthValue, options={}){
       const cfg = report?.cfg || getMonthlyGroupConfig(groupKey);
       if(!cfg || !report) return report;
       const summary = buildMonthlyAISummary(groupKey, report, monthValue);
       const rule = buildMonthlyAIRule(summary, cfg);
       const narrative = buildMonthlyAINarrative(summary, rule, cfg);
-      const ai = { summary_json: summary, rule_result_json: rule, narrative_text: narrative };
-      report.ai = ai;
+      const localAi = { summary_json: summary, rule_result_json: rule, narrative_text: narrative, source_type:'rule_based', headline:'', confidence:'' };
+      report.localAi = localAi;
+      report.ai = localAi;
       await persistMonthlyAISummary(monthValue, cfg, summary, rule);
-      const aiHtml = buildMonthlyAIHtml(ai);
+
+      let aiToUse = null;
+      try{
+        if(options.forceGenerateAI){
+          aiToUse = await generateMonthlyAINarrativeFromServer(monthValue, cfg.ai_group_name || groupKey);
+        }else{
+          aiToUse = await fetchSavedMonthlyAINarrative(monthValue, cfg.ai_group_name || groupKey);
+        }
+      }catch(aiErr){
+        console.warn('AI function / Supabase read failed', aiErr);
+      }
+
+      if(!aiToUse?.narrative_text){
+        aiToUse = {
+          summary_json: summary,
+          rule_result_json: { risk_level:'watch', findings:[], actions:['Bấm "Tạo nhận định AI" để gọi OpenAI, lưu monthly_ai_narrative vào Supabase rồi tải lại báo cáo tháng.'] },
+          narrative_text:'Chưa có nhận định OpenAI đã lưu trong Supabase cho nhóm này. Nhận định AI nội bộ vẫn được giữ nguyên ở phía trên; khi có bản ghi monthly_ai_narrative, nhận định OpenAI sẽ hiển thị ở khối bên dưới.',
+          source_type:'missing',
+          headline:'Chưa có dữ liệu OpenAI',
+          confidence:''
+        };
+      }
+
+      report.openAi = aiToUse;
+      report.ai = aiToUse;
+      const aiHtml = buildMonthlyAIStackHtml(localAi, aiToUse);
       if(groupKey === 'seepage'){
         const seepageData = buildSeepageTotalSummaryData(report.rawRows, {design_value: report?.evaluation?.design_value ?? cfg.design_limit ?? null});
         report.summaryHtml = buildMonthlySummaryCard(cfg.title, seepageData.summary, seepageData.evaluation, cfg.unit, seepageData.noteHtml, aiHtml);
@@ -2764,11 +3533,11 @@ function renderKpis(rows,latestRows){
       }
       return report;
     }
-    async function generateMonthlyAIForAllGroups(monthValue, reports){
+    async function generateMonthlyAIForAllGroups(monthValue, reports, options={}){
       const list = Array.isArray(reports) ? reports : [];
       const out = [];
       for(const report of list){
-        out.push(await enrichMonthlyReportWithAI(report.key, report, monthValue));
+        out.push(await enrichMonthlyReportWithAI(report.key, report, monthValue, options));
       }
       return out;
     }
@@ -2817,7 +3586,7 @@ function renderKpis(rows,latestRows){
         },
         options:{
           responsive:true,
-          maintainAspectRatio:true,
+          maintainAspectRatio: false,
           aspectRatio:1,
           plugins:{
             legend:{display:false}
@@ -2932,7 +3701,12 @@ function renderKpis(rows,latestRows){
         trendBlocks = blocks.slice(1);
       }
 
-      const trendHtml = trendBlocks.map(block=>trendCardHtml(block)).join('');
+      const trendPagesHtml = [];
+      for(let i=0; i<trendBlocks.length; i+=2){
+        const pageBlocks = trendBlocks.slice(i, i+2);
+        trendPagesHtml.push(`<div class="monthly-trend-page">${pageBlocks.map(block=>trendCardHtml(block)).join('')}</div>`);
+      }
+      const trendHtml = trendPagesHtml.join('');
       return {radarHtml, trendHtml, inlineTrendHtml};
     }
     async function buildMonthlyChartsForGroup(groupKey, report, monthValue){
@@ -3017,10 +3791,10 @@ async function loadSingleMonthlyGroupReport(groupValue,monthValue){
       };
     }
 
-    async function loadCombinedMonthlyReport(monthValue){
+    async function loadCombinedMonthlyReport(monthValue, options={}){
       const groups=['temperature','jointmeter','piezometer','seepage'];
       const rawReports=await Promise.all(groups.map(g=>loadSingleMonthlyGroupReport(g,monthValue)));
-      const reports=await generateMonthlyAIForAllGroups(monthValue, rawReports);
+      const reports=await generateMonthlyAIForAllGroups(monthValue, rawReports, options);
       const chartSections=await Promise.all(reports.map(r=>buildMonthlyChartsForGroup(r.key, r, monthValue)));
       const overviewHtml=buildMonthlyExecutiveSummary(reports, monthValue);
       const detailHtml=reports.map((r,idx)=>buildMonthlyDetailedSection(
@@ -3036,25 +3810,26 @@ async function loadSingleMonthlyGroupReport(groupValue,monthValue){
         renderer:()=>chartSections.forEach(s=>s.renderer())
       };
     }
-    async function loadMonthlyReport(){
+    async function loadMonthlyReport(options={}){
       try{
         destroyMonthlyReportCharts();
         const monthValue=$('reportMonth').value;
         const groupValue=$('reportGroup').value;
         const preview=$('monthlyReportPreview');
+        const forceGenerateAI = !!options.forceGenerateAI;
         if(!monthValue){ preview.innerHTML='<div class="empty-box">Vui lòng chọn tháng báo cáo.</div>'; return; }
         $('monthlyMeta').textContent=`${monthValue} • ${groupValue==='summary_all'?'Báo cáo tổng hợp':(getMonthlyGroupConfig(groupValue)?.title||'--')}`;
         $('printReportMonth').textContent=monthValue.replace('-', ' / ');
         $('printReportGroup').textContent=groupValue==='summary_all'?'Báo cáo tổng hợp':(getMonthlyGroupConfig(groupValue)?.title||'--');
-        preview.innerHTML='<div class="empty-box">Đang tải báo cáo tháng và tạo nhận định AI...</div>';
+        preview.innerHTML=`<div class="empty-box">${forceGenerateAI ? 'Đang tạo OpenAI trên Supabase và dựng báo cáo tháng...' : 'Đang tải báo cáo tháng từ Supabase...'}</div>`;
         if(groupValue==='summary_all'){
-          const combined=await loadCombinedMonthlyReport(monthValue);
+          const combined=await loadCombinedMonthlyReport(monthValue, { forceGenerateAI });
           preview.innerHTML=combined.html;
           setTimeout(()=>combined.renderer(), 50);
           return;
         }
         let report=await loadSingleMonthlyGroupReport(groupValue,monthValue);
-        report=await enrichMonthlyReportWithAI(groupValue, report, monthValue);
+        report=await enrichMonthlyReportWithAI(groupValue, report, monthValue, { forceGenerateAI });
         const chartSection=await buildMonthlyChartsForGroup(groupValue, report, monthValue);
         preview.innerHTML=buildMonthlyDetailedSection(
           1,
