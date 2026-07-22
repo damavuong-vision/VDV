@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -2739,7 +2740,69 @@ function renderKpis(rows,latestRows){
     function applyPreset(groupName){ $('sourceFilter').value='ALL'; refreshFilterOptions(); $('stationFilter').value='ALL'; refreshFilterOptions(); $('groupFilter').value=groupName; refreshFilterOptions(); $('sensorFilter').value='ALL'; $('chartSensorFilter').value='ALL'; const metricMap={piezometer:'eng_value',temperature:'temp',level:'level',seepage:'flow',jointmeter:'eng_value'}; const targetMetric=metricMap[groupName]||'ALL'; const metricEl=$('metricFilter'); if(metricEl){ const hasTarget=[...metricEl.options].some(o=>o.value===targetMetric); metricEl.value=hasTarget?targetMetric:'ALL'; } void applyFilters(); }
     async function applyFilters(){ try{ await Promise.all([loadMeasurements(),loadLatestSummaryRows(),loadReservoirTrendData()]); renderAll(); $('apiStatus').textContent='ONLINE'; $('errorPanel').classList.add('hidden'); }catch(err){ console.error(err); $('apiStatus').textContent='ERROR'; $('errorPanel').classList.remove('hidden'); $('errorBody').textContent='Lỗi tải dữ liệu: '+(err?.message||err); $('errorMeta').textContent='Load error'; } }
     function switchView(view){ const map={ overview:['sectionOverviewHero','sectionSafetyOverview','sectionInvalidData','sectionOverviewTop','sectionOverviewMain','sectionBottom'], trend:['sectionTrend'], radar:['sectionTempRadar'], view3d:['section3D'], crosssection:['sectionCrossSection'], heatmap:['sectionOverviewMain'], anomaly:['sectionBottom'], monthly:['sectionMonthlyReport'] }; document.querySelectorAll('.nav-main').forEach(el=>el.classList.toggle('active', el.dataset.view===view)); ['sidebarOverview','sidebarTrend','sidebarRadar','sidebar3D','sidebarCrossSection','sidebarHeatmap','sidebarAnomaly'].forEach(id=>{ const el=$(id); if(!el) return; el.classList.toggle('hidden', !((view==='overview'&&id==='sidebarOverview')||(view==='trend'&&id==='sidebarTrend')||(view==='radar'&&id==='sidebarRadar')||(view==='view3d'&&id==='sidebar3D')||(view==='crosssection'&&id==='sidebarCrossSection')||(view==='heatmap'&&id==='sidebarHeatmap')||(view==='anomaly'&&id==='sidebarAnomaly'))); }); ['sectionOverviewHero','sectionSafetyOverview','sectionTempRadar','section3D','sectionInvalidData','sectionOverviewTop','sectionOverviewMain','sectionTrend','sectionCrossSection','sectionBottom','sectionMonthlyReport'].forEach(id=>{ const el=$(id); if(!el) return; el.classList.toggle('hidden', !((map[view]||[]).includes(id))); }); }
-    function bindEvents(){ $('btnLogin')?.addEventListener('click',()=>{ void handleLogin(); }); $('loginPass')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') void handleLogin(); }); $('loginEmail')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') void handleLogin(); }); $('btnLogout')?.addEventListener('click',()=>{ void handleLogout(); }); $('btnLoadMonthlyReport')?.addEventListener('click',()=>{ void loadMonthlyReport(); }); $('btnGenerateMonthlyAI')?.addEventListener('click',async ()=>{ const btn=$('btnGenerateMonthlyAI'); const monthValue=$('reportMonth')?.value; if(btn){ btn.disabled=true; btn.textContent='Đang tạo AI trên Supabase...'; } try{ if(!monthValue) throw new Error('Vui lòng chọn tháng báo cáo trước khi tạo nhận định AI.'); const runResult = await invokeMonthlyAIFunction(monthValue, true); const successRows = Array.isArray(runResult?.results) ? runResult.results.filter(x=>x.ok) : []; const failedRows = Array.isArray(runResult?.results) ? runResult.results.filter(x=>!x.ok) : []; const successCount = successRows.length; const totalCount = Array.isArray(runResult?.results) ? runResult.results.length : 0; await loadMonthlyReport(); const failText = failedRows.length ? ('\nNhóm lỗi: ' + failedRows.map(x=>`${x.group_name}: ${x.error || 'Lỗi không xác định'}`).join(' | ')) : ''; alert(`Đã tạo nhận định AI trên Supabase cho tháng ${monthValue}. Thành công: ${successCount}/${totalCount}.${failText}`); } catch(err){ console.error(err); alert('Lỗi tạo nhận định AI: ' + (err?.message || err)); } finally { if(btn){ btn.disabled=false; btn.textContent='Tạo nhận định AI'; } } }); $('btnPrintMonthly')?.addEventListener('click',()=>{ window.print(); }); $('btnReload').addEventListener('click',()=>{ void applyFilters(); }); $('btnApply').addEventListener('click',()=>{ void applyFilters(); }); $('btnReset').addEventListener('click',()=>{ resetFilters(); refreshFilterOptions(); applyFilters(); }); $('sourceFilter').addEventListener('change', refreshFilterOptions); $('stationFilter').addEventListener('change', refreshFilterOptions); $('groupFilter').addEventListener('change', refreshFilterOptions); $('sensorFilter').addEventListener('change',()=>{ void applyFilters(); }); $('chartSensorFilter').addEventListener('change', renderAll); $('metricFilter').addEventListener('change', renderAll); $('seriesLimitFilter').addEventListener('change', renderAll); $('seriesModeFilter').addEventListener('change', renderAll); document.querySelectorAll('.preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('trend'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.radar-preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('radar'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.heatmap-preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('heatmap'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.nav-main').forEach(el=>el.addEventListener('click',()=>switchView(el.dataset.view))); document.querySelectorAll('.station-link').forEach(el=>el.addEventListener('click',()=>{ $('sourceFilter').value='ALL'; refreshFilterOptions(); $('stationFilter').value=el.dataset.station; refreshFilterOptions(); $('groupFilter').value='ALL'; $('sensorFilter').value='ALL'; $('chartSensorFilter').value='ALL'; applyFilters(); })); }
+    function bindEvents(){ $('btnLogin')?.addEventListener('click',()=>{ void handleLogin(); }); $('loginPass')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') void handleLogin(); }); $('loginEmail')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') void handleLogin(); }); $('btnLogout')?.addEventListener('click',()=>{ void handleLogout(); }); $('btnLoadMonthlyReport')?.addEventListener('click',()=>{ void loadMonthlyReport(); }); $('btnGenerateMonthlyAI')?.addEventListener('click',async ()=>{
+      const btn = $('btnGenerateMonthlyAI');
+      const monthValue = $('reportMonth')?.value;
+
+      if(btn){
+        btn.disabled = true;
+        btn.textContent = 'Đang chuẩn bị dữ liệu tháng...';
+      }
+
+      try{
+        if(!monthValue){
+          throw new Error('Vui lòng chọn tháng báo cáo trước khi tạo nhận định AI.');
+        }
+
+        // Bước 1: tổng hợp và lưu đủ 4 summary trước khi gọi Edge Function.
+        await prepareMonthlyAISummaries(
+          monthValue,
+          (current, total, title)=>{
+            if(btn) btn.textContent = `Đang chuẩn bị ${current}/${total}: ${title}...`;
+          }
+        );
+
+        // Bước 2: xác nhận DB đã có đủ 4 nhóm.
+        if(btn) btn.textContent = 'Đang kiểm tra dữ liệu AI...';
+        const summaryRows = await verifyMonthlyAISummaries(monthValue);
+
+        // Xóa cache để luôn chạy lại sau khi summary vừa được cập nhật.
+        monthlyAIGenerationCache.clear();
+
+        // Bước 3: gọi Edge Function bằng access token của phiên đăng nhập.
+        if(btn) btn.textContent = 'Đang gọi AI trên Supabase...';
+        const runResult = await invokeMonthlyAIFunction(monthValue, true);
+
+        const results = Array.isArray(runResult?.results) ? runResult.results : [];
+        const successRows = results.filter(x=>x.ok);
+        const failedRows = results.filter(x=>!x.ok);
+        const successCount = successRows.length;
+        const totalCount = results.length;
+
+        // Bước 4: tải lại báo cáo để đọc monthly_ai_narrative mới.
+        if(btn) btn.textContent = 'Đang tải lại báo cáo...';
+        await loadMonthlyReport();
+
+        const failText = failedRows.length
+          ? ('\nNhóm lỗi: ' + failedRows
+              .map(x=>`${x.group_name}: ${x.error || 'Lỗi không xác định'}`)
+              .join(' | '))
+          : '';
+
+        alert(
+          `Đã chuẩn bị ${summaryRows.length}/4 nhóm dữ liệu và tạo nhận định AI ` +
+          `cho tháng ${monthValue}. Thành công: ${successCount}/${totalCount}.${failText}`
+        );
+      }catch(err){
+        console.error('Lỗi tạo nhận định AI:', err);
+        alert('Lỗi tạo nhận định AI: ' + (err?.message || err));
+      }finally{
+        if(btn){
+          btn.disabled = false;
+          btn.textContent = 'Tạo nhận định AI';
+        }
+      }
+    }); $('btnPrintMonthly')?.addEventListener('click',()=>{ window.print(); }); $('btnReload').addEventListener('click',()=>{ void applyFilters(); }); $('btnApply').addEventListener('click',()=>{ void applyFilters(); }); $('btnReset').addEventListener('click',()=>{ resetFilters(); refreshFilterOptions(); applyFilters(); }); $('sourceFilter').addEventListener('change', refreshFilterOptions); $('stationFilter').addEventListener('change', refreshFilterOptions); $('groupFilter').addEventListener('change', refreshFilterOptions); $('sensorFilter').addEventListener('change',()=>{ void applyFilters(); }); $('chartSensorFilter').addEventListener('change', renderAll); $('metricFilter').addEventListener('change', renderAll); $('seriesLimitFilter').addEventListener('change', renderAll); $('seriesModeFilter').addEventListener('change', renderAll); document.querySelectorAll('.preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('trend'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.radar-preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('radar'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.heatmap-preset-link').forEach(el=>el.addEventListener('click',()=>{ switchView('heatmap'); applyPreset(el.dataset.preset); })); document.querySelectorAll('.nav-main').forEach(el=>el.addEventListener('click',()=>switchView(el.dataset.view))); document.querySelectorAll('.station-link').forEach(el=>el.addEventListener('click',()=>{ $('sourceFilter').value='ALL'; refreshFilterOptions(); $('stationFilter').value=el.dataset.station; refreshFilterOptions(); $('groupFilter').value='ALL'; $('sensorFilter').value='ALL'; $('chartSensorFilter').value='ALL'; applyFilters(); })); }
     async function initDashboardAfterAuth(){ switchView('overview'); const d=getDefaultDates(); $('dateFrom').value=d.from; $('dateTo').value=d.to; await loadMaster(); await applyFilters(); }
 
     function getMonthRange(monthValue){ return monthRangeToOffsetIso(monthValue, APP_TZ_OFFSET_MINUTES); }
@@ -3330,13 +3393,20 @@ function renderKpis(rows,latestRows){
         return monthlyAIGenerationCache.get(cacheKey);
       }
       const runner = (async ()=>{
+        const { data: sessionData, error: sessionError } = await sb.auth.getSession();
+        if(sessionError) throw sessionError;
+        const accessToken = sessionData?.session?.access_token;
+        if(!accessToken){
+          throw new Error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại trước khi tạo AI.');
+        }
+
         const endpoint = `${SB_URL}/functions/v1/${MONTHLY_AI_FUNCTION_NAME}`;
         const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'apikey': SB_KEY,
-            'Authorization': `Bearer ${SB_KEY}`
+            'Authorization': `Bearer ${accessToken}`
           },
           body: JSON.stringify({
             report_month: monthValue,
@@ -3477,17 +3547,102 @@ function renderKpis(rows,latestRows){
       </div>`;
     }
     async function persistMonthlyAISummary(reportMonth, cfg, summary, rule){
-      if(!sb || !cfg?.ai_group_name) return;
-      try{
-        await sb.from('monthly_ai_summary').upsert({
-          report_month: reportMonth,
-          group_name: cfg.ai_group_name,
-          summary_json: summary,
-          rule_result_json: rule,
-          created_at: new Date().toISOString()
-        }, { onConflict: 'report_month,group_name' });
-      }catch(err){ console.warn('Không thể lưu monthly_ai_summary:', err?.message || err); }
+      if(!sb) throw new Error('Supabase client chưa khởi tạo.');
+      if(!reportMonth) throw new Error('Thiếu report_month khi lưu monthly_ai_summary.');
+      if(!cfg?.ai_group_name) throw new Error('Thiếu ai_group_name khi lưu monthly_ai_summary.');
+      if(!summary || typeof summary !== 'object') {
+        throw new Error(`summary_json không hợp lệ cho nhóm ${cfg.ai_group_name}.`);
+      }
+      if(!rule || typeof rule !== 'object') {
+        throw new Error(`rule_result_json không hợp lệ cho nhóm ${cfg.ai_group_name}.`);
+      }
+
+      const payload = {
+        report_month: reportMonth,
+        group_name: cfg.ai_group_name,
+        summary_json: summary,
+        rule_result_json: rule,
+        updated_at: new Date().toISOString()
+      };
+
+      const { data, error } = await sb
+        .from('monthly_ai_summary')
+        .upsert(payload, { onConflict: 'report_month,group_name' })
+        .select('report_month,group_name,created_at,updated_at')
+        .single();
+
+      if(error){
+        console.error('Không thể lưu monthly_ai_summary:', error);
+        throw new Error(
+          `Không lưu được monthly_ai_summary ${reportMonth}/${cfg.ai_group_name}: ` +
+          `${error.code || ''} ${error.message || ''}`.trim()
+        );
+      }
+      if(!data){
+        throw new Error(`Supabase không trả về bản ghi monthly_ai_summary cho ${cfg.ai_group_name}.`);
+      }
+      return data;
     }
+
+    async function prepareMonthlyAISummaries(reportMonth, onProgress){
+      if(!reportMonth) throw new Error('Vui lòng chọn tháng báo cáo.');
+      const groups = ['temperature','jointmeter','piezometer','seepage'];
+      const savedRows = [];
+
+      for(let i = 0; i < groups.length; i++){
+        const groupKey = groups[i];
+        const cfg = getMonthlyGroupConfig(groupKey);
+        if(typeof onProgress === 'function'){
+          onProgress(i + 1, groups.length, cfg?.title || groupKey);
+        }
+
+        const report = await loadSingleMonthlyGroupReport(groupKey, reportMonth);
+        if(!report){
+          throw new Error(`Không tổng hợp được dữ liệu tháng cho nhóm ${groupKey}.`);
+        }
+
+        const summary = buildMonthlyAISummary(groupKey, report, reportMonth);
+        const rule = buildMonthlyAIRule(summary, cfg);
+        const saved = await persistMonthlyAISummary(reportMonth, cfg, summary, rule);
+        savedRows.push(saved);
+      }
+
+      return savedRows;
+    }
+
+    async function verifyMonthlyAISummaries(reportMonth){
+      const expected = [
+        'nhiet_do_be_tong',
+        'khe_nhiet_ho',
+        'ap_luc_tham',
+        'luu_luong_tham'
+      ];
+
+      const { data, error } = await sb
+        .from('monthly_ai_summary')
+        .select('report_month,group_name,created_at,updated_at')
+        .eq('report_month', reportMonth)
+        .in('group_name', expected);
+
+      if(error){
+        throw new Error(
+          `Không kiểm tra được monthly_ai_summary tháng ${reportMonth}: ` +
+          `${error.code || ''} ${error.message || ''}`.trim()
+        );
+      }
+
+      const found = new Set((data || []).map(row => String(row.group_name)));
+      const missing = expected.filter(name => !found.has(name));
+
+      if(missing.length){
+        throw new Error(
+          `Chưa tạo đủ monthly_ai_summary tháng ${reportMonth}. Thiếu: ${missing.join(', ')}`
+        );
+      }
+
+      return data || [];
+    }
+
     async function enrichMonthlyReportWithAI(groupKey, report, monthValue, options={}){
       const cfg = report?.cfg || getMonthlyGroupConfig(groupKey);
       if(!cfg || !report) return report;
